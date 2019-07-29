@@ -1,0 +1,387 @@
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>CF-164C. Machine Programming(最小费用最大流)</title>
+<link  href="//bbsmax.ikafan.com/assets/prettify.css?ab" type="text/css" rel="stylesheet"/>
+<!-- <meta name="referrer" content="never">
+h -->
+<style>
+ .menu li { float: left; }
+</style>
+<script src="//bbsmax.ikafan.com/assets/run_prettify.js?ac"></script>
+<link rel="stylesheet" href="//bbsmax.ikafan.com/css.grace/style.css?ac">
+<!-- <link rel="stylesheet" href="//bbsmax.ikafan.com/css.grace/fontello.css?ac"> -->
+<!-- <link rel="stylesheet" href="//bbsmax.ikafan.com/css.grace/animation.css?ac"> -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?f2adcef0bf5f8333f378fa05eda393f4";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+</head>
+<body>
+<div id="header" class="navbar navbar-default navbar-fixed-top header-01">
+	<div class="container">
+		<h1 class="logo">
+			<a  href="/" title="bbsmax"/>
+							<img src="//bbsmax.ikafan.com/images.grace/logo.png?ab" alt="bbsmax">
+			</a>
+		</h1>
+				<div role="navigation"  class="site-nav  primary-menu">
+			<div class="menu-fix-box">
+				 <ul id="menu-navigation" class="menu" >
+<li>首页</li>
+<li>Python</li>
+<li>Java</li>
+<li>PHP</li>
+<li>IOS</li>
+<li>Andorid</li>
+<li>NodeJS</li>
+<li>JavaScript</li>
+<li>HTML5</li>
+</ul>					 			</div>
+		</div>
+				<!--<div class="right-nav">
+				<button class="js-toggle-search"><i class="icon-search"></i></button>
+		</div>-->
+       
+			</div>	
+</div>
+
+
+<div id="page-content">
+	<div class="container">
+		<div class="row">
+			
+			<div class="blog-post">
+								<!--<div class="posts-top-cjtz clearfix"></div>-->
+								<div class="post">
+										<div class="post-title">
+						<!--<div class="post-entry-categories"><a href="/tag/abc" rel="tag">tag</a><a href="/tag/abc" rel="tag">tag2</a></div>-->
+						<h1 class="title">CF-164C. Machine Programming(最小费用最大流)</h1>
+						<div class="post_icon"> 
+															<span class="icon-user-o"> z.arbitrary</span>															
+															<span class="icon-clock-1"> 2013-08-14 </span>
+															<span class="icon-article-1"> <a href="/link/Z1ZkbkVwOU41Vw==" target="_blank" rel="noindex,nofollow,oarchive">原文</a> </span>
+					</div>
+										<div class="post-content">
+													<!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-format="fluid"
+     data-ad-layout="in-article"
+     data-ad-client="ca-pub-6527383233809815"
+     data-ad-slot="7460572068"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script> -->
+
+<!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script> -->
+<!-- bbsmax_article_top_250*250 -->
+<!-- <ins class="adsbygoogle"
+     style="display:inline-block;width:250px;height:250px"
+     data-ad-client="ca-pub-6527383233809815"
+     data-ad-slot="5351446295"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script> -->
+											
+		<p>题意：</p>
+<p>给你n个任务，k个机器，n个任务的起始时间，持续时间，完成任务的获利</p>
+<p>每个机器可以完成任何一项任务，但是同一时刻只能完成一项任务，一旦某台机器在完成某项任务时，直到任务结束，这台机器都不能去做其他任务</p>
+<p>最后问你当获利最大时，应该安排那些机器工作，即输出方案</p>
+<p>分析：</p>
+<p>要求的是最大费用，因此将费用取负就可以用最小费用最大流算法了</p>
+<p>建图很重要。如果图建的复杂的话，可能就会超时了的！</p>
+<p>新建源汇S T&lsquo;</p>
+<p>对任务按照起始时间s按升序排序</p>
+<p>拆点：</p>
+<p>u 向 u'连一条边 容量为 1 费用为 -c,</p>
+<p>u' 向 T连一条边 容量为 inf 费用为 0；</p>
+<p>如果任务u完成后接下来最先开始的是任务v</p>
+<p>则从u' 向 v连一条边，容量inf 费用 0.</p>
+<p>另外，任务从前往后具有传递性，所以必须是第i个任务向第i+1个任务建边，容量为inf</p>
+<div>
+<pre class="prettyprint linenums">// File Name: 164-C.cpp
+// Author: Zlbing
+// Created Time: 2013年08月13日 星期二 14时57分55秒
+
+#include&lt;iostream&gt;
+#include&lt;string&gt;
+#include&lt;algorithm&gt;
+#include&lt;cstdlib&gt;
+#include&lt;cstdio&gt;
+#include&lt;set&gt;
+#include&lt;map&gt;
+#include&lt;vector&gt;
+#include&lt;cstring&gt;
+#include&lt;stack&gt;
+#include&lt;cmath&gt;
+#include&lt;queue&gt;
+using namespace std;
+#define CL(x,v); memset(x,v,sizeof(x));
+#define INF 0x3f3f3f3f
+#define LL long long
+#define REP(i,r,n) for(int i=r;i&lt;=n;i++)
+#define RREP(i,n,r) for(int i=n;i&gt;=r;i--)
+;
+struct Edge{
+    int from,to,cap,flow,cost;
+};
+struct MCMF{
+    int n,m,s,t;
+    vector&lt;Edge&gt;edges;
+    vector&lt;int&gt; G[MAXN];
+    int inq[MAXN];
+    int d[MAXN];
+    int p[MAXN];
+    int a[MAXN];
+    void init(int n){
+        this-&gt;n=n;
+        ;i&lt;=n;i++)G[i].clear();
+        edges.clear();
+    }
+    void AddEdge(int from,int to,int cap,int cost){
+        edges.push_back((Edge){,cost});
+        edges.push_back((Edge){to,,,-cost});
+        m=edges.size();
+        G[);
+        G[to].push_back(m-);
+    }
+    bool BellmanFord(int s,int t,int&amp; flow,int&amp; cost){
+        ;i&lt;=n;i++)d[i]=INF;
+            CL(inq,);
+        d[s]=;inq[s]=;p[s]=;a[s]=INF;
+
+        queue&lt;int&gt;Q;
+        Q.push(s);
+        while(!Q.empty()){
+            int u=Q.front();Q.pop();
+            inq[u]=;
+            ;i&lt;(int)G[u].size();i++){
+                Edge&amp; e=edges[G[u][i]];
+                if(e.cap&gt;e.flow&amp;&amp;d[e.to]&gt;d[u]+e.cost){
+                    d[e.to]=d[u]+e.cost;
+                    p[e.to]=G[u][i];
+                    a[e.to]=min(a[u],e.cap-e.flow);
+                    if(!inq[e.to]){
+                        Q.push(e.to);
+                        inq[e.to]=;
+                    }
+                }
+            }
+        }
+        if(d[t]==INF)return false;
+        flow+=a[t];
+        cost+=d[t]*a[t];
+        int u=t;
+        while(u!=s){
+            edges[p[u]].flow+=a[t];
+            edges[p[u]^].flow-=a[t];
+            u=edges[p[u]].from;
+        }
+        return true;
+    }
+    int Mincost(int s,int t){
+        ,cost=;
+        while(BellmanFord(s,t,flow,cost));
+        return cost;
+    }
+};
+struct node{
+    int u, v,cost,id ;
+    bool operator &lt;(const node &amp;rsh)const
+    {
+        return u&lt;rsh.u;
+    }
+}pos[MAXN];
+MCMF solver;
+int ans[MAXN];
+int main()
+{
+    int n,m;
+    while(~scanf("%d%d",&amp;n,&amp;m))
+    {
+        int a,b,c;
+        solver.init(*n+);
+        REP(i,,n-)
+        {
+            scanf("%d%d%d",&amp;a,&amp;b,&amp;c);
+            pos[i]=(node){
+                a,a+b-,c,i
+            };
+        }
+        sort(pos,pos+n);
+        ,t=n*+;
+        REP(i,,n-)
+        {
+            solver.AddEdge(i,i+n,,-pos[i].cost);
+            solver.AddEdge(i+n,t,INF,);
+            )solver.AddEdge(i,i+,INF,);
+            ;j&lt;n;j++)
+            {
+                if(pos[i].v&lt;pos[j].u)
+                {
+                    solver.AddEdge(i+n,j,INF,);
+                    break;
+                }
+            }
+        }
+        solver.AddEdge(s,,m,);
+        solver.AddEdge(n-,t,m,);
+        solver.Mincost(s,t);
+       //printf("cost=%d\n",-tmp);
+        CL(ans,);
+        ;i&lt;(int)solver.edges.size();i++)
+        {
+            Edge e=solver.edges[i];
+            if(e.cap)
+            {
+                int u=e.from;
+                if(u!=s&amp;&amp;u!=t&amp;&amp;u&lt;n&amp;&amp;e.flow==e.cap)
+                {
+                    ans[pos[u].id]=;
+                }
+            }
+        }
+        ;i&lt;n;i++)
+        {
+            if(i)printf(" ");
+            printf("%d",ans[i]);
+        }
+        printf("\n");
+    }
+    ;
+}</pre>
+</div>												<!-- <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-format="fluid"
+     data-ad-layout="in-article"
+     data-ad-client="ca-pub-6527383233809815"
+     data-ad-slot="2451787962"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script> -->
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- bbsmax_article_top_250*250 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:250px;height:250px"
+     data-ad-client="ca-pub-6527383233809815"
+     data-ad-slot="5351446295"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+											<h2><a href="/R/gVdnEp9N5W/">CF-164C. Machine Programming(最小费用最大流)的更多相关文章</a></h2>	
+<ol>
+								<li><a href="https://www.bbsmax.com/A/WpdKynmZJV/">【CF708D】Incorrect Flow 最小费用可行流</a>
+		<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">[CF708D]Incorrect Flow 题意:给你一个点数为n,边数为m的流网络,每条边有一个容量c和流量f,这个网络可能是不合法的.你可以花费1的代价使c或f减少或增加1,可以修改无限次.你不 ...</p>
+		</li>
+						<li><a href="https://www.bbsmax.com/A/lk5aAWqP51/">hdu 2686&amp;amp&semi;&amp;amp&semi;hdu 3376&lpar;拆点&plus;构图&plus;最小费用最大流&rpar;</a>
+		<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">Matrix Time Limit: 2000/1000 MS (Java/Others)    Memory Limit: 32768/32768 K (Java/Others)Total Subm ...</p>
+		</li>
+						<li><a href="https://www.bbsmax.com/A/x9J200YZd6/">hdu 1853 Cyclic Tour &lpar;二分匹配KM最小权值 或 最小费用最大流&rpar;</a>
+		<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">Cyclic Tour Time Limit: 1000/1000 MS (Java/Others)    Memory Limit: 32768/65535 K (Java/Others)Total ...</p>
+		</li>
+						<li><a href="https://www.bbsmax.com/A/WpdKxWrzVQ/">&lbrack;板子&rsqb;最小费用最大流&lpar;Dijkstra增广&rpar;</a>
+		<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">最小费用最大流板子,没有压行.利用重标号让边权非负,用Dijkstra进行增广,在理论和实际上都比SPFA增广快得多.教程略去.转载请随意. #include &lt;cstdio&gt; #incl ...</p>
+		</li>
+						<li><a href="https://www.bbsmax.com/A/kPzOb23dxn/">bzoj1927最小费用最大流</a>
+		<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">其实本来打算做最小费用最大流的题目前先来点模板题的,,,结果看到这道题二话不说(之前打太多了)敲了一个dinic,快写完了发现不对 我当时就这表情→   =_=你TM逗我 刚要删突然感觉dinic的模 ...</p>
+		</li>
+						<li><a href="https://www.bbsmax.com/A/Vx5MpgvJNr/">ACM&sol;ICPC 之 卡卡的矩阵旅行-最小费用最大流&lpar;可做模板&rpar;&lpar;POJ3422&rpar;</a>
+		<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">将每个点拆分成原点A与伪点B,A-&gt;B有两条单向路(邻接表实现时需要建立一条反向的空边,并保证环路费用和为0),一条残留容量为1,费用为本身的负值(便于计算最短路),另一条残留容量+∞,费用为0 ...</p>
+		</li>
+						<li><a href="https://www.bbsmax.com/A/Gkz1b1nJR6/">HDU5900 QSC and Master（区间DP &plus; 最小费用最大流）</a>
+		<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">题目 Source http://acm.hdu.edu.cn/showproblem.php?pid=5900 Description Every school has some legends,  ...</p>
+		</li>
+						<li><a href="https://www.bbsmax.com/A/ZOJPKZglzv/">P3381 【模板】最小费用最大流</a>
+		<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">P3381 [模板]最小费用最大流 题目描述 如题,给出一个网络图,以及其源点和汇点,每条边已知其最大流量和单位流量费用,求出其网络最大流和在最大流情况下的最小费用. 输入输出格式 输入格式: 第一行 ...</p>
+		</li>
+						<li><a href="https://www.bbsmax.com/A/kmzLxojYzG/">【BZOJ-3876】支线剧情         有上下界的网络流（有下界有源有汇最小费用最大流）</a>
+		<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">3876: [Ahoi2014]支线剧情 Time Limit: 10 Sec  Memory Limit: 256 MBSubmit: 821  Solved: 502[Submit][Status ...</p>
+		</li>
+		</ol>
+	
+
+<h2>随机推荐</h2>	
+<ol>
+									<li><a href="https://www.bbsmax.com/A/Vx5Mo9y7zN/">InfoCube信息立方体的优化</a>
+			<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">声明:原创作品,转载时请注明文章来自SAP师太技术博客( 博/客/园www.cnblogs.com):www.cnblogs.com/jiangzhengjun,并以超链接形式标明文章原始出处,否则将 ...</p>
+			</li>
+						<li><a href="https://www.bbsmax.com/A/WpdKBZLq5V/">Asp&period;net中Json的序列化和反序列化（一）</a>
+			<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">JSON是专门为浏览器中的网页上运行的JavaScript代码而设计的一种数据格式.在网站应用中使用JSON的场景越来越多,本文介绍ASP.NET中JSON的序列化和反序列化,主要对JSON的简单介绍 ...</p>
+			</li>
+						<li><a href="https://www.bbsmax.com/A/amd03gjj5g/">Sprint 3计划</a>
+			<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">一.计划目标: 1.完成基本的首页面的信息查询功能 2.学生家教用户注册和登录,将信息存储到数据库 3.完成家教的资格评定设定和个人教学内容备份信息 二.燃尽图 三.项目具体工作细则 待明天工作会议分 ...</p>
+			</li>
+						<li><a href="https://www.bbsmax.com/A/WpdKDYGrzV/">VMware 不可恢复错误&lpar;svga&rpar;&rdquo;解决方法</a>
+			<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">虚拟机VMware 文件在迁移到另一台计算机时出现&quot;VMware Workstation 不可恢复错误(svga)&quot;  将另一台机器的 VMware 文件拷贝至本机,打开虚拟机出现 ...</p>
+			</li>
+						<li><a href="https://www.bbsmax.com/A/kvJ3XYDw5g/">mongo链接报错&colon;couldn&amp;&num;39&semi;t connect to server 127&period;0&period;0&period;1&colon;27017 &lpar;127&period;0&period;0&period;1&rpar;</a>
+			<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">angela@angeladeMacBook-Air:/data/db$mongo MongoDB shell version: 2.6.1 connecting to: test 2014-06-0 ...</p>
+			</li>
+						<li><a href="https://www.bbsmax.com/A/A2dmMQn7de/">HTML5 拖放（Drag 和 Drop）</a>
+			<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">拖放是一种常见的特性,即抓取对象以后拖到另一个位置. 在 HTML5 中,拖放是标准的一部分,任何元素都能够拖放. &lt;!DOCTYPE HTML&gt; &lt;html&gt; &lt;hea ...</p>
+			</li>
+						<li><a href="https://www.bbsmax.com/A/B0zqx1V3dv/">vs2010打包winform程序详解</a>
+			<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">vs2010打包winform程序详解   最近一直在做winform程序,做完后程序打包很头疼,第三方打包工具,好用的花钱,不花钱的不好用,最后只能用vs自带的打包工具了! 打包过程vs2010(包 ...</p>
+			</li>
+						<li><a href="https://www.bbsmax.com/A/gAJGeXp3dZ/">sublime 编辑完自动生成tmp的备份</a>
+			<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">是安装phptool之后造成的,卸载即可 http://bbs.csdn.net/topics/390826865</p>
+			</li>
+						<li><a href="https://www.bbsmax.com/A/pRdB28w6dn/">leecode  树的平衡判定 java</a>
+			<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">以前写过c++版本的,感觉java写的好舒心啊/** * Definition for binary tree * public class TreeNode { * int val; * TreeN ...</p>
+			</li>
+						<li><a href="https://www.bbsmax.com/A/n2d92wn0zD/">git本地仓库关联多个remote&comma;怎么用本地一个分支向不同remote不同分支推送代码</a>
+			<p style="color: rgba(0, 0, 0, 0.32);margin-bottom: 8px;">我想这个问题,是大家关注的问题,这个问题,我非常关注. 背景:在公司开发项目,我们一般都要把项目推送到公司领导创建的一个远程仓库里边去,但是我们同时也有自己的小仓库,这样的话,如何方便的将我们的代码, ...</p>
+			</li>
+			</ol>			
+							
+					</div>
+
+					
+					<!--<div class="shareBox  clearfix">
+
+					</div>-->
+					<!--<div class="posts-cjtz content-cjtz clearfix"><img src="/images.grace/2865270162.png" alt="" /></div>	-->										<div class="next-prev-posts clearfix">
+</div>
+						 
+				</div>
+				
+	<div class="clear"></div>
+
+			</div>	</div>
+</div>
+</div>
+
+
+<div class="clearfix"></div>
+<div id="footer" class="two-s-footer">
+	<div class="footer-box">
+		<div class="container">
+			<div class="row" style="padding-left: 15px;padding-right: 15px;">
+			<div class="nav-footer">
+				<a href="/">Home</a>
+				</div>
+				<div class="copyright-footer">
+					<p>Powered By WordPress</p>
+				</div>
+							</div>
+		</div>
+	</div>
+</div>
+<div style="display:none">
+<script src="https://s22.cnzz.com/z_stat.php?id=1273180860&web_id=1273180860" language="JavaScript"></script>
+</div>
+</body>
+</html>

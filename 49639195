@@ -1,0 +1,2846 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://blog.csdn.net/Kirito_Acmer/article/details/49639195"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="report" content='{"pid":"blog"}'>
+    <meta name="referrer" content="always">
+    <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+    <meta name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848">
+        <meta name="csdn-baidu-search"  content='{"autorun":true,"install":true,"keyword":"codeforces 492D. Vanya and Computer Game - 新月"}'>
+    
+    <link href="https://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">
+    <title>codeforces 492D. Vanya and Computer Game - 新月 - CSDN博客</title>
+
+        
+                    <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/detail-c278e9b7fe.min.css">
+            
+        
+            <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/themes/skin-blue/skin-blue-b7967eb1c8.min.css">
+        <script type="text/javascript">
+        var username = "Kirito_Acmer";
+        var blog_address = "https://blog.csdn.net/kirito_acmer";
+        var static_host = "https://csdnimg.cn/release/phoenix/";
+        var currentUserName = "";
+        var isShowAds = true;
+        var isOwner = false;
+        var loginUrl = "http://passport.csdn.net/account/login?from=https://blog.csdn.net/Kirito_Acmer/article/details/49639195"
+        var blogUrl = "https://blog.csdn.net/";
+
+        var curSkin = "skin-blue";
+        // 收藏所需数据
+        var articleTitle = "codeforces 492D. Vanya and Computer Game";
+        var articleDesc = "timelimitpertest2secondsmemorylimitpertest256megabytesinputstandardinputoutputstandardoutputVanyaandhisfriendVovaplayacomputergamewheretheyneedt";
+        // 第四范式所需数据
+        var articleTitles = "codeforces 492D. Vanya and Computer Game - 新月";
+        
+        var nickName = "Herumw";
+        var isCorporate = false;
+        var subDomainBlogUrl = "https://blog.csdn.net/"
+        var digg_base_url = "https://blog.csdn.net/kirito_acmer/phoenix/comment";
+        var articleDetailUrl = "https://blog.csdn.net/Kirito_Acmer/article/details/49639195";
+    </script>
+    <script src="https://csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="//g.csdnimg.cn/??fixed-sidebar/1.1.3/fixed-sidebar.js,report/1.0.3/report.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="https://csdnimg.cn/public/sandalstrap/1.4/css/sandalstrap.min.css">
+    <style>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </style>
+</head>
+<body class="nodata " > 
+    <link rel="stylesheet" href="https://csdnimg.cn/public/common/toolbar/content_toolbar_css/content_toolbar.css">
+    <script id="toolbar-tpl-scriptId" src="https://csdnimg.cn/public/common/toolbar/js/content_toolbar.js" type="text/javascript" domain="https://blog.csdn.net/"></script>
+<div id="kp_box_476" data-pid="476" data-track-view='{"mod":"kp_popu_476-923","con":",,"}' data-track-click='{"mod":"kp_popu_476-923","con":",,"}' data-report-view='{"mod":"kp_popu_476-923","keyword":""}' data-report-click='{"mod":"kp_popu_476-923","keyword":""}'><script src="//csdnimg.cn/public/common/indexSuperise/1.1.1/indexSuperise.js?20190111165312"></script><script>window.csdn.indexSuperise({smallMoveImg:'https://img-bss.csdn.net/1560915497802.png',bigMoveImg:'https://img-bss.csdn.net/1560915494375.png',link:'https://kunyu.csdn.net?p=476&a=923&c=437&k=&d=1&t=3&dest=https%3A%2F%2Fedu.csdn.net%2Ftopic%2Fai30%3Futm_source%3Dblogpopup',trackSuperId:476,smallMove:'notMove',trackSId:923});</script></div><link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/blog_code-c3a0c33d5c.css">
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/vendor/pagination/paging.css">
+<script type="text/javascript">
+	var NEWS_FEED = function(){}
+</script>
+
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/chart-3456820cac.css" />
+<div class="container clearfix" id="mainBox">
+			<div class="recommend-right">
+  <ul class="recommend-fixed-box">
+    
+  </ul>
+</div>	    <main>
+        <div class="blog-content-box">
+    <div class="article-header-box">
+        <div class="article-header">
+            <div class="article-title-box">
+                <span class="article-type type-1 float-left">原</span>                <h1 class="title-article">codeforces 492D. Vanya and Computer Game</h1>
+            </div>
+            <div class="article-info-box">
+                <div class="article-bar-top">
+                                                                                                                        <span class="time">2015年11月04日 16:00:26</span>
+                    <a class="follow-nickName" href="https://me.csdn.net/Kirito_Acmer" target="_blank">Herumw</a>
+                    <span class="read-count">阅读数 378</span>
+                                                                        <span class="tags-box artic-tag-box">
+                <span class="label">标签：</span>
+                                                                <a data-report-click='{"mod":"popu_626","strategy":"二分"}' data-report-view='{"mod":"popu_626","strategy":"二分"}' class="tag-link" href="https://so.csdn.net/so/search/s.do?q=二分&t=blog" target="_blank">二分                                                    </a>
+              </span>
+                                                                            <div class="tags-box space">
+                                <span class="label">个人分类：</span>
+                                                                <a class="tag-link" href="https://blog.csdn.net/Kirito_Acmer/article/category/3276447" target="_blank">二分                                                                    </a>
+                            </div>
+                                                                                    </div>
+                <div class="operating">
+                                    </div>
+            </div>
+        </div>
+    </div>
+    <article class="baidu_pl">
+                <div id="article_content" class="article_content clearfix" data-report-view='{"mod":"popu_307","dest":"https://blog.csdn.net/Kirito_Acmer/article/details/49639195"}' data-report-click='{"mod":"popu_307","dest":"https://blog.csdn.net/Kirito_Acmer/article/details/49639195"}'>
+                                                <div class="article-copyright">
+                        
+                        版权声明：本文为博主原创文章，未经博主允许不得转载。                        https://blog.csdn.net/Kirito_Acmer/article/details/49639195                    </div>
+                                                    <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-3019150162.css" />
+                                        <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-3019150162.css" />
+                <div class="htmledit_views" id="content_views">
+                                            
+<div style="font-family:verdana, arial, sans-serif;font-size:14px;">
+<div id="pageContent" class="content-with-sidebar" style="min-height:20em;">
+<div class="problemindexholder">
+<div class="ttypography" style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;line-height:21px;color:rgb(34,34,34);">
+<div class="problem-statement" style="line-height:1.5em;">
+<div class="header" style="text-align:center;">
+<div class="time-limit">
+<div class="property-title" style="display:inline;">
+time limit per test</div>
+2 seconds</div>
+<div class="memory-limit">
+<div class="property-title" style="display:inline;">
+memory limit per test</div>
+256 megabytes</div>
+<div class="input-file">
+<div class="property-title" style="display:inline;">
+input</div>
+standard input</div>
+<div class="output-file">
+<div class="property-title" style="display:inline;">
+output</div>
+standard output</div>
+</div>
+<div>
+<p style="font-size:1em;line-height:1.4em;">
+Vanya and his friend Vova play a computer game where they need to destroy <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>n</em></span> monsters to pass a level. Vanya's character performs attack
+ with frequency <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>x</em></span> hits per second and Vova's character performs attack with frequency <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>y</em></span> hits
+ per second. Each character spends fixed time to raise a weapon and then he hits (the time to raise the weapon is <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;">1 / <em>x</em></span> seconds for
+ the first character and <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;">1 / <em>y</em></span> seconds for the second one). The <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>i</em></span>-th
+ monster dies after he receives <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>a</em><span class="lower-index" style="font-size:13.125px;line-height:0;vertical-align:baseline;"><em>i</em></span></span> hits.</p>
+<p style="font-size:1em;line-height:1.4em;">
+Vanya and Vova wonder who makes the last hit on each monster. If Vanya and Vova make the last hit at the same time, we assume that both of them have made the last hit.</p>
+</div>
+<div class="input-specification">
+<div class="section-title" style="font-size:16.1000003814697px;font-weight:bold;">
+Input</div>
+<p style="font-size:1em;line-height:1.4em;">
+The first line contains three integers <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>n</em></span>,<span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>x</em></span>,<span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>y</em></span> (<span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;">1 ≤ <em>n</em> ≤ 10<span class="upper-index" style="font-size:13.125px;line-height:0;vertical-align:baseline;">5</span></span>, <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;">1 ≤ <em>x</em>, <em>y</em> ≤ 10<span class="upper-index" style="font-size:13.125px;line-height:0;vertical-align:baseline;">6</span></span>)
+ — the number of monsters, the frequency of Vanya's and Vova's attack, correspondingly.</p>
+<p style="font-size:1em;line-height:1.4em;">
+Next <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>n</em></span> lines contain integers <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>a</em><span class="lower-index" style="font-size:13.125px;line-height:0;vertical-align:baseline;"><em>i</em></span></span> (<span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;">1 ≤ <em>a</em><span class="lower-index" style="font-size:13.125px;line-height:0;vertical-align:baseline;"><em>i</em></span> ≤ 10<span class="upper-index" style="font-size:13.125px;line-height:0;vertical-align:baseline;">9</span></span>) —
+ the number of hits needed do destroy the <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>i</em></span>-th monster.</p>
+</div>
+<div class="output-specification">
+<div class="section-title" style="font-size:16.1000003814697px;font-weight:bold;">
+Output</div>
+<p style="font-size:1em;line-height:1.4em;">
+Print <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>n</em></span> lines. In the <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>i</em></span>-th
+ line print word "<span class="tex-font-style-tt" style="font-size:15.3999996185303px;font-family:'courier new', monospace;">Vanya</span>", if the last hit on the <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;"><em>i</em></span>-th
+ monster was performed by Vanya, "<span class="tex-font-style-tt" style="font-size:15.3999996185303px;font-family:'courier new', monospace;">Vova</span>", if Vova performed the last hit, or "<span class="tex-font-style-tt" style="font-size:15.3999996185303px;font-family:'courier new', monospace;">Both</span>",
+ if both boys performed it at the same time.</p>
+</div>
+<div class="sample-tests" style="font-family:Consolas, 'Lucida Console', 'Andale Mono', 'Bitstream Vera Sans Mono', 'Courier New', Courier;font-size:.9em;">
+<div class="section-title" style="font-family:'Helvetica Neue', Helvetica, Arial, sans-serif;font-size:14.4899997711182px;font-weight:bold;">
+Sample test(s)</div>
+<div class="sample-test">
+<div class="input" style="border:1px solid rgb(136,136,136);">
+<div class="title" style="font-size:1.3em;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(136,136,136);text-transform:lowercase;font-weight:bold;">
+input</div>
+<pre style="font-size:12.6000003814697px;font-family:Consolas, 'Lucida Console', 'Andale Mono', 'Bitstream Vera Sans Mono', 'Courier New', Courier;line-height:1.25em;color:rgb(136,0,0);">4 3 2
+1
+2
+3
+4
+</pre>
+</div>
+<div class="output" style="border:1px solid rgb(136,136,136);">
+<div class="title" style="font-size:1.3em;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(136,136,136);text-transform:lowercase;font-weight:bold;">
+output</div>
+<pre style="font-size:12.6000003814697px;font-family:Consolas, 'Lucida Console', 'Andale Mono', 'Bitstream Vera Sans Mono', 'Courier New', Courier;line-height:1.25em;color:rgb(136,0,0);">Vanya
+Vova
+Vanya
+Both
+</pre>
+</div>
+<div class="input" style="border:1px solid rgb(136,136,136);">
+<div class="title" style="font-size:1.3em;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(136,136,136);text-transform:lowercase;font-weight:bold;">
+input</div>
+<pre style="font-size:12.6000003814697px;font-family:Consolas, 'Lucida Console', 'Andale Mono', 'Bitstream Vera Sans Mono', 'Courier New', Courier;line-height:1.25em;color:rgb(136,0,0);">2 1 1
+1
+2
+</pre>
+</div>
+<div class="output" style="border:1px solid rgb(136,136,136);">
+<div class="title" style="font-size:1.3em;border-bottom-width:1px;border-bottom-style:solid;border-bottom-color:rgb(136,136,136);text-transform:lowercase;font-weight:bold;">
+output</div>
+<pre style="font-size:12.6000003814697px;font-family:Consolas, 'Lucida Console', 'Andale Mono', 'Bitstream Vera Sans Mono', 'Courier New', Courier;line-height:1.25em;color:rgb(136,0,0);">Both
+Both
+</pre>
+</div>
+</div>
+</div>
+<div class="note">
+<div class="section-title" style="font-size:16.1000003814697px;font-weight:bold;">
+Note</div>
+<p style="font-size:1em;line-height:1.4em;">
+In the first sample Vanya makes the first hit at time <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;">1 / 3</span>, Vova makes the second hit at time <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;">1 / 2</span>,
+ Vanya makes the third hit at time<span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;">2 / 3</span>, and both boys make the fourth and fifth hit simultaneously at the time <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;">1</span>.</p>
+<p style="font-size:1em;line-height:1.4em;">
+In the second sample Vanya and Vova make the first and second hit simultaneously at time <span class="tex-span" style="font-size:17.5px;font-family:'times new roman', sans-serif;">1</span>.</p>
+<p><br /></p>
+<p>这题思路不难，我的思路是先找出最后一秒t，然后m减去(t-1)*(x+y),然后二分最后一秒。但是这题非常卡精度，非常坑啊。</p>
+<p><br /></p>
+<p></p><pre><code class="language-cpp">#include&lt;iostream&gt;
+#include&lt;stdio.h&gt;
+#include&lt;stdlib.h&gt;
+#include&lt;string.h&gt;
+#include&lt;math.h&gt;
+#include&lt;vector&gt;
+#include&lt;map&gt;
+#include&lt;set&gt;
+#include&lt;queue&gt;
+#include&lt;stack&gt;
+#include&lt;string&gt;
+#include&lt;algorithm&gt;
+using namespace std;
+typedef long long ll;
+#define inf 0x7fffffff
+#define eps 1e-9
+#define eps1 1e-6
+
+double x,y,m;
+int cal1(double shijian)
+{
+    int i,j,num1,num2;
+    int l=0;
+    int r=x,mid;
+    while(l&lt;=r){
+        mid=(l+r)/2;
+        if(1.0*mid*(1.0/(x*1.0) )&gt;shijian )r=mid-1;
+        else l=mid+1;
+    }
+    return r;
+}
+
+
+int cal2(double shijian)
+{
+    int i,j,num1,num2;
+    int l=0;
+    int r=y,mid;
+    while(l&lt;=r){
+        mid=(l+r)/2;
+        if(1.0*mid*(1.0/ (1.0*y) )&gt;shijian )r=mid-1;
+        else l=mid+1;
+    }
+    return r;
+
+}
+
+int main()
+{
+    int n,i,j,t1,num11,num22,h;
+    double l,r,mid;
+    int num1,num2;
+    while(scanf("%d%lf%lf",&amp;n,&amp;x,&amp;y)!=EOF)
+    {
+        for(h=1;h&lt;=n;h++){
+            scanf("%lf",&amp;m);
+            t1=m/(x+y);
+            m-=(x+y)*t1;
+            l=0;r=1;
+            for(i=1;i&lt;=200;i++){
+                mid=(l+r)/2.0;
+                num1=cal1(mid);
+                num2=cal2(mid);
+                if(num1+num2&gt;=m)r=mid;
+                //if(floor(mid*x)+floor(mid*y)&gt;=m)r=mid;
+                else l=mid;
+            }
+            double num3=floor(mid*x+eps);
+            double num4=floor(mid*y+eps);  //这里不加eps会错的= =
+            if(num3*y==num4*x)printf("Both\n");
+            else if(num3*y&gt;num4*x)printf("Vanya\n");
+            else if(num3*y&lt;num4*x)printf("Vova\n");
+        }
+    }
+    return 0;
+}</code></pre><br /><br /></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+                                    </div>
+                    </div>
+    </article>
+</div>
+
+            <div class="hide-article-box hide-article-pos text-center">
+            <a class="btn-readmore" data-report-view='{"mod":"popu_376","dest":"https://blog.csdn.net/Kirito_Acmer/article/details/49639195","strategy":"readmore"}' data-report-click='{"mod":"popu_376","dest":"https://blog.csdn.net/Kirito_Acmer/article/details/49639195","strategy":"readmore"}'>
+                展开阅读全文
+                <svg class="icon chevrondown" aria-hidden="true">
+                    <use xlink:href="#csdnc-chevrondown"></use>
+                </svg>
+            </a>
+        </div>
+    
+<script>
+    $(".MathJax").remove();
+    if ($('div.markdown_views pre.prettyprint code.hljs').length > 0) {
+        $('div.markdown_views')[0].className = 'markdown_views';
+    }
+</script>
+
+<script src="https://csdnimg.cn/release/phoenix/vendor/linkCatcher/linkCatcher.js?20190723202812"></script>
+        <div id="dmp_ad_58"><div id="kp_box_58" data-pid="58" data-track-view='{"mod":"kp_popu_58-402","con":",,"}' data-track-click='{"mod":"kp_popu_58-402","con":",,"}' data-report-view='{"mod":"kp_popu_58-402","keyword":""}' data-report-click='{"mod":"kp_popu_58-402","keyword":""}'><div style="width:100%;background:#fff;border:3px solid #fff;padding:16px 0px 0px 0px;">
+<script type="text/javascript" src="//static.mediav.com/js/mvf_news_feed.js"></script>
+<div id="three_ad1" class="mediav_ad" ></div>
+<script>
+                                               NEWS_FEED({
+                w: 900,
+                h : 100,
+                showid : 'ztvJV8',
+                placeholderId: "three_ad1",
+                inject : 'define',
+                define : {
+                    imagePosition : 'left',
+                    imageBorderRadius : 0,
+                    imageWidth: 90,
+                    imageHeight: 68,
+                    imageFill : 'clip',
+                    displayImage : true,
+                    displayTitle : true,
+                    titleFontSize: 18,
+                    titleFontColor: '#000',
+                    titleFontFamily : 'Lato,-apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif',
+                    titleFontWeight: 'bold',
+                    titlePaddingTop : 0,
+                    titlePaddingRight : 0,
+                    titlePaddingBottom : 5,
+                    titlePaddingLeft : 16,
+                    displayDesc : true,
+                    descFontSize: 14,
+                    descFontColor: '#8e959a',
+                    descFontFamily : 'Microsoft YaHei',
+                    paddingTop : 10,
+                    paddingRight : 0,
+                    paddingBottom : 0,
+                    paddingLeft : 20,
+                    backgroundColor: '#fff',
+                    hoverColor: '#000'
+                      }
+                  })
+                                        </script>
+</div></div></div>        <a id="commentBox"></a>
+<div class="comment-box">
+	
+	<div class="comment-edit-box d-flex">
+		<a id="commentsedit"></a>
+		<div class="user-img">
+			<a href="javascript:void(0);" target="_blank">
+				<img class="show_loginbox" src="//g.csdnimg.cn/static/user-img/anonymous-User-img.png">
+			</a>
+		</div>
+		<form id="commentform">
+			<input type="hidden" id="comment_replyId">
+			<textarea class="comment-content" name="comment_content" id="comment_content" placeholder="想对作者说点什么"></textarea>
+			<div class="opt-box"> <!-- d-flex -->
+				<div id="ubbtools" class="add_code">
+					<a href="#insertcode" code="code" target="_self"><i class="icon iconfont icon-daima"></i></a>
+				</div>
+				<input type="hidden" id="comment_replyId" name="comment_replyId">
+				<input type="hidden" id="article_id" name="article_id" value="49639195">
+				<input type="hidden" id="comment_userId" name="comment_userId" value="">
+				<input type="hidden" id="commentId" name="commentId" value="">
+				<div style="display: none;" class="csdn-tracking-statistics tracking-click" data-report-click='{"mod":"popu_384","dest":""}'><a href="#" target="_blank" class="comment_area_btn">发表评论</a></div>
+				<div class="dropdown" id="myDrap">
+					<a class="dropdown-face d-flex align-items-center" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+					<div class="txt-selected text-truncate">添加代码片</div>
+					<svg class="icon d-block" aria-hidden="true">
+						<use xlink:href="#csdnc-triangledown"></use>
+					</svg>
+					</a>
+					<ul class="dropdown-menu" id="commentCode" aria-labelledby="drop4">
+						<li><a data-code="html">HTML/XML</a></li>
+						<li><a data-code="objc">objective-c</a></li>
+						<li><a data-code="ruby">Ruby</a></li>
+						<li><a data-code="php">PHP</a></li>
+						<li><a data-code="csharp">C</a></li>
+						<li><a data-code="cpp">C++</a></li>
+						<li><a data-code="javascript">JavaScript</a></li>
+						<li><a data-code="python">Python</a></li>
+						<li><a data-code="java">Java</a></li>
+						<li><a data-code="css">CSS</a></li>
+						<li><a data-code="sql">SQL</a></li>
+						<li><a data-code="plain">其它</a></li>
+					</ul>
+				</div>  
+				<div class="right-box">
+					<span id="tip_comment" class="tip">还能输入<em>1000</em>个字符</span>
+					<input type="button" class="btn btn-sm btn-cancel d-none" value="取消回复">
+					<input type="submit" class="btn btn-sm btn-red btn-comment" value="发表评论">
+				</div>
+			</div>
+		</form>
+	</div>
+
+		<div class="comment-list-container">
+		<a id="comments"></a>
+		<div class="comment-list-box">
+		</div>
+		<div id="commentPage" class="pagination-box d-none"></div>
+		<div class="opt-box text-center">
+			<div class="btn btn-sm btn-link-blue" id="btnMoreComment"></div>
+		</div>
+	</div>
+</div>
+        <div class="recommend-box">
+                            <div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/mengxiang000000/article/details/64443342","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/mengxiang000000/article/details/64443342","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/mengxiang000000/article/details/64443342" target="_blank" title="Codeforces 677E Vanya and Balloons【断点前缀和+暴力维护+数学技巧】">
+		<h4 class="text-truncate oneline">
+				<em>Codeforces</em> 677E <em>Vanya</em> and Balloons【断点前缀和+暴力维护+数学技巧】		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">03-21</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					278</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/mengxiang000000/article/details/64443342" target="_blank" title="Codeforces 677E Vanya and Balloons【断点前缀和+暴力维护+数学技巧】">
+				<span class="desc oneline">E.VanyaandBalloonstimelimitpertest3secondsmemorylimitpertest512megabytesinputstandardinputoutputstan...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/mengxiang000000">来自：	<span class="blog_title">  mengxiang000000</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/obsorb_knowledge/article/details/78356753","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/obsorb_knowledge/article/details/78356753","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/obsorb_knowledge/article/details/78356753" target="_blank" title="CodeForces - 492D    Vanya and Computer Game     (一道数学思维题,可以说是最大公约数，最小公倍数为一个周期，再找在这一个周期中能打多少拳，拳数的周期)">
+		<h4 class="text-truncate oneline">
+				<em>CodeForces</em> - 492D    <em>Vanya</em> and <em>Computer</em> <em>Game</em>     (一道数学思维题,可以说是最大公约数，最小公倍数为一个周期，再找在这一个周期中能打多少拳，拳数的周期)		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">10-26</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					149</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/obsorb_knowledge/article/details/78356753" target="_blank" title="CodeForces - 492D    Vanya and Computer Game     (一道数学思维题,可以说是最大公约数，最小公倍数为一个周期，再找在这一个周期中能打多少拳，拳数的周期)">
+				<span class="desc oneline">VanyaandhisfriendVovaplayacomputergamewheretheyneedtodestroy n monsterstopassalevel.Vanya'scharacter...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/obsorb_knowledge">来自：	<span class="blog_title"> obsorb_knowledge的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/hzj1054689699/article/details/84567322","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/hzj1054689699/article/details/84567322","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/hzj1054689699/article/details/84567322" target="_blank" title="【杂题】[CodeForces 1076G] Array Game【数据结构】【博弈】">
+		<h4 class="text-truncate oneline">
+				【杂题】[<em>CodeForces</em> 1076G] Array <em>Game</em>【数据结构】【博弈】		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">11-27</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					251</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/hzj1054689699/article/details/84567322" target="_blank" title="【杂题】[CodeForces 1076G] Array Game【数据结构】【博弈】">
+				<span class="desc oneline">原题链接：http://codeforces.com/problemset/problem/1076/GDescription考虑这样一个博弈你有一个序列B，一开始有一个棋子在B的第一个位置。双方轮流...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/hzj1054689699">来自：	<span class="blog_title"> Never give in.</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_41289920/article/details/82383247","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_41289920/article/details/82383247","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/qq_41289920/article/details/82383247" target="_blank" title="【CodeForces - 833A】The Meaningless Game（思维题，数学，可用牛顿迭代法，知识点总结）">
+		<h4 class="text-truncate oneline">
+				【<em>CodeForces</em> - 833A】The Meaningless <em>Game</em>（思维题，数学，可用牛顿迭代法，知识点总结）		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">09-04</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					148</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/qq_41289920/article/details/82383247" target="_blank" title="【CodeForces - 833A】The Meaningless Game（思维题，数学，可用牛顿迭代法，知识点总结）">
+				<span class="desc oneline">题干：SlastyonaandherloyaldogPushokareplayingameaningless game thatisindeedveryinteresting.The game con...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/qq_41289920">来自：	<span class="blog_title"> xuanwei的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	<div class="recommend-item-box recommend-ad-box"><div id="kp_box_59" data-pid="59" data-track-view='{"mod":"kp_popu_59-78","con":",,"}' data-track-click='{"mod":"kp_popu_59-78","con":",,"}' data-report-view='{"mod":"kp_popu_59-78","keyword":""}' data-report-click='{"mod":"kp_popu_59-78","keyword":""}'><script type="text/javascript">
+    (function() {
+        var s = "_" + Math.random().toString(36).slice(2);
+        document.write('<div style="" id="' + s + '"></div>');
+        (window.slotbydup = window.slotbydup || []).push({
+            id: "u3491668",
+            container:  s
+        });
+    })();
+</script>
+<!-- 多条广告如下脚本只需引入一次 -->
+<script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js" async="async" defer="defer" ></script></div></div>
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/CSDN___CSDN/article/details/87468279","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/CSDN___CSDN/article/details/87468279","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/CSDN___CSDN/article/details/87468279" target="_blank" title="【Codeforces】1104C Grid game （变异的俄罗斯方块）">
+		<h4 class="text-truncate oneline">
+				【<em>Codeforces</em>】1104C Grid <em>game</em> （变异的俄罗斯方块）		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">02-16</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					144</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/CSDN___CSDN/article/details/87468279" target="_blank" title="【Codeforces】1104C Grid game （变异的俄罗斯方块）">
+				<span class="desc oneline">http://codeforces.com/problemset/problem/1104/C4X4的方格放置1*2的矩形（用1表示）和2*1的矩形（用0表示）只要有一行或者一列都填满了，就会自动消除...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/CSDN___CSDN">来自：	<span class="blog_title"> ......</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/kuangfengwu/4329483","strategy":"BlogCommendFromQuerySearch","index":"5"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/kuangfengwu/4329483","strategy":"BlogCommendFromQuerySearch","index":"5"}'>
+		<a href="https://download.csdn.net/download/kuangfengwu/4329483" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						Mathematics for 3d <em>game</em> programming and <em>computer</em> graphics					</h4>
+					<span class="data float-right">05-25</span>
+				</div>
+				<div class="desc oneline">
+						Mathematics for 3d game programming and computer graphics
+
+3D游戏编程数学和计算机图形学）				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/wxjly20112011/10592937","strategy":"BlogCommendFromQuerySearch","index":"6"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/wxjly20112011/10592937","strategy":"BlogCommendFromQuerySearch","index":"6"}'>
+		<a href="https://download.csdn.net/download/wxjly20112011/10592937" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						Mathematics.for.3D.<em>Game</em>.Programming					</h4>
+					<span class="data float-right">08-09</span>
+				</div>
+				<div class="desc oneline">
+						Mathematics for 3D Game Programming and Computer Grahpics 3rd				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/u011433684/9992853","strategy":"BlogCommendFromQuerySearch","index":"7"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/u011433684/9992853","strategy":"BlogCommendFromQuerySearch","index":"7"}'>
+		<a href="https://download.csdn.net/download/u011433684/9992853" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						Mathematics for 3D <em>Game</em> Programming and <em>Computer</em> Graphics(3rd) 无水印pdf					</h4>
+					<span class="data float-right">09-24</span>
+				</div>
+				<div class="desc oneline">
+						Mathematics for 3D Game Programming and Computer Graphics(3rd) 英文无水印pdf 第3版
+                    
+pdf所有页面使用FoxitReader和P...				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/gsoosg/5190888","strategy":"BlogCommendFromQuerySearch","index":"8"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/gsoosg/5190888","strategy":"BlogCommendFromQuerySearch","index":"8"}'>
+		<a href="https://download.csdn.net/download/gsoosg/5190888" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						3d <em>Game</em> Engine Design: A Practical Approach to Real-Time <em>Computer</em> Graphics					</h4>
+					<span class="data float-right">03-28</span>
+				</div>
+				<div class="desc oneline">
+						3d Game Engine Design: A Practical Approach to Real-Time Computer Graphics电子书第二版，对应源码可以在http://www.geometrictools.com获得				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	<div class="recommend-item-box recommend-ad-box"><div id="kp_box_60" data-pid="60" data-track-view='{"mod":"kp_popu_60-43","con":",,"}' data-track-click='{"mod":"kp_popu_60-43","con":",,"}' data-report-view='{"mod":"kp_popu_60-43","keyword":""}' data-report-click='{"mod":"kp_popu_60-43","keyword":""}'><div id="three_ad8" class="mediav_ad" ></div>
+<script type="text/javascript" src="//static.mediav.com/js/mvf_news_feed.js"></script>
+<script>
+                                               NEWS_FEED({
+                w: 900,
+                h : 84,
+                showid : 'Afihld',
+                placeholderId: "three_ad8",
+                inject : 'define',
+                define : {
+                    imagePosition : 'left',
+                    imageBorderRadius : 3,
+                    imageWidth: 90,
+                    imageHeight: 60,
+                    imageFill : 'clip',
+                    displayImage : true,
+                    displayTitle : true,
+                    titleFontSize: 18,
+                    titleFontColor: '#000',
+                    titleFontFamily : 'Lato,-apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif',
+                    titleFontWeight: 'bold',
+                    titlePaddingTop : 0,
+                    titlePaddingRight : 0,
+                    titlePaddingBottom : 5,
+                    titlePaddingLeft : 16,
+                    displayDesc : true,
+                    descFontSize: 14,
+                    descFontColor: '#8e959a',
+                    descFontFamily : 'Microsoft Yahei',
+                    paddingTop : 10,
+                    paddingRight : 0,
+                    paddingBottom : 0,
+                    paddingLeft : 0,
+                    backgroundColor: '#fff',
+                    hoverColor: '#000'
+                      }
+                  })
+                                        </script></div></div>
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/OttsWang/article/details/77371275","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/OttsWang/article/details/77371275","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/OttsWang/article/details/77371275" target="_blank" title="CodeForces - 813C（最短路径水题）">
+		<h4 class="text-truncate oneline">
+				<em>CodeForces</em> - 813C（最短路径水题）		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">08-18</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					294</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/OttsWang/article/details/77371275" target="_blank" title="CodeForces - 813C（最短路径水题）">
+				<span class="desc oneline">TheTagGame AlicegottiredofplayingthetaggamebytheusualrulessosheofferedBobalittlemodificationtoit.Now...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/OttsWang">来自：	<span class="blog_title"> OttsWang的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/u011433684/9786424","strategy":"BlogCommendFromQuerySearch","index":"10"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/u011433684/9786424","strategy":"BlogCommendFromQuerySearch","index":"10"}'>
+		<a href="https://download.csdn.net/download/u011433684/9786424" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						Invent Your Own <em>Computer</em> <em>Game</em>s with Python(4th) 无水印pdf 0分					</h4>
+					<span class="data float-right">03-19</span>
+				</div>
+				<div class="desc oneline">
+						Invent Your Own Computer Games with Python(4th) 英文无水印pdf 第4版
+                    
+pdf所有页面使用FoxitReader和PDF-XChangeViewe...				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+			<div class="recommend-item-box blog-expert-recommend-box">
+			<div class="d-flex">
+				<div class="blog-expert-recommend">
+					<div class="blog-expert">
+						<div class="blog-expert-flexbox"></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/weixin_39453270/article/details/86750953","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/weixin_39453270/article/details/86750953","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/weixin_39453270/article/details/86750953" target="_blank" title="Codeforces 1104 D（数论+二分+交互）">
+		<h4 class="text-truncate oneline">
+				<em>Codeforces</em> 1104 D（数论+二分+交互）		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">02-02</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					177</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/weixin_39453270/article/details/86750953" target="_blank" title="Codeforces 1104 D（数论+二分+交互）">
+				<span class="desc oneline">传送门题意：让你在606060步之内猜出一个模数aaa。每次你可以输入两个数xxx和yyy。如果xmod&amp;amp;amp;amp;ThinSpace;&amp;amp;amp;amp;ThinSpace;a≥...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/weixin_39453270">来自：	<span class="blog_title"> Chen.Jr的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/mengxiang000000/article/details/78192008","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/mengxiang000000/article/details/78192008","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/mengxiang000000/article/details/78192008" target="_blank" title="Codeforces 214C Game【思维+拓扑排序】">
+		<h4 class="text-truncate oneline">
+				<em>Codeforces</em> 214C <em>Game</em>【思维+拓扑排序】		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">10-10</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					228</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/mengxiang000000/article/details/78192008" target="_blank" title="Codeforces 214C Game【思维+拓扑排序】">
+				<span class="desc oneline">C.Gametimelimitpertest1secondmemorylimitpertest256megabytesinputstandardinputoutputstandardoutputFur...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/mengxiang000000">来自：	<span class="blog_title">  mengxiang000000</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/mengxiang000000/article/details/72724480","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/mengxiang000000/article/details/72724480","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/mengxiang000000/article/details/72724480" target="_blank" title="Codeforces 808F Card Game【思维建图+最小割】">
+		<h4 class="text-truncate oneline">
+				<em>Codeforces</em> 808F Card <em>Game</em>【思维建图+最小割】		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">05-25</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					527</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/mengxiang000000/article/details/72724480" target="_blank" title="Codeforces 808F Card Game【思维建图+最小割】">
+				<span class="desc oneline">F.CardGametimelimitpertest2secondsmemorylimitpertest256megabytesinputstandardinputoutputstandardoutp...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/mengxiang000000">来自：	<span class="blog_title">  mengxiang000000</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	<div class="recommend-item-box recommend-ad-box"><div id="kp_box_61" data-pid="61" data-track-view='{"mod":"kp_popu_61-557","con":",,"}' data-track-click='{"mod":"kp_popu_61-557","con":",,"}' data-report-view='{"mod":"kp_popu_61-557","keyword":""}' data-report-click='{"mod":"kp_popu_61-557","keyword":""}'><div id="three_ad13" class="mediav_ad" ></div>
+<script type="text/javascript" src="//static.mediav.com/js/mvf_news_feed.js"></script>
+<script>
+                                               NEWS_FEED({
+                w: 852,
+                h : 60,
+                showid : 'GNKXx7',
+                placeholderId: "three_ad13",
+                inject : 'define',
+                define : {
+                    imagePosition : 'left',
+                    imageBorderRadius : 3,
+                    imageWidth: 90,
+                    imageHeight: 60,
+                    imageFill : 'clip',
+                    displayImage : true,
+                    displayTitle : true,
+                    titleFontSize: 18,
+                    titleFontColor: '#000',
+                    titleFontFamily : 'Lato,-apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif',
+                    titleFontWeight: 'bold',
+                    titlePaddingTop : 0,
+                    titlePaddingRight : 0,
+                    titlePaddingBottom : 5,
+                    titlePaddingLeft : 16,
+                    displayDesc : true,
+                    descFontSize: 14,
+                    descFontColor: '#8e959a',
+                    descFontFamily : 'Microsoft Yahei',
+                    paddingTop : 0,
+                    paddingRight : 0,
+                    paddingBottom : 0,
+                    paddingLeft : 0,
+                    backgroundColor: '#fff',
+                    hoverColor: '#000'
+                      }
+                  })
+                                        </script></div></div>
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_34143240/article/details/77599859","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_34143240/article/details/77599859","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/qq_34143240/article/details/77599859" target="_blank" title="E - Toda 2 CodeForces - 730A(简单思维和处理技巧）">
+		<h4 class="text-truncate oneline">
+				E - Toda 2 <em>CodeForces</em> - 730A(简单思维和处理技巧）		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">08-26</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					157</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/qq_34143240/article/details/77599859" target="_blank" title="E - Toda 2 CodeForces - 730A(简单思维和处理技巧）">
+				<span class="desc oneline">Agroupof n friendsenjoysplayingpopularvideogameToda2.Thereisaratingsystemdescribingskilllevelofeachp...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/qq_34143240">来自：	<span class="blog_title"> 沉醉不知归路</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/defonds/2698323","strategy":"BlogCommendFromQuerySearch","index":"15"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/defonds/2698323","strategy":"BlogCommendFromQuerySearch","index":"15"}'>
+		<a href="https://download.csdn.net/download/defonds/2698323" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						游戏设计大师Charis Crawford经典巨著The art of <em>computer</em> <em>game</em> design.pdf					</h4>
+					<span class="data float-right">09-16</span>
+				</div>
+				<div class="desc oneline">
+						游戏设计大师Charis Crawford经典巨著：《The art of computer game design》。
+看了这本书才知道什么是电脑游戏呀，游戏无错，玩游戏的人无错，感觉国内的游戏产业缺少的就是好的策划，大家都在这个市场中...				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/oier_forever/article/details/80395996","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/oier_forever/article/details/80395996","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/oier_forever/article/details/80395996" target="_blank" title="Codeforces 515C 题解(贪心+数论)(思维题)">
+		<h4 class="text-truncate oneline">
+				<em>Codeforces</em> 515C 题解(贪心+数论)(思维题)		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">05-21</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					219</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/oier_forever/article/details/80395996" target="_blank" title="Codeforces 515C 题解(贪心+数论)(思维题)">
+				<span class="desc oneline">题目网址:http://codeforces.com/problemset/problem/515/CDrazilisplayingamathgamewithVarda.Let’sdefinef(x)...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/oier_forever">来自：	<span class="blog_title"> oier_forever的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/lanshan1111/article/details/81437035","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/lanshan1111/article/details/81437035","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/lanshan1111/article/details/81437035" target="_blank" title="暑假训练10之POJ 1006-Biorhythms(CRT)(中国剩余定理模板题）">
+		<h4 class="text-truncate oneline">
+				暑假训练10之POJ 1006-Biorhythms(CRT)(中国剩余定理模板题）		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">08-05</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					50</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/lanshan1111/article/details/81437035" target="_blank" title="暑假训练10之POJ 1006-Biorhythms(CRT)(中国剩余定理模板题）">
+				<span class="desc oneline">人自出生起就有体力，情感和智力三个生理周期，分别为23，28和33天。一个周期内有一天为峰值，在这一天，人在对应的方面（体力，情感或智力）表现最好。通常这三个周期的峰值不会是同一天。现在给出三个日期，...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/lanshan1111">来自：	<span class="blog_title"> lanshan1111的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/weixin_40894017/article/details/86720814","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/weixin_40894017/article/details/86720814","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/weixin_40894017/article/details/86720814" target="_blank" title="CodeForces - 463D  (图的构造+记忆化搜索)">
+		<h4 class="text-truncate oneline">
+				<em>CodeForces</em> - 463D  (图的构造+记忆化搜索)		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">01-31</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					84</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/weixin_40894017/article/details/86720814" target="_blank" title="CodeForces - 463D  (图的构造+记忆化搜索)">
+				<span class="desc oneline">B-GargariandPermutations CodeForces-463D 题目大意：给出了k个序列求这k个序列的最长公共子序列解题思路：对于每个序列，如果i都在j的前边那么就添加一条从i到j的...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/weixin_40894017">来自：	<span class="blog_title"> 1999</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	<div class="recommend-item-box recommend-ad-box"><div id="kp_box_62" data-pid="62" data-track-view='{"mod":"kp_popu_62-556","con":",,"}' data-track-click='{"mod":"kp_popu_62-556","con":",,"}' data-report-view='{"mod":"kp_popu_62-556","keyword":""}' data-report-click='{"mod":"kp_popu_62-556","keyword":""}'><div id="three_ad18" class="mediav_ad" ></div>
+<script type="text/javascript" src="//static.mediav.com/js/mvf_news_feed.js"></script>
+<script>
+                                               NEWS_FEED({
+                w: 852,
+                h : 60,
+                showid : 'Afihld',
+                placeholderId: "three_ad18",
+                inject : 'define',
+                define : {
+                    imagePosition : 'left',
+                    imageBorderRadius : 3,
+                    imageWidth: 90,
+                    imageHeight: 60,
+                    imageFill : 'clip',
+                    displayImage : true,
+                    displayTitle : true,
+                    titleFontSize: 18,
+                    titleFontColor: '#000',
+                    titleFontFamily : 'Lato,-apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif',
+                    titleFontWeight: 'bold',
+                    titlePaddingTop : 0,
+                    titlePaddingRight : 0,
+                    titlePaddingBottom : 5,
+                    titlePaddingLeft : 16,
+                    displayDesc : true,
+                    descFontSize: 14,
+                    descFontColor: '#8e959a',
+                    descFontFamily : 'Microsoft Yahei',
+                    paddingTop : 0,
+                    paddingRight : 0,
+                    paddingBottom : 0,
+                    paddingLeft : 0,
+                    backgroundColor: '#fff',
+                    hoverColor: '#000'
+                      }
+                  })
+                                        </script></div></div>
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/u011433684/9992521","strategy":"BlogCommendFromQuerySearch","index":"19"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/u011433684/9992521","strategy":"BlogCommendFromQuerySearch","index":"19"}'>
+		<a href="https://download.csdn.net/download/u011433684/9992521" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						Algorithms and Networking for <em>Computer</em> <em>Game</em>s(2nd) 无水印pdf					</h4>
+					<span class="data float-right">09-24</span>
+				</div>
+				<div class="desc oneline">
+						Algorithms and Networking for Computer Games(2nd) 英文无水印pdf 第2版
+                    
+pdf所有页面使用FoxitReader和PDF-XChangeVie...				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/u010309922/5353381","strategy":"BlogCommendFromQuerySearch","index":"20"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/u010309922/5353381","strategy":"BlogCommendFromQuerySearch","index":"20"}'>
+		<a href="https://download.csdn.net/download/u010309922/5353381" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						<em>COMPUTER</em> <em>GAME</em> LEVEL DESIGN					</h4>
+					<span class="data float-right">05-10</span>
+				</div>
+				<div class="desc oneline">
+						主要针对于游戏关卡设计介绍论文参考，和对游戏关卡设计的理念。				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/breakerzy/4742280","strategy":"BlogCommendFromQuerySearch","index":"21"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/breakerzy/4742280","strategy":"BlogCommendFromQuerySearch","index":"21"}'>
+		<a href="https://download.csdn.net/download/breakerzy/4742280" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						Mathematics for 3D <em>Game</em> Programming and <em>Computer</em> Graphics, 3Ed					</h4>
+					<span class="data float-right">11-07</span>
+				</div>
+				<div class="desc oneline">
+						Mathematics for 3D Game Programming and Computer Graphics, 3Ed, by Eric Lengyel, 英文				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/seacsd/4031342","strategy":"BlogCommendFromQuerySearch","index":"22"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/seacsd/4031342","strategy":"BlogCommendFromQuerySearch","index":"22"}'>
+		<a href="https://download.csdn.net/download/seacsd/4031342" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						3D <em>Game</em> Engine Design, A Practical Approach to Real-Time <em>Computer</em> Graphics					</h4>
+					<span class="data float-right">01-24</span>
+				</div>
+				<div class="desc oneline">
+						3D Game Engine Design, A Practical Approach to Real-Time Computer Graphics				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_41289920/article/details/84846720","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_41289920/article/details/84846720","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/qq_41289920/article/details/84846720" target="_blank" title="【CodeForces - 347C 】Alice and Bob （思维，数学，等差数列）">
+		<h4 class="text-truncate oneline">
+				【<em>CodeForces</em> - 347C 】Alice and Bob （思维，数学，等差数列）		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">12-06</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					136</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/qq_41289920/article/details/84846720" target="_blank" title="【CodeForces - 347C 】Alice and Bob （思维，数学，等差数列）">
+				<span class="desc oneline">题干：Itissoboringinthesummerholiday,isn'tit?SoAliceandBobhaveinventedanewgametoplay.Therulesareasfollo...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/qq_41289920">来自：	<span class="blog_title"> xuanwei的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	<div class="recommend-item-box recommend-ad-box"><div id="kp_box_63" data-pid="63" data-track-view='{"mod":"kp_popu_63-555","con":",,"}' data-track-click='{"mod":"kp_popu_63-555","con":",,"}' data-report-view='{"mod":"kp_popu_63-555","keyword":""}' data-report-click='{"mod":"kp_popu_63-555","keyword":""}'><div id="three_ad23" class="mediav_ad" ></div>
+<script type="text/javascript" src="//static.mediav.com/js/mvf_news_feed.js"></script>
+<script>
+                                               NEWS_FEED({
+                w: 852,
+                h : 60,
+                showid : 'GNKXx7',
+                placeholderId: "three_ad23",
+                inject : 'define',
+                define : {
+                    imagePosition : 'left',
+                    imageBorderRadius : 3,
+                    imageWidth: 90,
+                    imageHeight: 60,
+                    imageFill : 'clip',
+                    displayImage : true,
+                    displayTitle : true,
+                    titleFontSize: 18,
+                    titleFontColor: '#000',
+                    titleFontFamily : 'Lato,-apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif',
+                    titleFontWeight: 'bold',
+                    titlePaddingTop : 0,
+                    titlePaddingRight : 0,
+                    titlePaddingBottom : 5,
+                    titlePaddingLeft : 16,
+                    displayDesc : true,
+                    descFontSize: 14,
+                    descFontColor: '#8e959a',
+                    descFontFamily : 'Microsoft Yahei',
+                    paddingTop : 0,
+                    paddingRight : 0,
+                    paddingBottom : 0,
+                    paddingLeft : 0,
+                    backgroundColor: '#fff',
+                    hoverColor: '#000'
+                      }
+                  })
+                                        </script></div></div>
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/cxy9459/9448601","strategy":"BlogCommendFromQuerySearch","index":"24"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/cxy9459/9448601","strategy":"BlogCommendFromQuerySearch","index":"24"}'>
+		<a href="https://download.csdn.net/download/cxy9459/9448601" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						Concise <em>Computer</em> Vision - An Introduction into Theory and Algorithm					</h4>
+					<span class="data float-right">02-29</span>
+				</div>
+				<div class="desc oneline">
+						Concise Computer Vision - An Introduction into Theory and Algorithm				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/baoza_w/article/details/85834293","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/baoza_w/article/details/85834293","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/baoza_w/article/details/85834293" target="_blank" title="Codeforces——Hello 2019（待更新）">
+		<h4 class="text-truncate oneline">
+				<em>Codeforces</em>——Hello 2019（待更新）		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">01-05</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					722</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/baoza_w/article/details/85834293" target="_blank" title="Codeforces——Hello 2019（待更新）">
+				<span class="desc oneline">A.GennadyandaCardGameGennadyownsasmallhotelinthecountrysidewherehelivesapeacefullife.Helovestotakelo...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/baoza_w">来自：	<span class="blog_title"> baoza_w的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/yanghui07216/article/details/51212893","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/yanghui07216/article/details/51212893","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/yanghui07216/article/details/51212893" target="_blank" title="CodeForces - 552D Vanya and Triangles （数学几何求三角形个数）水">
+		<h4 class="text-truncate oneline">
+				<em>CodeForces</em> - 552D <em>Vanya</em> and Triangles （数学几何求三角形个数）水		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">04-21</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					614</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/yanghui07216/article/details/51212893" target="_blank" title="CodeForces - 552D Vanya and Triangles （数学几何求三角形个数）水">
+				<span class="desc oneline">CodeForces-552DVanyaandTrianglesTimeLimit: 4000MS MemoryLimit: 524288KB 64bitIOFormat: %I64d&amp;%I64uSu...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/yanghui07216">来自：	<span class="blog_title"> yanghui07216的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/weixin_42484877/article/details/86774049","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/weixin_42484877/article/details/86774049","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/weixin_42484877/article/details/86774049" target="_blank" title="【比赛小结和题解】Codeforces Global Round 1 注意贪心，简单dp技巧，还有AC自动机+数位dp">
+		<h4 class="text-truncate oneline">
+				【比赛小结和题解】<em>Codeforces</em> Global Round 1 注意贪心，简单dp技巧，还有AC自动机+数位dp		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">02-08</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					841</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/weixin_42484877/article/details/86774049" target="_blank" title="【比赛小结和题解】Codeforces Global Round 1 注意贪心，简单dp技巧，还有AC自动机+数位dp">
+				<span class="desc oneline">从重要的题开始题解连接1110G-Tree-Tac-Toe题意：给出一棵树，上面有白点和未染色点，白色先手，轮流染色。当染成3个连续白点获胜。问是平局还是白胜。n&amp;amp;amp;amp;lt;=5e...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/weixin_42484877">来自：	<span class="blog_title"> 执子之手,与子偕老</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/Dog_dream/article/details/82709310","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/Dog_dream/article/details/82709310","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/Dog_dream/article/details/82709310" target="_blank" title="HDU5114(扩展欧几里得定理)">
+		<h4 class="text-truncate oneline">
+				HDU5114(扩展欧几里得定理)		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">09-14</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					69</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/Dog_dream/article/details/82709310" target="_blank" title="HDU5114(扩展欧几里得定理)">
+				<span class="desc oneline">数学（扩展欧几里得算法）：HDU5114CollisionMattisplayinganaivecomputergamewithhisdeeplylovedpuregirl.Theplayground...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/Dog_dream">来自：	<span class="blog_title"> Dog_dream的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	<div class="recommend-item-box recommend-ad-box"><div id="kp_box_64" data-pid="64" data-track-view='{"mod":"kp_popu_64-1060","con":",,"}' data-track-click='{"mod":"kp_popu_64-1060","con":",,"}' data-report-view='{"mod":"kp_popu_64-1060","keyword":""}' data-report-click='{"mod":"kp_popu_64-1060","keyword":""}'><iframe  src="https://kunpeng-sc.csdnimg.cn/#/preview/235?positionId=64&queryWord=" frameborder="0" width= "100%"  height= "75px" scrolling="no" ></iframe></div></div>
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_41661919/article/details/79547907","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_41661919/article/details/79547907","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/qq_41661919/article/details/79547907" target="_blank" title="HDU [ 拯救天使 ]——优先队列（结构体）+BFS">
+		<h4 class="text-truncate oneline">
+				HDU [ 拯救天使 ]——优先队列（结构体）+BFS		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">03-13</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					204</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/qq_41661919/article/details/79547907" target="_blank" title="HDU [ 拯救天使 ]——优先队列（结构体）+BFS">
+				<span class="desc oneline">HDU——拯救天使：ProblemDescriptionAngelwascaughtbytheMOLIGPY!HewasputinprisonbyMoligpy.Theprisonisdescribe...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/qq_41661919">来自：	<span class="blog_title"> 不拿金牌不改名</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/maplewzx/3181156","strategy":"BlogCommendFromQuerySearch","index":"30"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/maplewzx/3181156","strategy":"BlogCommendFromQuerySearch","index":"30"}'>
+		<a href="https://download.csdn.net/download/maplewzx/3181156" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						<em>Game</em> theory					</h4>
+					<span class="data float-right">04-11</span>
+				</div>
+				<div class="desc oneline">
+						Game theory Computer algorithm				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/knightx/1733926","strategy":"BlogCommendFromQuerySearch","index":"31"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/knightx/1733926","strategy":"BlogCommendFromQuerySearch","index":"31"}'>
+		<a href="https://download.csdn.net/download/knightx/1733926" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						《The Art of <em>Computer</em> <em>Game</em> Design》					</h4>
+					<span class="data float-right">10-12</span>
+				</div>
+				<div class="desc oneline">
+						《The Art of Computer Game Design》游戏设计艺术				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+<div class="recommend-item-box recommend-box-ident recommend-other-item-box" data-report-view='{"mod":"popu_614","dest":"https://ask.csdn.net/questions/649376","strategy":"BlogCommendFromQuerySearch","index":"32"}' data-report-click='{"mod":"popu_614","dest":"https://ask.csdn.net/questions/649376","strategy":"BlogCommendFromQuerySearch","index":"32"}'>
+	<a href="https://ask.csdn.net/questions/649376" target="_blank">
+		<h4 class="text-truncate oneline">
+				<em>Computer</em> Basketball <em>Game</em>		</h4>
+		<div class="info-box d-flex align-content-center">
+				<span class="date">08-13</span>
+		</div>
+		<p class="content oneline">
+			<span class="desc oneline">DescriptionnnIn a computer basketball game, people can play &quot;one vs. one&quot;, which has the following rules: when a player attacks, he may throw 2-point-goal or 3-point-goal. If he makes the goal, he can continue to attack in the next turn. Otherwise, i.e. he misses the goal, the two players grab the rebound, and who gets the rebound attack in the next turn. The player who first gets N (1 &lt;= N &lt;= 30) points will win the game. nnIn this game, each player has four kinds of properties: the skill of 2-point-goal, the skill of 3-point-goal, the skill of rebound and the skill of defense. (Each skill is described in integers between 1 and 10). Through the statistic data, we can know the functions of skill. We use pt2(i), pt3(i), reb(i) and def(i) to represent the skill of 2-point-goal, the skill of 3-point-goal, the skill of rebound and the skill of defense of player i respectively. Take the case that player 1 attacks while player 2 defends for example, we will have the following conclusion: n1. The probability that player 1 chooses to throw 3-point-goal is pt3(1)/[pt3(1)+pt2(1)], otherwise he throws 2-point-goal. n2. If player 1 throws 3-point-goal, the probability that he makes the goal is 0.8*pt3(1)/[pt3(1)+def(2)], otherwise he misses the goal. n3. If player 1 throws 2-point-goal, the probability that he makes the goal is pt2(1)/[pt2(1)+def(2)], otherwise he misses the goal. n4. If player 1 misses a goal, the probability that he can get the rebound is 0.8*reb(1)/[reb(1)+reb(2)], otherwise player 2 get the rebound. nnThe case that player 2 attacks while player 1 defends is similar to the description above. nnWell, now you are given the skill of your opponent, and you can assign your four kinds of skill in any way, but the sum of these four numbers must be a certain number M (4 &lt;= M &lt;= 40). Assume that you attack first, the problem is what is the maximum probability you win the game by assigning the skill optimally. You should know that once you choose your skills, the skills are fixed in every turn. nInputnnThe input consists of several test cases. In each test case, there are six integers N, M, pt2(2), pt3(2), reb(2), def(2) in a single line. (Assume you are player 1, and your opponent is player2.)nOutputnnFor each test case, please output the result in a separate line. The result should be rounded to three digits after the decimal point.nSample Inputnn19 21 3 5 6 6nSample Outputnn0.754</span>
+							<span class="type-show type-show-ask">问答</span>
+					</p>
+	</a>
+
+</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/u013247840/6754727","strategy":"BlogCommendFromQuerySearch","index":"33"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/u013247840/6754727","strategy":"BlogCommendFromQuerySearch","index":"33"}'>
+		<a href="https://download.csdn.net/download/u013247840/6754727" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						动态规划题解					</h4>
+					<span class="data float-right">12-22</span>
+				</div>
+				<div class="desc oneline">
+						codeforces的题解， 动态规划， 228D，				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	<div class="recommend-item-box recommend-ad-box"><div id="kp_box_65" data-pid="65" data-track-view='{"mod":"kp_popu_65-1061","con":",,"}' data-track-click='{"mod":"kp_popu_65-1061","con":",,"}' data-report-view='{"mod":"kp_popu_65-1061","keyword":""}' data-report-click='{"mod":"kp_popu_65-1061","keyword":""}'><iframe  src="https://kunpeng-sc.csdnimg.cn/#/preview/236?positionId=65&queryWord=" frameborder="0" width= "100%"  height= "75px" scrolling="no" ></iframe></div></div>
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_41384351/article/details/84780861","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_41384351/article/details/84780861","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/qq_41384351/article/details/84780861" target="_blank" title="面向对象——剪刀石头布">
+		<h4 class="text-truncate oneline">
+				面向对象——剪刀石头布		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">12-03</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					160</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/qq_41384351/article/details/84780861" target="_blank" title="面向对象——剪刀石头布">
+				<span class="desc oneline">实现一个简单的猜拳游戏（剪刀石头布）项目需求：此游戏的规则为：人机对战。分为三局两胜，每一局比赛结束后，统计人和电脑的分数，从而得出当前局比赛的输赢。共三局，得出最终胜利者。三局玩完后，询问是否继续比...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/qq_41384351">来自：	<span class="blog_title"> 巨未的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/veimen/757294","strategy":"BlogCommendFromQuerySearch","index":"35"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/veimen/757294","strategy":"BlogCommendFromQuerySearch","index":"35"}'>
+		<a href="https://download.csdn.net/download/veimen/757294" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						Mathematics.for.3D.<em>Game</em>.Programming.and.<em>Computer</em>.Graphics.(2004),.2Ed.LRN.LotB.pdf					</h4>
+					<span class="data float-right">11-06</span>
+				</div>
+				<div class="desc oneline">
+						Mathematics for 3D Game Programming and Computer Graphics, Second Edition (Game Development Series) by Eric Lengyel				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/onthewaytotop/article/details/51994801","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/onthewaytotop/article/details/51994801","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/onthewaytotop/article/details/51994801" target="_blank" title="codeforces 24 Game（数学构造）">
+		<h4 class="text-truncate oneline">
+				<em>codeforces</em> 24 <em>Game</em>（数学构造）		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">07-22</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					198</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/onthewaytotop/article/details/51994801" target="_blank" title="codeforces 24 Game（数学构造）">
+				<span class="desc oneline">题意：给你一个数字n，1,2,3,4......,n-1,n在一个集合里，每次拿出两个数进行加或者减或者乘三种操作，每次操作结果再放入集合中，问能不能使集合最后剩下的那个数是24！不能输出“NO”,能...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/onthewaytotop">来自：	<span class="blog_title"> onthewaytotop的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_41289920/article/details/83625644","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_41289920/article/details/83625644","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/qq_41289920/article/details/83625644" target="_blank" title="【CodeForces - 214C 】Game （拓扑排序，思维）">
+		<h4 class="text-truncate oneline">
+				【<em>CodeForces</em> - 214C 】<em>Game</em> （拓扑排序，思维）		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">11-01</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					92</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/qq_41289920/article/details/83625644" target="_blank" title="【CodeForces - 214C 】Game （拓扑排序，思维）">
+				<span class="desc oneline">题干：FurikandRubikloveplayingcomputergames.FurikhasrecentlyfoundanewgamethatgreatlyinterestedRubik.The...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/qq_41289920">来自：	<span class="blog_title"> xuanwei的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/KsCla/article/details/78852164","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/KsCla/article/details/78852164","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/KsCla/article/details/78852164" target="_blank" title="Codeforces 部分题目题解（口胡）">
+		<h4 class="text-truncate oneline">
+				<em>Codeforces</em> 部分题目题解（口胡）		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">12-20</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					429</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/KsCla/article/details/78852164" target="_blank" title="Codeforces 部分题目题解（口胡）">
+				<span class="desc oneline">883D题面题目大意：给你一个长度为n的字符串，上面有牛(“P”)，草(“*”)和空地(“.”)。现在你给每一头牛规定一个方向，它会一直往前吃草，直到走到边界。每一份草只会被吃1次，要求输出最多吃多少...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/KsCla">来自：	<span class="blog_title"> KsCla</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	<div class="recommend-item-box recommend-ad-box"><div id="kp_box_66" data-pid="66" data-track-view='{"mod":"kp_popu_66-87","con":",,"}' data-track-click='{"mod":"kp_popu_66-87","con":",,"}' data-report-view='{"mod":"kp_popu_66-87","keyword":""}' data-report-click='{"mod":"kp_popu_66-87","keyword":""}'><div id="three_ad38" class="mediav_ad" ></div>
+<script>
+                                               NEWS_FEED({
+                w: 852,
+                h : 60,
+                showid : 'Afihld',
+                placeholderId: "three_ad38",
+                inject : 'define',
+                define : {
+                    imagePosition : 'left',
+                    imageBorderRadius : 3,
+                    imageWidth: 90,
+                    imageHeight: 60,
+                    imageFill : 'clip',
+                    displayImage : true,
+                    displayTitle : true,
+                    titleFontSize: 18,
+                    titleFontColor: '#000',
+                    titleFontFamily : 'Lato,-apple-system,SF UI Text,Arial,PingFang SC,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif',
+                    titleFontWeight: 'bold',
+                    titlePaddingTop : 0,
+                    titlePaddingRight : 0,
+                    titlePaddingBottom : 5,
+                    titlePaddingLeft : 16,
+                    displayDesc : true,
+                    descFontSize: 14,
+                    descFontColor: '#8e959a',
+                    descFontFamily : 'Microsoft Yahei',
+                    paddingTop : 0,
+                    paddingRight : 0,
+                    paddingBottom : 0,
+                    paddingLeft : 0,
+                    backgroundColor: '#fff',
+                    hoverColor: '#000'
+                      }
+                  })
+                                        </script></div></div>
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/liuz1098/9468296","strategy":"BlogCommendFromQuerySearch","index":"39"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/liuz1098/9468296","strategy":"BlogCommendFromQuerySearch","index":"39"}'>
+		<a href="https://download.csdn.net/download/liuz1098/9468296" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						The.Art.of.<em>Game</em>.Design.A.Book.of.Lenses.2nd.Edition					</h4>
+					<span class="data float-right">03-21</span>
+				</div>
+				<div class="desc oneline">
+						The.Art.of.Game.Design最新第2版，游戏设计必备书籍！				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/cherryun2008/article/details/78398761","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/cherryun2008/article/details/78398761","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/cherryun2008/article/details/78398761" target="_blank" title="重音的读法">
+		<h4 class="text-truncate oneline">
+				重音的读法		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">11-04</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					601</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/cherryun2008/article/details/78398761" target="_blank" title="重音的读法">
+				<span class="desc oneline">重音的读法单音节本身重读[bɔɪ][waɪt][məst][mi:t][fɜ:st][dɒg]双音节前重读[ˈpɑ:ti][ˈti:tʃə(r)][ˈfraɪdeɪ]...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/cherryun2008">来自：	<span class="blog_title"> cherryun2008的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/wushirenfeig/article/details/72909699","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/wushirenfeig/article/details/72909699","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/wushirenfeig/article/details/72909699" target="_blank" title="记第一次codeforces比赛经历">
+		<h4 class="text-truncate oneline">
+				记第一次<em>codeforces</em>比赛经历		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">06-08</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					4865</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/wushirenfeig/article/details/72909699" target="_blank" title="记第一次codeforces比赛经历">
+				<span class="desc oneline">~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~凑字数~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/wushirenfeig">来自：	<span class="blog_title"> sunshine</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/seacsd/4193577","strategy":"BlogCommendFromQuerySearch","index":"42"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/seacsd/4193577","strategy":"BlogCommendFromQuerySearch","index":"42"}'>
+		<a href="https://download.csdn.net/download/seacsd/4193577" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						Developer's Guide to <em>Computer</em> <em>Game</em> Design code 12.					</h4>
+					<span class="data float-right">04-01</span>
+				</div>
+				<div class="desc oneline">
+						Developer's Guide to Computer Game Design code 12.				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/yudaxia00/10273343","strategy":"BlogCommendFromQuerySearch","index":"43"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/yudaxia00/10273343","strategy":"BlogCommendFromQuerySearch","index":"43"}'>
+		<a href="https://download.csdn.net/download/yudaxia00/10273343" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						Mathematics for 3D <em>Game</em> Programming and <em>Computer</em> Graphics - 2rd edition					</h4>
+					<span class="data float-right">03-07</span>
+				</div>
+				<div class="desc oneline">
+						Mathematics for 3D Game Programming and Computer Graphics - 2rd edition				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	<div class="recommend-item-box recommend-ad-box"><div id="kp_box_67" data-pid="67" data-track-view='{"mod":"kp_popu_67-653","con":",,"}' data-track-click='{"mod":"kp_popu_67-653","con":",,"}' data-report-view='{"mod":"kp_popu_67-653","keyword":""}' data-report-click='{"mod":"kp_popu_67-653","keyword":""}'><div id="three_ad43" class="mediav_ad" ></div>
+<script>
+                                               NEWS_FEED({
+                w: 900,
+                h : 84,
+                showid : '9gAEHz',
+                placeholderId: "three_ad43",
+                inject : 'define',
+                define : {
+                    imagePosition : 'left',
+                    imageBorderRadius : 3,
+                    imageWidth: 90,
+                    imageHeight: 60,
+                    imageFill : 'clip',
+                    displayImage : true,
+                    displayTitle : true,
+                    titleFontSize: 16,
+                    titleFontColor: '#000',
+                    titleFontFamily : 'Microsoft Yahei',
+                    titleFontWeight: 'bold',
+                    titlePaddingTop : 0,
+                    titlePaddingRight : 0,
+                    titlePaddingBottom : 5,
+                    titlePaddingLeft : 16,
+                    displayDesc : true,
+                    descFontSize: 12,
+                    descFontColor: '#8e959a',
+                    descFontFamily : 'Microsoft Yahei',
+                    paddingTop : 10,
+                    paddingRight : 0,
+                    paddingBottom : 0,
+                    paddingLeft : 0,
+                    backgroundColor: '#fff',
+                    hoverColor: '#000'
+                      }
+                  })
+                                        </script></div></div>
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/zoez20180624/10495915","strategy":"BlogCommendFromQuerySearch","index":"44"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/zoez20180624/10495915","strategy":"BlogCommendFromQuerySearch","index":"44"}'>
+		<a href="https://download.csdn.net/download/zoez20180624/10495915" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						3D <em>Game</em> Engine Design - A Practical Approach To Real-Time <em>Computer</em> Graphics					</h4>
+					<span class="data float-right">06-24</span>
+				</div>
+				<div class="desc oneline">
+						3D Game Engine Design - A Practical Approach To Real-Time Computer Graphics				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/luotuoqingshan/article/details/52459718","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/luotuoqingshan/article/details/52459718","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/luotuoqingshan/article/details/52459718" target="_blank" title="codeforces题目分类">
+		<h4 class="text-truncate oneline">
+				<em>codeforces</em>题目分类		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">09-07</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					3494</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/luotuoqingshan/article/details/52459718" target="_blank" title="codeforces题目分类">
+				<span class="desc oneline">多写写cf上的题吧。以前写的题都没记录，从今天开始记录吧。记录一下写过的题的做法和分类吧。388A（贪心）388B（一个不错的构造题，二进制构造）...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/luotuoqingshan">来自：	<span class="blog_title"> luotuoqingshan的博客</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/u011043491/9243757","strategy":"BlogCommendFromQuerySearch","index":"46"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/u011043491/9243757","strategy":"BlogCommendFromQuerySearch","index":"46"}'>
+		<a href="https://download.csdn.net/download/u011043491/9243757" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						Mathematics for 3D <em>Game</em> Programming and <em>Computer</em> Graphics.3Ed					</h4>
+					<span class="data float-right">11-05</span>
+				</div>
+				<div class="desc oneline">
+						Mathematics for 3D Game Programming and Computer Graphics.3Ed.3D游戏编程的基本数学理论				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/haishu_zheng/article/details/79340282","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/haishu_zheng/article/details/79340282","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/haishu_zheng/article/details/79340282" target="_blank" title="Codeforces查看被Hack的测试数据">
+		<h4 class="text-truncate oneline">
+				<em>Codeforces</em>查看被Hack的测试数据		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">02-20</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					2280</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/haishu_zheng/article/details/79340282" target="_blank" title="Codeforces查看被Hack的测试数据">
+				<span class="desc oneline">需求在Codeforces上如果自己的算法通过了系统测试，但是被人hack了，想查看hack所用的数据。步骤一、点击自己的Submissions二、找到被Hack的题三、用鼠标滚轮（注意不是左键）单击...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/haishu_zheng">来自：	<span class="blog_title"> KidsCode小朋友学编程</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+	<div class="recommend-item-box recommend-box-ident recommend-download-box clearfix" data-report-view='{"mod":"popu_614","dest":"https://download.csdn.net/download/hejiahui_pow/10580033","strategy":"BlogCommendFromQuerySearch","index":"48"}' data-report-click='{"mod":"popu_614","dest":"https://download.csdn.net/download/hejiahui_pow/10580033","strategy":"BlogCommendFromQuerySearch","index":"48"}'>
+		<a href="https://download.csdn.net/download/hejiahui_pow/10580033" target="_blank">
+			<div class="content clearfix">
+				<div class="">
+					<h4 class="text-truncate oneline clearfix">
+						Mathematics for 3D <em>Game</em> Programming and <em>Computer</em> Graphics, Third Edition					</h4>
+					<span class="data float-right">08-02</span>
+				</div>
+				<div class="desc oneline">
+						Mathematics for 3D Game Programming and Computer Graphics, Third Edition				</div>
+				<span class="type-show type-show-download">下载</span>
+			</div>
+		</a>
+	</div>
+
+	<div class="recommend-item-box recommend-ad-box"><div id="kp_box_68" data-pid="68" data-track-view='{"mod":"kp_popu_68-654","con":",,"}' data-track-click='{"mod":"kp_popu_68-654","con":",,"}' data-report-view='{"mod":"kp_popu_68-654","keyword":""}' data-report-click='{"mod":"kp_popu_68-654","keyword":""}'><div id="three_ad48" class="mediav_ad" ></div>
+<script>
+                                               NEWS_FEED({
+                w: 900,
+                h : 84,
+                showid : 'Afihld',
+                placeholderId: "three_ad48",
+                inject : 'define',
+                define : {
+                    imagePosition : 'left',
+                    imageBorderRadius : 3,
+                    imageWidth: 90,
+                    imageHeight: 60,
+                    imageFill : 'clip',
+                    displayImage : true,
+                    displayTitle : true,
+                    titleFontSize: 16,
+                    titleFontColor: '#000',
+                    titleFontFamily : 'Microsoft Yahei',
+                    titleFontWeight: 'bold',
+                    titlePaddingTop : 0,
+                    titlePaddingRight : 0,
+                    titlePaddingBottom : 5,
+                    titlePaddingLeft : 16,
+                    displayDesc : true,
+                    descFontSize: 14,
+                    descFontColor: '#8e959a',
+                    descFontFamily : 'Microsoft Yahei',
+                    paddingTop : 10,
+                    paddingRight : 0,
+                    paddingBottom : 0,
+                    paddingLeft : 0,
+                    backgroundColor: '#fff',
+                    hoverColor: '#000'
+                      }
+                  })
+                                        </script></div></div>
+	
+<div class="recommend-item-box type_blog clearfix" data-report-view='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_40693171/article/details/83623409","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}' data-report-click='{"mod":"popu_614","dest":"https://blog.csdn.net/qq_40693171/article/details/83623409","strategy":"BlogCommendFromQuerySearch","index":"logCommendFromQuerySearch"}'>
+	<div class="content">
+		<a href="https://blog.csdn.net/qq_40693171/article/details/83623409" target="_blank" title="github，codeforces访问过慢处理方法（涉及权限）">
+		<h4 class="text-truncate oneline">
+				github，<em>codeforces</em>访问过慢处理方法（涉及权限）		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p class="date-and-readNum oneline">
+				<span class="date hover-show">11-01</span>
+				<span class="read-num hover-hide">
+					阅读数 
+					1257</span>
+				</p>
+			</div>
+		</a>
+		<p class="content">
+			<a href="https://blog.csdn.net/qq_40693171/article/details/83623409" target="_blank" title="github，codeforces访问过慢处理方法（涉及权限）">
+				<span class="desc oneline">更新：最近发现下列配置已经失效，但是github的访问速度明显快乐很多，所以不需要哦配置，如果找到正确的网站或者其他网站访问慢可以按照相同的方法。另外。我之前的始用权限问题比较麻烦，可以直接右击属性安...</span>
+			</a>
+			<span class="blog_title_box oneline ">
+									<span class="type-show type-show-blog type-show-after">博文</span>
+											<a target="_blank" href="https://blog.csdn.net/qq_40693171">来自：	<span class="blog_title"> bigsai</span></a>
+												</span>
+		</p>
+	</div>
+	</div>
+
+	
+	
+                <div class="recommend-item-box type_hot_word">
+                                <div class="content clearfix">
+                    <div class="word float-left">
+                                                            <span>
+                        <a href="https://edu.csdn.net/courses/o5329_s5330_k " target="_blank">
+                        机器学习教程                    </a></span>
+                                                                                <span>
+                        <a href="https://edu.csdn.net/courses/o280_s351_k " target="_blank">
+                        Objective-C培训                    </a></span>
+                                                                                <span>
+                        <a href="https://edu.csdn.net/combos/o7115_s388_l0_t " target="_blank">
+                        交互设计视频教程                    </a></span>
+                                                                                <span>
+                        <a href="https://edu.csdn.net/course/play/5599/104252 " target="_blank">
+                        颜色模型                    </a></span>
+                                                                                <span>
+                        <a href="https://edu.csdn.net/combos/o363_l0_t " target="_blank">
+                        设计制作学习                    </a></span>
+                                                            </div>
+                </div>
+                                                </div>
+                            <div class="recommend-loading-box">
+                <img src='https://csdnimg.cn/release/phoenix/images/feedLoading.gif'>
+            </div>
+            <div class="recommend-end-box">
+                <p class="text-center">没有更多推荐了，<a href="https://blog.csdn.net/" class="c-blue c-blue-hover c-blue-focus">返回首页</a></p>
+            </div>
+        </div>
+    </main>
+
+    <aside>
+	<div id="asideProfile" class="aside-box">
+    <!-- <h3 class="aside-title">个人资料</h3> -->
+    <div class="profile-intro d-flex">
+        <div class="avatar-box d-flex justify-content-center flex-column">
+            <a href="https://blog.csdn.net/Kirito_Acmer">
+              <img src="https://avatar.csdn.net/2/E/5/3_kirito_acmer.jpg" class="avatar_pic">
+                              <img src="https://g.csdnimg.cn/static/user-reg-year/1x/4.png" class="user-years">
+                          </a>
+            
+        </div>
+        <div class="user-info d-flex justify-content-center flex-column">
+            <p class="name csdn-tracking-statistics tracking-click" data-report-click='{"mod":"popu_379"}'>
+                <a href="https://blog.csdn.net/Kirito_Acmer" target="_blank" class="" id="uid">Herumw</a>
+            </p>
+                    </div>
+                <div class="opt-box d-flex justify-content-center flex-column">
+            <span  class="csdn-tracking-statistics tracking-click" data-report-click='{"mod":"popu_379"}'>
+                                    <a class="btn btn-sm btn-red-hollow attention" id="btnAttent">关注</a>
+                            </span>
+        </div>
+            </div>
+    <div class="data-info d-flex item-tiling">
+                <dl class="text-center" title="394">
+                        <dt><a href="https://blog.csdn.net/kirito_acmer?t=1">原创</a></dt>
+            <dd><a href="https://blog.csdn.net/kirito_acmer?t=1"><span class="count">394</span></a></dd>
+                    </dl>
+        <dl class="text-center" id="fanBox" title="28">
+            <dt>粉丝</dt>
+            <dd><span class="count" id="fan">28</span></dd>
+        </dl>
+        <dl class="text-center" title="24">
+            <dt>喜欢</dt>
+            <dd><span class="count">24</span></dd>
+        </dl>
+        <dl class="text-center" title="35">
+            <dt>评论</dt>
+            <dd><span class="count">35</span></dd>
+        </dl>
+    </div>
+    <div class="grade-box clearfix">
+        <dl>
+            <dt>等级：</dt>
+            <dd>
+                <a href="https://blog.csdn.net/home/help.html#level" title="6级,点击查看等级说明" target="_blank">
+                    <svg class="icon icon-level" aria-hidden="true">
+                        <use xlink:href="#csdnc-bloglevel-6"></use>
+                    </svg>
+                </a>
+            </dd>
+        </dl>
+        <dl>
+            <dt>访问：</dt>
+            <dd title="226717">
+                22万+            </dd>
+        </dl>
+        <dl>
+            <dt>积分：</dt>
+            <dd title="6085">
+                6085            </dd>
+        </dl>
+        <dl title="7424">
+            <dt>排名：</dt>
+            <dd>7424</dd>
+        </dl>
+    </div>
+        <div class="badge-box d-flex">
+        <span>勋章：</span>
+        <div class="badge d-flex">
+                                                        <div class="icon-badge" title="持之以恒">
+                       <div class="mouse-box">
+                          <img src="https://g.csdnimg.cn/static/user-medal/chizhiyiheng.svg" alt="">
+                          <div class="icon-arrow"></div>
+                       </div>
+                       <div class="grade-detail-box">
+                           <div class="pos-box">
+                               <div class="left-box d-flex justify-content-center align-items-center flex-column">
+                                    <img src="https://g.csdnimg.cn/static/user-medal/chizhiyiheng.svg" alt="">
+                                   <p>持之以恒</p>
+                               </div>
+                               <div class="right-box">
+                                   授予每个自然月内发布4篇或4篇以上原创或翻译IT博文的用户。不积跬步无以至千里，不积小流无以成江海，程序人生的精彩需要坚持不懈地积累！                               </div>
+                           </div>
+                       </div>
+                   </div>
+                                             </div>
+        <script>
+            (function ($) {
+                setTimeout(function(){
+                    $('div.icon-badge.show-moment').removeClass('show-moment');
+                }, 5000);
+            })(window.jQuery)
+        </script>
+    </div>
+    </div>
+<div class="csdn-tracking-statistics mb8 box-shadow" data-pid="blog" data-report-click='{"mod":"popu_4"}' data-report-view='{"mod":"popu_4"}' style="height:250px;">
+    <div class="aside-content text-center" id="cpro_u2734133">
+      <div id="kp_box_56" data-pid="56" data-track-view='{"mod":"kp_popu_56-76","con":",,"}' data-track-click='{"mod":"kp_popu_56-76","con":",,"}' data-report-view='{"mod":"kp_popu_56-76","keyword":""}' data-report-click='{"mod":"kp_popu_56-76","keyword":""}'><script type="text/javascript">
+    (function() {
+        var s = "_" + Math.random().toString(36).slice(2);
+        document.write('<div style="" id="' + s + '"></div>');
+        (window.slotbydup = window.slotbydup || []).push({
+            id: "u3032528",
+            container:  s
+        });
+    })();
+</script>
+<!-- 多条广告如下脚本只需引入一次 -->
+<script type="text/javascript" src="//cpro.baidustatic.com/cpro/ui/c.js" async="async" defer="defer" ></script></div>    </div>
+</div>
+<div id="asideNewArticle" class="aside-box">
+    <h3 class="aside-title">最新文章</h3>
+    <div class="aside-content">
+        <ul class="inf_list clearfix csdn-tracking-statistics tracking-click" data-mod="popu_382">
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/Kirito_Acmer/article/details/85301571" target="_blank" >
+                                        KNN算法                </a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/Kirito_Acmer/article/details/85261713" target="_blank" >
+                                        《Same Representation,Different Attentions:Shareable Sentence Representation》阅读笔记                </a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/Kirito_Acmer/article/details/70739653" target="_blank" >
+                                        退役了                </a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/Kirito_Acmer/article/details/52624917" target="_blank" >
+                                        hdu4126Genghis Khan the Conqueror (最小生成树+树形dp)                </a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/Kirito_Acmer/article/details/52596073" target="_blank" >
+                                        hdu5886Tower Defence（树形dp）                </a>
+            </li>
+                    </ul>
+    </div>
+</div>
+<div id="asideCategory" class="aside-box flexible-box">
+    <h3 class="aside-title">个人分类</h3>
+    <div class="aside-content">
+        <ul>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3080819">
+                    <span class="title oneline">网络流</span>
+                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3087565">
+                    <span class="title oneline">模拟题</span>
+                    <span class="count float-right">10篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3089203">
+                    <span class="title oneline">搜索</span>
+                    <span class="count float-right">29篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3089473">
+                    <span class="title oneline">codeforces</span>
+                    <span class="count float-right">33篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3126861">
+                    <span class="title oneline">并查集</span>
+                    <span class="count float-right">11篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3133123">
+                    <span class="title oneline">树状数组</span>
+                    <span class="count float-right">26篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3073377">
+                    <span class="title oneline">线段树</span>
+                    <span class="count float-right">42篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3189151">
+                    <span class="title oneline">map</span>
+                    <span class="count float-right">7篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3226447">
+                    <span class="title oneline">单调队列</span>
+                    <span class="count float-right">12篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3163115">
+                    <span class="title oneline">贪心</span>
+                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5643619">
+                    <span class="title oneline">单调栈</span>
+                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3231191">
+                    <span class="title oneline">RMQ</span>
+                    <span class="count float-right">5篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3231913">
+                    <span class="title oneline">几何</span>
+                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3276447">
+                    <span class="title oneline">二分</span>
+                    <span class="count float-right">17篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5901577">
+                    <span class="title oneline">三分</span>
+                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3728239">
+                    <span class="title oneline">离散化</span>
+                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/4476043">
+                    <span class="title oneline">最长上升子序列</span>
+                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5570595">
+                    <span class="title oneline">博弈</span>
+                    <span class="count float-right">7篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5578169">
+                    <span class="title oneline">upper_bound and lower_bound</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5737141">
+                    <span class="title oneline">dp</span>
+                    <span class="count float-right">21篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5598391">
+                    <span class="title oneline">背包dp</span>
+                    <span class="count float-right">20篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3119541">
+                    <span class="title oneline">数位dp</span>
+                    <span class="count float-right">16篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5600035">
+                    <span class="title oneline">状压dp</span>
+                    <span class="count float-right">18篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5893937">
+                    <span class="title oneline">树形dp</span>
+                    <span class="count float-right">16篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5650715">
+                    <span class="title oneline">区间dp</span>
+                    <span class="count float-right">20篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5828863">
+                    <span class="title oneline">斜率优化</span>
+                    <span class="count float-right">6篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5642183">
+                    <span class="title oneline">素数</span>
+                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5658457">
+                    <span class="title oneline">最长公共子序列</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5705081">
+                    <span class="title oneline">快速幂</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5718793">
+                    <span class="title oneline">优先队列</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5721483">
+                    <span class="title oneline">hdu</span>
+                    <span class="count float-right">10篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5724723">
+                    <span class="title oneline">set</span>
+                    <span class="count float-right">6篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5725087">
+                    <span class="title oneline">手动开栈</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5771743">
+                    <span class="title oneline">大数</span>
+                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5814711">
+                    <span class="title oneline">二叉树</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5863639">
+                    <span class="title oneline">dfs序</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5892389">
+                    <span class="title oneline">lca</span>
+                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5929889">
+                    <span class="title oneline">最短路</span>
+                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5996419">
+                    <span class="title oneline">矩阵快速幂</span>
+                    <span class="count float-right">14篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6096691">
+                    <span class="title oneline">曼哈顿距离</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6005787">
+                    <span class="title oneline">拓扑排序</span>
+                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6091394">
+                    <span class="title oneline">莫队算法</span>
+                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6100874">
+                    <span class="title oneline">容斥原理</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6115288">
+                    <span class="title oneline">字符串</span>
+                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/5869693">
+                    <span class="title oneline">string</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/3082595">
+                    <span class="title oneline">kmp</span>
+                    <span class="count float-right">11篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6091065">
+                    <span class="title oneline">trie树</span>
+                    <span class="count float-right">5篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6093099">
+                    <span class="title oneline">AC自动机</span>
+                    <span class="count float-right">9篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6208289">
+                    <span class="title oneline">后缀数组</span>
+                    <span class="count float-right">5篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6209849">
+                    <span class="title oneline">manacher</span>
+                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6101419">
+                    <span class="title oneline">数学公式</span>
+                    <span class="count float-right">5篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6111389">
+                    <span class="title oneline">扩展欧几里德</span>
+                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6117860">
+                    <span class="title oneline">bitset</span>
+                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6138984">
+                    <span class="title oneline">约瑟夫环</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6178300">
+                    <span class="title oneline">主席树</span>
+                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6192989">
+                    <span class="title oneline">树链剖分</span>
+                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6215681">
+                    <span class="title oneline">treap</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6227230">
+                    <span class="title oneline">splay</span>
+                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6318132">
+                    <span class="title oneline">分块</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/6885415">
+                    <span class="title oneline">退役帖</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/8563298">
+                    <span class="title oneline">深度学习论文</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a class="clearfix" href="https://blog.csdn.net/kirito_acmer/article/category/8567200">
+                    <span class="title oneline">机器学习算法</span>
+                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                    </ul>
+    </div>
+        <p class="text-center">
+        <a class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</a>
+    </p>
+    </div>
+<div id="asideArchive" class="aside-box flexible-box">
+    <h3 class="aside-title">归档</h3>
+    <div class="aside-content">
+        <ul class="archive-list">
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2018/12">
+                    2018年12月                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2016/09">
+                    2016年9月                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2016/08">
+                    2016年8月                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2016/07">
+                    2016年7月                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2016/05">
+                    2016年5月                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2016/04">
+                    2016年4月                    <span class="count float-right">11篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2016/03">
+                    2016年3月                    <span class="count float-right">39篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2016/02">
+                    2016年2月                    <span class="count float-right">38篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2016/01">
+                    2016年1月                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2015/12">
+                    2015年12月                    <span class="count float-right">21篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2015/11">
+                    2015年11月                    <span class="count float-right">13篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2015/10">
+                    2015年10月                    <span class="count float-right">26篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2015/09">
+                    2015年9月                    <span class="count float-right">32篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2015/08">
+                    2015年8月                    <span class="count float-right">24篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2015/07">
+                    2015年7月                    <span class="count float-right">20篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2015/06">
+                    2015年6月                    <span class="count float-right">51篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2015/05">
+                    2015年5月                    <span class="count float-right">49篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2015/04">
+                    2015年4月                    <span class="count float-right">36篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/kirito_acmer/article/month/2015/03">
+                    2015年3月                    <span class="count float-right">6篇</span>
+                </a>
+            </li>
+                    </ul>
+    </div>
+        <p class="text-center">
+        <a class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</a>
+    </p>
+    </div>
+<div id="asideHotArticle" class="aside-box">
+	<h3 class="aside-title">热门文章</h3>
+	<div class="aside-content">
+		<ul class="hotArticle-list csdn-tracking-statistics tracking-click" data-report-view='{"mod":"popu_521"}'>
+							<li>
+
+					<a href="https://blog.csdn.net/Kirito_Acmer/article/details/46582483" >
+                                                poj1185 炮兵阵地                    </a>
+					<p class="read">阅读数 <span>2526</span></p>
+				</li>
+							<li>
+
+					<a href="https://blog.csdn.net/Kirito_Acmer/article/details/45115449" >
+                                                B. OR in Matrix                    </a>
+					<p class="read">阅读数 <span>1905</span></p>
+				</li>
+							<li>
+
+					<a href="https://blog.csdn.net/Kirito_Acmer/article/details/48716719" >
+                                                poj2018 Best Cow Fences                    </a>
+					<p class="read">阅读数 <span>1782</span></p>
+				</li>
+							<li>
+
+					<a href="https://blog.csdn.net/Kirito_Acmer/article/details/46897159" >
+                                                zjnu1181 石子合并【基础算法・动态规划】——高级                    </a>
+					<p class="read">阅读数 <span>1553</span></p>
+				</li>
+							<li>
+
+					<a href="https://blog.csdn.net/Kirito_Acmer/article/details/46291117" >
+                                                lower_bound()和upper_bound                    </a>
+					<p class="read">阅读数 <span>1427</span></p>
+				</li>
+					</ul>
+	</div>
+</div>
+<div id="asideNewComments" class="aside-box">
+    <h3 class="aside-title">最新评论</h3>
+    <div class="aside-content">
+        <ul class="newcomment-list">
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/kirito_acmer/article/details/47281679#comments">hdu4533 威威猫系列故事——...</a>
+                <p class="comment ellipsis">
+                    <a href="https://my.csdn.net/smile_running" class="user-name" target="_blank">smile_running：</a>😄👍                </p>
+            </li>
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/kirito_acmer/article/details/48716719#comments">poj2018 Best Cow ...</a>
+                <p class="comment ellipsis">
+                    <a href="https://my.csdn.net/Kirito_Acmer" class="user-name" target="_blank">Kirito_Acmer：</a>[reply]ll1243295518[/reply]
+你好，一直没有看回复，不知道你后来有没有解决问题，返回上界可以手动模拟是r。                </p>
+            </li>
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/kirito_acmer/article/details/48716719#comments">poj2018 Best Cow ...</a>
+                <p class="comment ellipsis">
+                    <a href="https://my.csdn.net/ll1243295518" class="user-name" target="_blank">ll1243295518：</a>厉害 学习了 不过我觉得39行的i应该从f开始，还有返回上确界应该是l不是r吧。                </p>
+            </li>
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/kirito_acmer/article/details/47667309#comments">poj1011 Sticks</a>
+                <p class="comment ellipsis">
+                    <a href="https://my.csdn.net/weixin_40230564" class="user-name" target="_blank">weixin_40230564：</a>if(dfs(t+1,i+1,len-a[i]))return 1; //当前这根一定是剩下最长的一根，且一定要拼
+这段代码为什么没有条件判断呢？如果搜到i=n的时候，那你i+1不就越界了吗？
+还有请教一下如果a这个数组都是从0开始存储stick的长度，而不是从1开始，为什么poj上就会显示output limit exceed呢？                </p>
+            </li>
+                    </ul>
+    </div>
+</div>
+	<div id="asideFooter">
+			
+		<div class="aside-box">
+			<div id="kp_box_57" data-pid="57" data-track-view='{"mod":"kp_popu_57-707","con":",,"}' data-track-click='{"mod":"kp_popu_57-707","con":",,"}' data-report-view='{"mod":"kp_popu_57-707","keyword":""}' data-report-click='{"mod":"kp_popu_57-707","keyword":""}'><script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- 博客内页左下视窗-20181130 -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:300px;height:250px"
+     data-ad-client="ca-pub-1076724771190722"
+     data-ad-slot="1894159733"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script></div>		</div>
+				<div class="aside-box">
+			<div class="persion_article">
+			</div>
+		</div>
+	</div>
+</aside>
+<script src="https://csdnimg.cn/pubfooter/js/publib_footer-1.0.3.js" data-isfootertrack="false" type="text/javascript"></script>
+<script>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).remove();
+	})
+</script>
+</div>
+<div class="mask-dark"></div>
+<div class="tool-box vertical">
+	<ul class="meau-list">
+		<li class="btn-like-box ">
+			<button class=" low-height hover-box btn-like " title="点赞">
+				<svg class="icon active hover-hide" aria-hidden="true">
+					<use xlink:href="#csdnc-thumbsup-ok"></use>
+				</svg>
+				<svg class="icon no-active hover-hide" aria-hidden="true">
+					<use xlink:href="#csdnc-thumbsup"></use>
+				</svg>
+				<span class="hover-show text-box text">
+					<span class="no-active">点赞</span>
+					<span class="active">取消点赞</span>
+				</span>
+				<p>0</p>
+			</button>
+		</li>
+		<li class="to-commentBox">
+						<a class="btn-comments low-height hover-box" title="写评论" href="#commentBox">
+				<svg class="icon hover-hide" aria-hidden="true">
+					<use xlink:href="#csdnc-comments"></use>
+				</svg>
+				<span class="hover-show text">评论</span>
+				<p class="">
+										</p>
+			</a>
+		</li>
+		<li class="toc-container-box" id="liTocBox">
+			<a class="btn-toc low-height hover-box btn-comments" title="目录">
+				<svg class="icon hover-hide" aria-hidden="true">
+					<use xlink:href="#csdnc-contents"></use>
+				</svg>
+				<span class="hover-show text">目录</span>
+			</a>
+			<div class="toc-container">
+				<div class="pos-box">
+					<div class="icon-arrow"></div>
+					<div class="scroll-box">
+						<div class="toc-box"></div>
+					</div>
+				</div>
+				<div class="opt-box">
+					<button class="btn-opt prev nomore" title="向上">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#csdnc-chevronup"></use>
+						</svg>
+					</button>
+					<button class="btn-opt next">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#csdnc-chevrondown"></use>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</li>
+		<li>
+			<a class="btn-bookmark low-height hover-box btn-comments" title="收藏">
+				<svg class="icon active hover-hide" aria-hidden="true">
+					<use xlink:href="#csdnc-bookmark-ok"></use>
+				</svg>
+				<svg class="icon no-active hover-hide" aria-hidden="true">
+					<use xlink:href="#csdnc-bookmark"></use>
+				</svg>
+					<span class="hover-show text">收藏</span>
+				<!-- <span class="hover-show text-box text">
+					<span class="no-active">收藏</span>
+					<span class="active">取消收藏</span>
+				</span> -->
+			</a>
+		</li>
+		<li class="bdsharebuttonbox">
+			<div class="weixin-qr btn-comments low-height hover-box" >
+        <a href="#" class="bds_weixin clear-share-style" data-cmd="weixin" title="手机看"></a>
+				<svg class="icon hover-hide" aria-hidden="true">
+					<use xlink:href="#csdnc-usephone"></use>
+				</svg>
+				<span class="hover-show text text3">
+					手机看
+				</span>
+			</div>
+		</li>
+							<li class="widescreen-hide">
+				<a class="prev btn-comments low-height hover-box" href="https://blog.csdn.net/kirito_acmer/article/details/49621267" title="hdu5510 Bazinga">
+					<svg class="icon hover-hide" aria-hidden="true">
+						<use xlink:href="#csdnc-chevronleft"></use>
+					</svg>
+					<span class="hover-show text text3">上一篇</span>
+				</a>
+			</li>
+								<li class="widescreen-hide">
+			<a class="next btn-comments hover-box low-height" href="https://blog.csdn.net/kirito_acmer/article/details/49661493" title="hdu5521 Meeting">
+				<svg class="icon hover-hide" aria-hidden="true">
+					<use xlink:href="#csdnc-chevronright"></use>
+				</svg>
+				<span class="hover-show text text3">下一篇</span>
+			</a>
+		</li>
+						<!-- 宽屏更多按钮 -->
+		<li class="widescreen-more">
+			<a class="btn-comments chat-ask-button low-height hover-box" title="快问" href="#chatqa">
+				<svg class="icon hover-hide" aria-hidden="true">
+					<use xlink:href="#csdnc-more"></use>
+				</svg>
+				<span class="hover-show text">更多</span>
+				
+			</a>
+			<ul class="widescreen-more-box">
+													<li class="widescreen-more">
+						<a class="btn-comments low-height hover-box" href="https://blog.csdn.net/kirito_acmer/article/details/49621267" title="hdu5510 Bazinga">
+							<svg class="icon hover-hide" aria-hidden="true">
+								<use xlink:href="#csdnc-chevronleft"></use>
+							</svg>
+							<span class="hover-show text text3">上一篇</span>
+						</a>
+					</li>
+																<li class="widescreen-more">
+					<a class="btn-comments hover-box low-height" href="https://blog.csdn.net/kirito_acmer/article/details/49661493" title="hdu5521 Meeting">
+						<svg class="icon hover-hide" aria-hidden="true">
+							<use xlink:href="#csdnc-chevronright"></use>
+						</svg>
+						<span class="hover-show text text3">下一篇</span>
+					</a>
+				</li>
+							</ul>
+		</li>
+	</ul>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'https://csdnimg.cn/static/api/js/share.js?v=89860594'];</script>
+<script src="https://g.csdnimg.cn/collection-box/1.0.0/collection-box.js?t=20190710173809" type="text/javascript"></script><script>
+    var recommendCount = 50;
+    recommendCount = recommendCount > 1 ? (recommendCount + (recommendCount>6 ? 2 : 1)) : recommendCount;
+    var ChannelId = 16;
+    var articleId = "49639195";
+    var commentscount = 0;
+    var islock = false;
+    var curentUrl = "https://blog.csdn.net/Kirito_Acmer/article/details/49639195";
+    var myUrl = "https://my.csdn.net/";
+    //1禁止评论，2正常
+    var commentAuth = 2;
+    //百度搜索
+    var baiduKey = "codeforces 492D. Vanya and Computer Game - 新月";
+    var needInsertBaidu = true;
+    // 代码段样式
+    var codeStyle = 'atom-one-dark';
+	var highlight = ["codeforces","492d.","vanya","computer","game"];//高亮数组
+
+    var RecommendBlogExpertList = [{"user_name":"qq_40693171","nick_name":"Big sai","avatar":"https:\/\/avatar.csdn.net\/C\/E\/8\/3_qq_40693171.jpg","is_expert":true,"article_count":159,"rank":"\u5343\u91cc\u4e4b\u5916"},{"user_name":"mengxiang000000","nick_name":"mengxiang000000","avatar":"https:\/\/avatar.csdn.net\/8\/5\/8\/3_mengxiang000000.jpg","is_expert":false,"article_count":2122,"rank":"287"},{"user_name":"obsorb_knowledge","nick_name":"obsorb_knowledge","avatar":"https:\/\/avatar.csdn.net\/5\/5\/4\/3_obsorb_knowledge.jpg","is_expert":false,"article_count":183,"rank":"\u5343\u91cc\u4e4b\u5916"},{"user_name":"hzj1054689699","nick_name":"BAJim_H","avatar":"https:\/\/avatar.csdn.net\/4\/8\/4\/3_hzj1054689699.jpg","is_expert":false,"article_count":464,"rank":"7000+"},{"user_name":"qq_41289920","nick_name":"\u97ec\u5149\u517b\u6666_","avatar":"https:\/\/avatar.csdn.net\/9\/D\/3\/3_qq_41289920.jpg","is_expert":false,"article_count":945,"rank":"3000+"},{"user_name":"CSDN___CSDN","nick_name":"__zzz__","avatar":"https:\/\/avatar.csdn.net\/C\/5\/4\/3_csdn___csdn.jpg","is_expert":false,"article_count":288,"rank":"\u5343\u91cc\u4e4b\u5916"},{"user_name":"OttsWang","nick_name":"OttsWang","avatar":"https:\/\/avatar.csdn.net\/3\/1\/5\/3_ottswang.jpg","is_expert":false,"article_count":28,"rank":"\u5343\u91cc\u4e4b\u5916"},{"user_name":"weixin_39453270","nick_name":"Chen_Jr_","avatar":"https:\/\/avatar.csdn.net\/9\/A\/D\/3_weixin_39453270.jpg","is_expert":false,"article_count":193,"rank":"\u5343\u91cc\u4e4b\u5916"},{"user_name":"qq_34143240","nick_name":"\u83ab\u6bd4\u4e4c\u65af\u706f\u6ce1","avatar":"https:\/\/avatar.csdn.net\/8\/C\/A\/3_qq_34143240.jpg","is_expert":false,"article_count":44,"rank":"\u5343\u91cc\u4e4b\u5916"},{"user_name":"oier_forever","nick_name":"oier_forever","avatar":"https:\/\/avatar.csdn.net\/6\/3\/9\/3_oier_forever.jpg","is_expert":false,"article_count":42,"rank":"\u5343\u91cc\u4e4b\u5916"}];
+	var articleType = 1;
+	var CopyrightContent = '本文为博主原创文章，未经博主允许不得转载。';
+</script>
+<script src="https://csdnimg.cn/public/sandalstrap/1.4/js/sandalstrap.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/vendor/pagination/paging.js"></script>
+
+<div style="display:none;">
+	<img src="" onerror='setTimeout(function(){if(!/(csdn.net|iteye.com|baiducontent.com|googleusercontent.com|360webcache.com|sogoucdn.com|bingj.com|baidu.com)$/.test(window.location.hostname)){window.location.href="\x68\x74\x74\x70\x73\x3a\x2f\x2f\x77\x77\x77\x2e\x63\x73\x64\x6e\x2e\x6e\x65\x74"}},3000);'>
+</div>
+</body>
+
+<!-- 高亮未与 markdown兼容  -->
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.4.2/ckeditor/plugins/chart/chart.css" />
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.4.2/ckeditor/plugins/chart/lib/chart.min.js"></script>
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.4.2/ckeditor/plugins/chart/widget2chart.js"></script>
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.4.2/ckeditor/plugins/codesnippet/lib/highlight/styles/atom-one-dark.css">
+	<script type="text/javascript" src="https://csdnimg.cn/release/phoenix/production/pc_wap_common-183107e5f3.js" /></script>
+
+<script src="https://csdnimg.cn/release/phoenix/template/js/common-39dba58a5f.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/template/js/detail-5459bc6e9d.min.js"></script>
+
+	<script src="https://csdnimg.cn/release/phoenix/themes/skin-yellow/skin-yellow-fc7383b956.min.js"></script>
+<script>
+ // 全局声明
+ if (window.csdn === undefined) {
+      window.csdn = {};
+    }
+    window.csdn.sideToolbar = {
+        options: {
+            report:{
+                isShow: true,
+            },
+            afterFinished: function(){
+                setTimeout(function () {
+                    var viphtml = '<a class="option-box" data-type="vip" href="https://mall.csdn.net/vip" target="_blank">'+
+                        '<img src="https://g.csdnimg.cn/side-toolbar/1.2/images/vip.png" alt="" srcset="">'+
+                        '<span class="show-txt">VIP<br>免广告</span>'+
+                        '</a>';
+                    $('.csdn-side-toolbar').prepend(viphtml)
+                },300)
+            }
+        }
+    }
+
+    $(function(){
+        $(document).on('click',"a.option-box[data-type='report']",function() {
+            showReport(false,articleTitles)
+        });
+    })
+</script>
+<script src="https://g.csdnimg.cn/side-toolbar/1.2/side-toolbar.js"></script>
+
+    <script src="//g.csdnimg.cn/??login-box/1.0.6/login-box.js,login-box/1.0.5/login-auto.js,copyright/1.0.3/copyright.js,baidu-search/1.0.0/baidu-search.js?t=20190307095522"  type="text/javascript"></script>
+
+<script type="text/javascript" src="https://csdnimg.cn/release/blog_mathjax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+            "HTML-CSS": {
+                    linebreaks: { automatic: true, width: "94%container" },
+                    imageFont: null
+            },
+            tex2jax: {
+                preview: "none"
+            },
+            mml2jax: {
+                preview: 'none'
+            }
+    });
+</script>
+<script type="text/javascript">
+    </script>
+<script src="https://gh.bdstatic.com/static/gh/js/sdk/bword.min.js"></script>
+</html>
