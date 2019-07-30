@@ -78,14 +78,12 @@ bool Miller_Rabin(ll x) {
 }
 
 __int128 modInverse(__int128 a, __int128 p) { return qp(a, p - 2ll, p); }
-// power(a, p - 2LL, p); }
 
 ll modFact(ll n, ll p) {
     if (p <= n)
         return 0;
     __int128 res = (p - 1ll);
     for (__int128 i = n + 1ll; i < p; i++) {
-        // printf("res=%lld,modinv=%lld\n", res, modInverse(i, p));
         res = ((res % p) * (modInverse(i, p) % p)) % p;
     }
     return (ll)res;
@@ -101,7 +99,6 @@ int main() {
             if (Miller_Rabin(i))
                 break;
         }
-        // printf("i=%lld\n", i);
         printf("%lld\n", modFact(i, MOD));
     }
     return 0;
