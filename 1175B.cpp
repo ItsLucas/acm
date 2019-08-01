@@ -6,7 +6,7 @@ typedef long long ll;
 
 struct oo_t {
     inline ll operator+() { return 1LL << 32; }
-    inline ll operator-() { return -(1LL < 32); }
+    inline ll operator-() { return -(1LL << 32); }
 } oo;
 
 int main() {
