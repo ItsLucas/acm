@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="origin" />
+    <meta http-equiv="Cache-Control" content="no-transform" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <title>Codeforces Round #265 (Div. 2)  C 暴力+ 找规律+ 贪心 - njczy2010 - 博客园</title>
+    <meta property="og:description" content="C. No to Palindromes!time limit per test1 secondmemory limit per test256 megabytesinputstandard inpu" />
+    <link type="text/css" rel="stylesheet" href="/bundles/blog-common.css?v=KOZafwuaDasEedEenI5aTy8aXH0epbm6VUJ0v3vsT_Q1"/>
+<link id="MainCss" type="text/css" rel="stylesheet" href="/skins/sea/bundle-sea.css?v=PPe3jt1rcXPno6kucw0iQU2MWF3DbrvubQHRM0FEMas1"/>
+<link id="mobile-style" media="only screen and (max-width: 767px)" type="text/css" rel="stylesheet" href="/skins/sea/bundle-sea-mobile.css?v=yFtgEd5VFXGr9Lo4adjD_iDDW9y0pVJjEZ2io36-rWw1"/>
+    <link title="RSS" type="application/rss+xml" rel="alternate" href="https://www.cnblogs.com/njczy2010/rss"/>
+    <link title="RSD" type="application/rsd+xml" rel="EditURI" href="https://www.cnblogs.com/njczy2010/rsd.xml"/>
+<link type="application/wlwmanifest+xml" rel="wlwmanifest" href="https://www.cnblogs.com/njczy2010/wlwmanifest.xml"/>
+    <script src="//common.cnblogs.com/scripts/jquery-2.2.0.min.js"></script>
+    <script>var currentBlogId=194237;var currentBlogApp='njczy2010',cb_enable_mathjax=false;var isLogined=false;</script>
+    <script src="/bundles/blog-common.js?v=smtcUT5dhdu_5eEO8CKHYoVc7DPLgEBGzp6zKkstlzg1" type="text/javascript"></script>
+</head>
+<body>
+<a name="top"></a>
+
+
+<!--done-->
+<div id="header">
+	
+<!--done-->
+<div class="header">
+	<div class="headerText">
+		<a id="Header1_HeaderTitle" class="headermaintitle" href="https://www.cnblogs.com/njczy2010/">njczy2010</a><br>
+		
+	</div>
+</div>
+
+</div>
+
+<div id="mytopmenu" >
+	
+		<div id="mylinks"><a id="blog_nav_sitehome" class="menu" href="https://www.cnblogs.com/">博客园</a> &nbsp;
+<a id="blog_nav_myhome" class="menu" href="https://www.cnblogs.com/njczy2010/">首页</a> &nbsp;
+<a id="blog_nav_newpost" class="menu" rel="nofollow" href="https://i.cnblogs.com/EditPosts.aspx?opt=1">新随笔</a> &nbsp;
+<a id="blog_nav_contact" class="menu" rel="nofollow" href="https://msg.cnblogs.com/send/njczy2010">联系</a> &nbsp;
+<a id="blog_nav_rss" class="menu" href="https://www.cnblogs.com/njczy2010/rss">订阅</a><a id="blog_nav_rss_image" href="https://www.cnblogs.com/njczy2010/rss"><img src="//www.cnblogs.com/images/xml.gif" alt="订阅" /></a>&nbsp;
+<a id="blog_nav_admin" class="menu" rel="nofollow" href="https://i.cnblogs.com/">管理</a>
+</div>
+		<DIV id="mystats"><div id="blog_stats">
+随笔-285&nbsp;
+评论-44&nbsp;
+文章-1&nbsp;
+<!--trackbacks-0-->
+</div></DIV>
+	
+</div>
+<div id="centercontent" >
+	
+        <div id="post_detail">
+<div class = "post">
+	<h1 class = "postTitle"><a id="cb_post_title_url" class="postTitle2" href="https://www.cnblogs.com/njczy2010/p/3967834.html">Codeforces Round #265 (Div. 2)  C 暴力+ 找规律+ 贪心</a></h1>
+	<div id="cnblogs_post_body" class="blogpost-body"><div class="header">
+<div class="title">C. No to Palindromes!</div>
+<div class="time-limit">
+<div class="property-title">time limit per test</div>
+1 second</div>
+<div class="memory-limit">
+<div class="property-title">memory limit per test</div>
+256 megabytes</div>
+<div class="input-file">
+<div class="property-title">input</div>
+standard input</div>
+<div class="output-file">
+<div class="property-title">output</div>
+standard output</div>
+</div>
+<div>
+<p>Paul <span class="tex-font-style-it">hates palindromes. He assumes that string <span class="tex-span"><em>s</em> is <span class="tex-font-style-it">tolerable if each its character is one of the first <span class="tex-span"><em>p</em> letters of the English alphabet and <span class="tex-span"><em>s</em> doesn't contain any palindrome contiguous substring of length 2 or more.</span></span></span></span></span></p>
+<p>Paul has found a tolerable string <span class="tex-span"><em>s</em> of length <span class="tex-span"><em>n</em>. Help him find the lexicographically next tolerable string of the same length or else state that such string does not exist.</span></span></p>
+</div>
+<div class="input-specification">
+<div class="section-title">Input</div>
+<p>The first line contains two space-separated integers: <span class="tex-span"><em>n</em> and <span class="tex-span"><em>p</em> (<span class="tex-span">1&thinsp;&le;&thinsp;<em>n</em>&thinsp;&le;&thinsp;1000; <span class="tex-span">1&thinsp;&le;&thinsp;<em>p</em>&thinsp;&le;&thinsp;26). The second line contains string <span class="tex-span"><em>s</em>, consisting of <span class="tex-span"><em>n</em> small English letters. It is guaranteed that the string is tolerable (according to the above definition).</span></span></span></span></span></span></p>
+</div>
+<div class="output-specification">
+<div class="section-title">Output</div>
+<p>If the lexicographically next tolerable string of the same length exists, print it. Otherwise, print "<span class="tex-font-style-tt">NO" (without the quotes).</span></p>
+</div>
+<div class="sample-tests">
+<div class="section-title">Sample test(s)</div>
+<div class="sample-test">
+<div class="input">
+<div class="title">Input</div>
+<pre>3 3 cba</pre>
+</div>
+<div class="output">
+<div class="title">Output</div>
+<pre>NO</pre>
+</div>
+<div class="input">
+<div class="title">Input</div>
+<pre>3 4 cba</pre>
+</div>
+<div class="output">
+<div class="title">Output</div>
+<pre>cbd</pre>
+</div>
+<div class="input">
+<div class="title">Input</div>
+<pre>4 4 abcd</pre>
+</div>
+<div class="output">
+<div class="title">Output</div>
+<pre>abda</pre>
+</div>
+</div>
+</div>
+<div class="note">
+<div class="section-title">Note</div>
+<p>String <span class="tex-span"><em>s</em> is <span class="tex-font-style-it">lexicographically larger (or simply <span class="tex-font-style-it">larger) than string <span class="tex-span"><em>t</em> with the same length, if there is number <span class="tex-span"><em>i</em>, such that <span class="tex-span"><em>s</em><sub class="lower-index">1</sub>&thinsp;=&thinsp;<em>t</em><sub class="lower-index">1</sub>, ..., <span class="tex-span"><em>s</em><sub class="lower-index"><em>i</em></sub>&thinsp;=&thinsp;<em>t</em><sub class="lower-index"><em>i</em></sub>, <span class="tex-span"><em>s</em><sub class="lower-index"><em>i</em>&thinsp;+&thinsp;1</sub>&thinsp;&gt;&thinsp;<em>t</em><sub class="lower-index"><em>i</em>&thinsp;+&thinsp;1</sub>.</span></span></span></span></span></span></span></span></p>
+<p>The lexicographically next tolerable string is the lexicographically minimum tolerable string which is larger than the given one.</p>
+<p>A palindrome is a string that reads the same forward or reversed.</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>题解转自：<a href="http://www.cnblogs.com/iwtwiioi/p/3961709.html">http://www.cnblogs.com/iwtwiioi/p/3961709.html</a></p>
+<p>题意：给你一个没有长度为2以上（包括2）的回文串的一个字符串，然后让你求比他大的所有排列且没有长度为2以上（包括2）的下一个最小的排列。</p>
+<p>剩下的1个半小时都在搞这题。。。。。。。。。。T_T</p>
+<p>神题。。</p>
+<p>我dfs写渣</p>
+<p>判重写渣</p>
+<p>然后滚粗。</p>
+<p>这里有个贪心。</p>
+<p><strong>串的任意部分都不能是回文=串中任意连续3个字符互不相同</strong></p>
+<p>那么如果从左往右找，那么只需要判断x-1和x-2与x不等即可</p>
+<p>其次我们要保证字典序最小，所以我们从右向左依次尝试修改，只要找到不符合回文条件的点，就修改它。这样保证了前边的最小。。</p>
+<p>而且能证明，后边一定能构造出一个不是回文的串。例如m=4，我可以构造abcabcabc。。。。。。。。。。。。（x-1和x-2与x不等）</p>
+</div>
+<p>&nbsp;</p>
+<p>程序中有访问&nbsp;char&nbsp;数组的负下标，感觉太高大上了,我试了下，负下标的%d输出为0</p>
+<p>网上有人说原因是&nbsp;&nbsp;：记住，下标只是个操作符。 x[n] 等价于 *(x + n)</p>
+<p>&nbsp;</p>
+<div class="cnblogs_code">
+<pre><span style="color: #008080;"> 1</span> #include&lt;iostream&gt;
+<span style="color: #008080;"> 2</span> #include&lt;cstring&gt;
+<span style="color: #008080;"> 3</span> #include&lt;cstdlib&gt;
+<span style="color: #008080;"> 4</span> #include&lt;cstdio&gt;
+<span style="color: #008080;"> 5</span> #include&lt;algorithm&gt;
+<span style="color: #008080;"> 6</span> #include&lt;cmath&gt;
+<span style="color: #008080;"> 7</span> #include&lt;queue&gt;
+<span style="color: #008080;"> 8</span> #include&lt;map&gt;
+<span style="color: #008080;"> 9</span> 
+<span style="color: #008080;">10</span> <span style="color: #0000ff;">#define</span> N 1005
+<span style="color: #008080;">11</span> <span style="color: #0000ff;">#define</span> M 15
+<span style="color: #008080;">12</span> <span style="color: #0000ff;">#define</span> mod 6
+<span style="color: #008080;">13</span> <span style="color: #0000ff;">#define</span> mod2 100000000
+<span style="color: #008080;">14</span> <span style="color: #0000ff;">#define</span> ll long long
+<span style="color: #008080;">15</span> <span style="color: #0000ff;">#define</span> maxi(a,b) (a)&gt;(b)? (a) : (b)
+<span style="color: #008080;">16</span> <span style="color: #0000ff;">#define</span> mini(a,b) (a)&lt;(b)? (a) : (b)
+<span style="color: #008080;">17</span> 
+<span style="color: #008080;">18</span> <span style="color: #0000ff;">using</span> <span style="color: #0000ff;">namespace</span><span style="color: #000000;"> std;
+</span><span style="color: #008080;">19</span> 
+<span style="color: #008080;">20</span> <span style="color: #0000ff;">int</span><span style="color: #000000;"> n,p;
+</span><span style="color: #008080;">21</span> <span style="color: #0000ff;">char</span><span style="color: #000000;"> s[N];
+</span><span style="color: #008080;">22</span> 
+<span style="color: #008080;">23</span> <span style="color: #0000ff;">char</span> ok(<span style="color: #0000ff;">int</span><span style="color: #000000;"> t)
+</span><span style="color: #008080;">24</span> <span style="color: #000000;">{
+</span><span style="color: #008080;">25</span>     <span style="color: #0000ff;">char</span><span style="color: #000000;"> i;
+</span><span style="color: #008080;">26</span>     <span style="color: #0000ff;">for</span>(i=s[t]+<span style="color: #800080;">1</span>;i-<span style="color: #800000;">'</span><span style="color: #800000;">a</span><span style="color: #800000;">'</span>+<span style="color: #800080;">1</span>&lt;=p;i++<span style="color: #000000;">){
+</span><span style="color: #008080;">27</span>         <span style="color: #0000ff;">if</span>(s[t-<span style="color: #800080;">1</span>]!=i &amp;&amp; s[t-<span style="color: #800080;">2</span>]!=i) <span style="color: #0000ff;">return</span><span style="color: #000000;"> i;
+</span><span style="color: #008080;">28</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">29</span>     <span style="color: #0000ff;">return</span> <span style="color: #800080;">0</span><span style="color: #000000;">;
+</span><span style="color: #008080;">30</span> <span style="color: #000000;">}
+</span><span style="color: #008080;">31</span> 
+<span style="color: #008080;">32</span> <span style="color: #0000ff;">int</span><span style="color: #000000;"> solve()
+</span><span style="color: #008080;">33</span> <span style="color: #000000;">{
+</span><span style="color: #008080;">34</span>     <span style="color: #0000ff;">int</span><span style="color: #000000;"> i;
+</span><span style="color: #008080;">35</span>     <span style="color: #0000ff;">char</span><span style="color: #000000;"> t;
+</span><span style="color: #008080;">36</span>    <span style="color: #008000;">//</span><span style="color: #008000;"> if(p==1) return 0;
+</span><span style="color: #008080;">37</span>    <span style="color: #008000;">//</span><span style="color: #008000;"> if(n==1) return</span>
+<span style="color: #008080;">38</span>     <span style="color: #0000ff;">for</span>(i=n-<span style="color: #800080;">1</span>;i&gt;=<span style="color: #800080;">0</span>;i--<span style="color: #000000;">){
+</span><span style="color: #008080;">39</span>         t=<span style="color: #000000;">ok(i);
+</span><span style="color: #008080;">40</span>         <span style="color: #0000ff;">if</span>( t!=<span style="color: #800080;">0</span><span style="color: #000000;"> ){
+</span><span style="color: #008080;">41</span>             s[i]=<span style="color: #000000;">t;
+</span><span style="color: #008080;">42</span>             <span style="color: #0000ff;">break</span><span style="color: #000000;">;
+</span><span style="color: #008080;">43</span> <span style="color: #000000;">        }
+</span><span style="color: #008080;">44</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">45</span>     <span style="color: #0000ff;">if</span>(i==-<span style="color: #800080;">1</span>) <span style="color: #0000ff;">return</span> <span style="color: #800080;">0</span><span style="color: #000000;">;
+</span><span style="color: #008080;">46</span> 
+<span style="color: #008080;">47</span>     i++<span style="color: #000000;">;
+</span><span style="color: #008080;">48</span>     <span style="color: #0000ff;">for</span>(;i&lt;n;i++<span style="color: #000000;">){
+</span><span style="color: #008080;">49</span>         s[i]=<span style="color: #800000;">'</span><span style="color: #800000;">a</span><span style="color: #800000;">'</span>-<span style="color: #800080;">1</span><span style="color: #000000;">;
+</span><span style="color: #008080;">50</span>         t=<span style="color: #000000;">ok(i);
+</span><span style="color: #008080;">51</span>         <span style="color: #0000ff;">if</span>( t!=<span style="color: #800080;">0</span><span style="color: #000000;"> ){
+</span><span style="color: #008080;">52</span>             s[i]=<span style="color: #000000;">t;
+</span><span style="color: #008080;">53</span> <span style="color: #000000;">        }
+</span><span style="color: #008080;">54</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">55</span>     <span style="color: #0000ff;">return</span> <span style="color: #800080;">1</span><span style="color: #000000;">;
+</span><span style="color: #008080;">56</span> <span style="color: #000000;">}
+</span><span style="color: #008080;">57</span> 
+<span style="color: #008080;">58</span> <span style="color: #0000ff;">int</span><span style="color: #000000;"> main()
+</span><span style="color: #008080;">59</span> <span style="color: #000000;">{
+</span><span style="color: #008080;">60</span>     <span style="color: #008000;">//</span><span style="color: #008000;">freopen("data.in","r",stdin);
+</span><span style="color: #008080;">61</span>     <span style="color: #008000;">//</span><span style="color: #008000;">scanf("%d",&amp;T);
+</span><span style="color: #008080;">62</span>     <span style="color: #008000;">//</span><span style="color: #008000;">for(int cnt=1;cnt&lt;=T;cnt++)
+</span><span style="color: #008080;">63</span>     <span style="color: #008000;">//</span><span style="color: #008000;">while(T--)</span>
+<span style="color: #008080;">64</span>     <span style="color: #0000ff;">while</span>(scanf(<span style="color: #800000;">"</span><span style="color: #800000;">%d%d</span><span style="color: #800000;">"</span>,&amp;n,&amp;p)!=<span style="color: #000000;">EOF)
+</span><span style="color: #008080;">65</span> <span style="color: #000000;">    {
+</span><span style="color: #008080;">66</span> 
+<span style="color: #008080;">67</span>         scanf(<span style="color: #800000;">"</span><span style="color: #800000;">%s</span><span style="color: #800000;">"</span><span style="color: #000000;">,s);
+</span><span style="color: #008080;">68</span>        <span style="color: #008000;">//</span><span style="color: #008000;"> if(p==1){
+</span><span style="color: #008080;">69</span>         <span style="color: #008000;">//</span><span style="color: #008000;">    printf("NO\n");continue;
+</span><span style="color: #008080;">70</span>        <span style="color: #008000;">//</span><span style="color: #008000;"> }</span>
+<span style="color: #008080;">71</span>         <span style="color: #0000ff;">if</span>(solve()==<span style="color: #800080;">0</span><span style="color: #000000;">){
+</span><span style="color: #008080;">72</span>             printf(<span style="color: #800000;">"</span><span style="color: #800000;">NO\n</span><span style="color: #800000;">"</span><span style="color: #000000;">);
+</span><span style="color: #008080;">73</span> <span style="color: #000000;">        }
+</span><span style="color: #008080;">74</span>         <span style="color: #0000ff;">else</span><span style="color: #000000;">{
+</span><span style="color: #008080;">75</span>             printf(<span style="color: #800000;">"</span><span style="color: #800000;">%s\n</span><span style="color: #800000;">"</span><span style="color: #000000;">,s);
+</span><span style="color: #008080;">76</span> <span style="color: #000000;">        }
+</span><span style="color: #008080;">77</span> <span style="color: #000000;">    }
+</span><span style="color: #008080;">78</span> 
+<span style="color: #008080;">79</span>     <span style="color: #0000ff;">return</span> <span style="color: #800080;">0</span><span style="color: #000000;">;
+</span><span style="color: #008080;">80</span> }</pre>
+</div>
+<p>&nbsp;</p></div><div id="MySignature"></div>
+<div class="clear"></div>
+<div id="blog_post_info_block">
+<div id="BlogPostCategory"></div>
+<div id="EntryTag"></div>
+<div id="blog_post_info">
+</div>
+<div class="clear"></div>
+<div id="post_next_prev"></div>
+</div>
+
+
+	<div class = "postDesc">posted on <span id="post-date">2014-09-12 10:19</span> <a href='https://www.cnblogs.com/njczy2010/'>njczy2010</a> 阅读(<span id="post_view_count">...</span>) 评论(<span id="post_comment_count">...</span>)  <a href ="https://i.cnblogs.com/EditPosts.aspx?postid=3967834" rel="nofollow">编辑</a> <a href="#" onclick="AddToWz(3967834);return false;">收藏</a></div>
+</div>
+<script type="text/javascript">var allowComments=true,cb_blogId=194237,cb_entryId=3967834,cb_blogApp=currentBlogApp,cb_blogUserGuid='88655a0d-371e-e411-8d02-90b11c0b17d6',cb_entryCreatedDate='2014/9/12 10:19:00';loadViewCount(cb_entryId);var cb_postType=1;var isMarkdown=false;</script>
+
+</div><a name="!comments"></a><div id="blog-comments-placeholder"></div><script type="text/javascript">var commentManager = new blogCommentManager();commentManager.renderComments(0);</script>
+<div id='comment_form' class='commentform'>
+<a name='commentform'></a>
+<div id='divCommentShow'></div>
+<div id='comment_nav'><span id='span_refresh_tips'></span><a href='javascript:void(0);' onclick='return RefreshCommentList();' id='lnk_RefreshComments' runat='server' clientidmode='Static'>刷新评论</a><a href='#' onclick='return RefreshPage();'>刷新页面</a><a href='#top'>返回顶部</a></div>
+<div id='comment_form_container'></div>
+<div class='ad_text_commentbox' id='ad_text_under_commentbox'></div>
+<div id='ad_t2'></div>
+<div id='opt_under_post'></div>
+<script async='async' src='https://www.googletagservices.com/tag/js/gpt.js'></script>
+<script>
+  var googletag = googletag || {};
+  googletag.cmd = googletag.cmd || [];
+</script>
+<script>
+  googletag.cmd.push(function() {
+        googletag.defineSlot('/1090369/C1', [300, 250], 'div-gpt-ad-1546353474406-0').addService(googletag.pubads());
+        googletag.defineSlot('/1090369/C2', [468, 60], 'div-gpt-ad-1539008685004-0').addService(googletag.pubads());
+        googletag.pubads().enableSingleRequest();
+        googletag.enableServices();
+  });
+</script>
+<div id='cnblogs_c1' class='c_ad_block'>
+    <div id='div-gpt-ad-1546353474406-0' style='height:250px; width:300px;'></div>
+</div>
+<div id='under_post_news'></div>
+<div id='cnblogs_c2' class='c_ad_block'>
+    <div id='div-gpt-ad-1539008685004-0' style='height:60px; width:468px;'></div>
+</div>
+<div id='under_post_kb'></div>
+<div id='HistoryToday' class='c_ad_block'></div>
+<script type='text/javascript'>
+ if(enablePostBottom()) {
+    codeHighlight();
+    fixPostBody();
+    setTimeout(function () { incrementViewCount(cb_entryId); }, 50);
+    deliverT2();
+    deliverC1();
+    deliverC2();    
+    loadNewsAndKb();
+    loadBlogSignature();
+    LoadPostInfoBlock(cb_blogId, cb_entryId, cb_blogApp, cb_blogUserGuid);
+    GetPrevNextPost(cb_entryId, cb_blogId, cb_entryCreatedDate, cb_postType);
+    loadOptUnderPost();
+    GetHistoryToday(cb_blogId, cb_blogApp, cb_entryCreatedDate);  
+}
+</script>
+</div>
+
+    
+</div>
+<div id="leftcontent">
+	
+		<DIV id="leftcontentcontainer">
+			
+<!--done-->
+<div class="newsItem">
+	<div id="blog-news"></div><script type="text/javascript">loadBlogNews();</script>
+</div>
+
+			<div id="blog-calendar" style="display:none"></div><script type="text/javascript">loadBlogDefaultCalendar();</script><br>
+			<div id="blog-sidecolumn"></div><script type="text/javascript">loadBlogSideColumn();</script></DIV>
+	
+</div>
+
+<!--done-->
+<div class="footer">
+	Powered by: <a href="http://www.cnblogs.com">博客园</a>	模板提供：<a href="http://blog.hjenglish.com">沪江博客</a>
+	Copyright &copy;2019 njczy2010
+</div>
+
+
+
+
+</body>
+</html>
