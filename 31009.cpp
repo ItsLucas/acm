@@ -32,6 +32,11 @@ vector<ll> make(vector<ll> a, ll n) {
         }
     ll pos = 0;
     vector<ll> tmp;
+    printf("Select:\n");
+    for (int i : L[maxIndex]) {
+        printf("%d ", i);
+    }
+    cout << endl;
     for (ll i = 0; i < a.size(); i++) {
         if (a[i] != L[maxIndex][pos]) {
             tmp.push_back(a[i]);
