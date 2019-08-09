@@ -4,6 +4,7 @@ using namespace std;
 
 typedef long long ll;
 
+int a[20000007];
 static constexpr double eps = 1e-9;
 double x, y, m;
 

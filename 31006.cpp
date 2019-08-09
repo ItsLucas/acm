@@ -103,3 +103,20 @@ int main() {
     }
     return 0;
 }
+
+for (int i = 1; i <= n; i++)
+    if (a[i] < 0)
+        if (!dfs(i, 0))
+            ans = 0;
+        else
+            ans = ans * 2 % mod;
+
+bool dfs(int k, int sh) {
+    if (a[k] >= 0)
+        return a[k] == sh;
+    a[k] = sh;
+    for (int i = head[k]; i != -1; i = edge[i].nex)
+        if (!dfs(edge[i].to, sh ^ edge[i].len ^ 1))
+            return 0;
+    return 1;
+}
