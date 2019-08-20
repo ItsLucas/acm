@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+using namespace std;
+const int maxn = 1e5 + 10;
+const int mmod = 1e9 + 7;
+vector<int> a[maxn];
+priority_queue<pair<int, int> >q;
+int qu[maxn], nu[maxn];
+int tot, ans;
+int tryy[20] = {0, 1, 4, 6, 10, 2, 5, 7, 3, 2, 1};
+int main()
+{
+    int n, x, y, z;
+    scanf("%d", &n);
+    for(int i = 1; i <= n; i ++)
+    {
+        scanf("%d", &nu[i]);
+        tot += nu[i];
+        for(int j = 1; j <= nu[i]; j ++)
+        {
+            scanf("%d", &x);
+            a[i].push_back(x);
+            q.push(make_pair(0 - x, i));
+        }
+    }
+    long long mi = 1, tryyt = 0;
+    for(int i = 1; i <= 10; i ++)
+    {
+        mi = (mi * 365) % mmod;
+        x = 0 - q.top().first;
+        y = q.top().second;
+        q.pop();
+        ans += mi * x;
+        ans %= mmod;
+        tryyt += ((mi * tryy[i]) % mmod);
+        tryyt %= mmod;
+        qu[y] ++;
+        if(qu[y] < nu[y])
+        {
+            q.push(make_pair(0 - a[y][qu[y]], y));
+        }
+    }
+    printf("%lld\n", tryyt);
+    return 0;
+}
