@@ -5,7 +5,6 @@ using namespace std;
 const int INF = 0x7fffffff;
 const int maxn = 1e5 + 50;
 const double INFF = 1.0 * 1e18;
-const double eps = 1e-8;
 struct MEdge {
     int from, to, cap;
     double cost;
@@ -13,7 +12,7 @@ struct MEdge {
         : from(from), to(to), cap(cap), cost(cost) {}
 };
 
-struct MCMF {
+struct MCMF { // qdd tql
     int n, s, t, flow;
     double cost;
     vector<MEdge> es;
