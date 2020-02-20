@@ -110,4 +110,12 @@ int main() {
             }
         }
     }
+    set<int> a;
+    set<int> b;
+    //此处省略大量区间操作
+    a.erase(b.end());
+    b.erase(a.end());
+    for (int i = 1; i <= n; i++) {
+        cin >> i;
+    }
 }
