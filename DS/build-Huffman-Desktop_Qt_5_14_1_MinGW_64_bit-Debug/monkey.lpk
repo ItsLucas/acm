@@ -1,0 +1,1641 @@
+LPK1
+LPKDIR_
+Huffman
+LPKF_
+lpk.cpp
+3008
+#include "lpk.h"
+#include <io.h>
+#include <fstream>
+using namespace std;
+
+lpk::lpk(const QString &path,const QString &target)
+{
+    beginpath=path;
+    fileName=target;
+}
+
+lpk::lpk(const QString &target)
+{
+    fileName=target;
+}
+
+void lpk::unpack() {
+    QFile file(fileName);
+    file.open(QFile::ReadOnly);
+    QByteArray arr = file.readLine();
+    QDir dir(".\\");
+    dir.mkdir(fileName+"_d");
+    dir.cd(fileName+"_d");
+    for(;;) {
+        QByteArray arr = file.readLine();
+        if(arr.toStdString()=="LPKDIR_\n") {
+            arr = file.readLine();
+            dir.mkdir(arr.simplified());
+            dir.cd(arr.simplified());
+        }
+        if(arr.contains("1KPL")) {
+            break;
+        }
+        if(arr.toStdString()=="LPKDIR_E\n") {
+            dir.cdUp();
+        }
+        if(arr.toStdString()=="LPKF_\n") {
+            arr = file.readLine();
+            handle = new QFile(dir.path()+"\\"+QString(arr).simplified());
+            //createFile(dir.currentPath(),QString(arr));
+            arr = file.readLine();
+            int size = arr.toUInt();
+            arr = file.read(size);
+            handle->open(QIODevice::WriteOnly|QIODevice::Truncate);
+            handle->write(arr);
+            handle->close();
+            delete handle;
+        }
+    }
+}
+
+void lpk::commit() {
+    handle = new QFile(fileName);
+    handle->open(QIODevice::WriteOnly|QIODevice::Truncate);
+    handle->write("LPK1");
+    handle->write("\n");
+    findFile(beginpath);
+    handle->write("1KPL");
+    handle->close();
+}
+
+bool lpk::findFile(const QString &path)
+{
+    QDir dir(path);
+    if(!dir.exists())
+    {
+        return false;
+    }
+    dir.setFilter(QDir::Dirs | QDir::Files);
+    dir.setSorting(QDir::DirsFirst);
+    QFileInfoList list = dir.entryInfoList();
+    int i = 0;
+
+    bool bIsDir;
+    do
+    {
+        QFileInfo fileInfo = list.at(i);
+        if(fileInfo.fileName() == "." | fileInfo.fileName() == "..")
+        {
+            ++i;
+            continue;
+        }
+        bIsDir = fileInfo.isDir();
+        if(bIsDir)
+        {
+            handle->write("LPKDIR_\n");
+            handle->write(fileInfo.fileName().toStdString().c_str());
+            handle->write("\n");
+            findFile(fileInfo.filePath());
+            handle->write("LPKDIR_E\n");
+        }
+        else
+        {
+            handle->write("LPKF_\n");
+            handle->write(fileInfo.fileName().toStdString().c_str());
+            handle->write("\n");
+            handle->flush();
+            QFile file(fileInfo.absoluteFilePath());
+            file.open(QFile::ReadOnly);
+            QByteArray arr = file.readAll();
+            handle->write(QString::number(arr.length()).toStdString().c_str());
+            handle->write("\n");
+            handle->write(arr);
+            file.close();
+            handle->flush();
+        }
+        ++i;
+    }while(i < list.size());
+
+    return true;
+}
+
+LPKF_
+lpk.h
+783
+#ifndef LPK_H
+#define LPK_H
+#include <QDir>
+#include <QFileInfoList>
+#include <iostream>
+#include <QFile>
+#include <vector>
+
+using namespace std;
+
+const char LPK_STARTL[2]={0x4C,0x0A};
+const char LPK_STARTF[2]={0x4C,0x0B};
+const char LPK_ENDF[2]={0x4C,0x0C};
+const char LPK_STARTD[2]={0x4C,0x0D};
+const char LPK_ENDD[2]={0x4C,0x0E};
+const char LPK_ENDL[2]={0x4C,0x0F};
+const char LPK_HEADER[4]={0x5F,0x37,0x59,0x0F};
+
+class lpk
+{
+public:
+    lpk(const QString &path,const QString &target);
+    lpk(const QString &target);
+    void commit();
+    void unpack();
+    void unpackr(QString path);
+private:
+    bool findFile(const QString &path);
+    QString beginpath;
+    QString fileName;
+    QFile* handle;
+    vector<string> fs;
+};
+
+#endif // LPK_H
+LPKF_
+lpk2.cpp
+2408
+#include "lpk2.h"
+#include <iostream>
+#include <io.h>
+#include <vector>
+#include <fstream>
+using namespace std;
+
+lpk2::lpk2()
+{
+
+}
+void GetAllSubFiles(string path, vector<string>& files)
+{
+    long hFile = 0;
+    struct _finddata_t fileinfo;
+    string p;
+    if ((hFile = _findfirst(p.assign(path).append("\\*").c_str(), &fileinfo)) != -1)
+    {
+        do
+        {
+            if ((fileinfo.attrib &  _A_SUBDIR))
+            {
+                if (strcmp(fileinfo.name, ".") != 0 && strcmp(fileinfo.name, "..") != 0)
+                {
+                    files.push_back(p.assign(path).append("\\").append(fileinfo.name));
+                    GetAllSubFiles(p.assign(path).append("\\").append(fileinfo.name), files);
+                }
+            }
+            else
+            {
+                files.push_back(p.assign(path).append("\\").append(fileinfo.name));
+            }
+
+        } while (_findnext(hFile, &fileinfo) == 0);
+
+        _findclose(hFile);
+
+    }
+}
+
+bool PackFileAndDirectory(const vector<string>& files, const vector<string>& directories, const string& outputfilename) //æ‰“åŒ…ï¼šå†™æ–‡ä»¶çš„è¿‡ç¨‹
+{
+    FILE *wfp = NULL;
+    wfp = fopen(outputfilename.c_str(), "wb");
+    if (wfp == NULL)
+    {
+
+    }
+
+    /************************ç¬¬ä¸€ä¸ªå‚æ•°ï¼šæ–‡ä»¶vector**********************/
+
+    int fileCount = files.size();
+    fwrite(&fileCount, sizeof(fileCount), 1, wfp);
+
+    for (size_t i = 0; i < fileCount; i++)
+    {
+        struct FileInfo file;
+
+        string path = files[i]; //åŒæ–œæ è·¯å¾„å
+        string filename = getFileNameFromPath(path);//æ ¹æ®è·¯å¾„è·å–æ–‡ä»¶å
+        strcpy(file.FileName, filename.c_str());
+        file.fileNameLen = strlen(filename.c_str());
+
+        ifstream fin;
+        fin.open(path, ios::binary);
+
+        fin.seekg(0, ios::end);
+        streampos sp = fin.tellg();
+        file.fileSize = sp; //æ–‡ä»¶çš„size
+
+        fwrite(&file, sizeof(file), 1, wfp);
+        cout << "filename:" << file.FileName << ";  filenameLength:" << file.fileNameLen << ";  fileSize:" << file.fileSize << endl;
+
+        FILE *files = fopen(path.c_str(), "rb");
+        eachFile = new unsigned char[file.fileSize];
+        fileBuffer.push_back(eachFile);
+        fread(fileBuffer[i], file.fileSize, 1, files);
+
+        fwrite(fileBuffer[i], file.fileSize, 1, wfp);
+    }
+}
+LPKF_
+lpk2.h
+123
+#ifndef LPK2_H
+#define LPK2_H
+
+
+using namespace std;
+
+
+class lpk2
+{
+public:
+    lpk2();
+};
+
+#endif // LPK2_H
+LPKF_
+lz78.cpp
+2795
+#include "lz78.h"
+
+LZ78::LZ78(string src,string dest) {
+    this->src=src;
+    this->dest=dest;
+}
+
+void LZ78::comp() {
+    map<ustring,int> dict;
+    ustring chars;
+    ustring codes;
+    ustring ch;
+    ustring pre;
+    chars=fileRead(src);
+    for(auto i=0;i<chars.length();i++) {
+        ch=chars.substr(i,1);
+        if(dict.count(pre+ch)) {
+            pre+=ch;
+        }
+        else {
+            if(pre.empty()) {
+                ustring s;
+                for(int j=1;j<=8;j++) {
+                    s.push_back('0');
+                }
+                codes+=s;
+            }
+            else {
+                codes+=decToBin(dict[pre]);
+            }
+            codes+=stringToASCII(ch);
+            dict[pre+ch]=dict.size()+1;
+            pre.clear();
+        }
+    }
+    fileWriteBin(dest,codes);
+}
+
+void LZ78::uncomp() {
+    map<int,ustring> dict;
+    ustring chars;
+    ustring codes;
+    ustring ch;
+    int cw;
+    codes=fileRead(src);
+    for(auto i=0;i<codes.length();i+=2) {
+        cw=binToDec(codes[i]);
+        ch=codes.substr(i+1,1);
+        if (cw!=0)
+            chars+=dict[cw];
+        chars+=ch;
+        if(cw!=0)
+            dict[dict.size()+1]=dict[cw]+ch;
+        else
+            dict[dict.size()+1]=ch;
+    }
+    fileWrite(dest,chars);
+}
+
+ustring LZ78::decToBin(const int& x) const
+{
+    bitset<8> bs(x);
+    string s = bs.to_string();
+    ustring ret;
+    for(auto x:s) {
+        ret.push_back((unsigned char)x);
+    }
+    return ret;
+}
+
+int LZ78::binToDec(const unsigned char& x) const
+{
+    bitset<8> dec(x);
+    return dec.to_ulong();
+}
+
+ustring LZ78::stringToASCII(const ustring& x) const
+{
+    bitset<8> bs(x[0]);
+    string s = bs.to_string();
+    ustring ret;
+    for(auto x:s) {
+        ret.push_back((unsigned char)x);
+    }
+    return ret;
+}
+
+char LZ78::ASCIIToChar(const ustring& x) const
+{
+    return (unsigned char)bitset<8>(x).to_ulong();
+}
+
+ustring LZ78::fileRead(const string filename)
+{
+    ifstream t(filename,ios_base::binary);
+    unsigned char ch;
+    ustring s;
+    while(!t.eof()) {
+        ch=t.get();
+        s.push_back(ch);
+    }
+    return s;
+}
+
+void LZ78::fileWrite(const string filename, const ustring x)
+{
+    ofstream out(filename);
+    for(auto i:x) {
+        out.put(i);
+    }
+    out.close();
+}
+
+void LZ78::fileWriteBin(const string filename, const ustring x)
+{
+    ustring buffer;
+    long temp;
+    unsigned char output;
+    ofstream out(filename);
+
+    for (int i = 0; i < x.length(); i += 8)
+    {
+        buffer = x.substr(i, 8);
+        temp = strtol(reinterpret_cast<const char*>(buffer.c_str()),0, 2);
+        output = temp & 0xffl;
+        out << output;
+    }
+
+    out.close();
+}
+
+
+LPKF_
+lz78.h
+767
+#ifndef LZ78_H
+#define LZ78_H
+#include <map>
+#include <vector>
+#include <sstream>
+#include <string>
+#include <bitset>
+#include <fstream>
+#include <iostream>
+using namespace std;
+
+typedef basic_string<unsigned char> ustring;
+
+class LZ78
+{
+public:
+    LZ78(string src,string dest);
+    void comp();
+    void uncomp();
+private:
+    string src;
+    string dest;
+    ustring decToBin(const int& x) const;
+    int binToDec(const unsigned char& x) const;
+    ustring stringToASCII(const ustring& x) const;
+    char ASCIIToChar(const ustring& x) const;
+    ustring fileRead(const string filename);
+    void fileWrite(const string  filename, const ustring x);
+    void fileWriteBin(const string filename, const ustring x);
+};
+
+#endif // LZ78_H
+LPKF_
+lzw.cpp
+7202
+#include "libio.h"
+#include "lzw.h"
+#include <cassert>
+#include <ctime>
+#include <iostream>
+
+typedef unsigned long long ull;
+typedef unsigned char byte;
+unsigned getLzwMap(const std::vector<byte> &input, byte *lzwMap) {
+    const ull size = input.size();
+    bool used[256];
+    for (unsigned i = 0; i < 256; ++i) {
+        used[i] = false;
+        lzwMap[i] = 255;
+    }
+
+    for (ull i = 0; i < size; ++i)
+        used[input[i]] = true;
+
+    unsigned lzwMapCount = 0;
+    for (unsigned i = 0; i < 256; ++i) {
+        if (used[i])
+            lzwMap[i] = lzwMapCount++;
+    }
+    return lzwMapCount;
+}
+
+unsigned rb(unsigned value) {
+    unsigned bits = 1;
+    while ((value >>= 1) > 0)
+        ++bits;
+    return bits;
+}
+
+struct _string {
+    unsigned prefixidx;
+    unsigned first;
+    unsigned nextLeft, nextRight;
+    byte k;
+    _string(byte newByte = 0, unsigned pI = ~0U)
+        : prefixidx(pI), first(~0U), nextLeft(~0U), nextRight(~0U),
+          k(newByte) {}
+};
+
+class dict {
+    std::vector<_string> seq;
+    unsigned dictStart, new_stringidx;
+    std::vector<byte> decoded;
+    unsigned add(_string &c) {
+        if (c.prefixidx == ~0U)
+            return c.k;
+
+        unsigned index = seq[c.prefixidx].first;
+        if (index == ~0U)
+            seq[c.prefixidx].first = new_stringidx;
+        else {
+            while (true) {
+                if (c.k == seq[index].k)
+                    return index;
+                if (c.k < seq[index].k) {
+                    const unsigned next = seq[index].nextLeft;
+                    if (next == ~0U) {
+                        seq[index].nextLeft = new_stringidx;
+                        break;
+                    }
+                    index = next;
+                } else {
+                    const unsigned next = seq[index].nextRight;
+                    if (next == ~0U) {
+                        seq[index].nextRight = new_stringidx;
+                        break;
+                    }
+                    index = next;
+                }
+            }
+        }
+        seq[new_stringidx++] = c;
+
+        return ~0U;
+    }
+
+    void filldecoded(unsigned code) {
+        decoded.clear();
+        while (code != ~0U) {
+            const _string &cs = seq[code];
+            decoded.push_back(cs.k);
+            code = cs.prefixidx;
+        }
+    }
+
+  public:
+    dict(unsigned mb, unsigned dictStart)
+        : seq(1 << mb), dictStart(dictStart),
+          new_stringidx(dictStart) {
+        for (unsigned i = 0; i < dictStart; ++i)
+            seq[i].k = i;
+    }
+
+    bool search_string(_string &c) {
+        unsigned index = add(c);
+        if (index != ~0U) {
+            c.prefixidx = index;
+            return true;
+        }
+        return false;
+    }
+
+    void decode(unsigned oldCode, unsigned code, std::vector<byte> &outStream,
+                const byte *lzwMap) {
+        const bool exists = code < new_stringidx;
+
+        if (exists)
+            filldecoded(code);
+        else
+            filldecoded(oldCode);
+
+        for (ull i = decoded.size(); i > 0;)
+            outStream.push_back(lzwMap[decoded[--i]]);
+        if (!exists)
+            outStream.push_back(lzwMap[decoded.back()]);
+
+        seq[new_stringidx].prefixidx = oldCode;
+        seq[new_stringidx++].k = decoded.back();
+    }
+
+    unsigned size() const { return new_stringidx; }
+
+    void reset() {
+        new_stringidx = dictStart;
+        for (unsigned i = 0; i < dictStart; ++i)
+            seq[i] = _string(i);
+    }
+};
+/*
+ *  dict.init(size:256)
+    prefix.clear()
+    b=input.next
+    if(dict.exist(prefix+B))
+        prefix=prefix+b
+    else
+        dict.add(prefix+b)
+    write(prefix.idx,result)
+    prefix=b
+    if(!input.empty)
+    goto b.input.next
+    else write(prefix.idx,result)
+*/
+void LZWCodec::encode(const std::vector<unsigned char> &input, std::vector<unsigned char> &encoded) {
+    unsigned int mb = 24;
+    const ull size = input.size();
+    encoded.clear();
+    encoded.reserve(size + size / 8);
+
+    byte lzwMap[256];
+    const unsigned lzwMapSize = getLzwMap(input, lzwMap);
+    const bool mapped = lzwMapSize < 256;
+    const unsigned eoiCode = lzwMapSize;
+    const unsigned dictStart = lzwMapSize + 1;
+    const unsigned minBits = rb(dictStart);
+    if (mb < minBits)
+        mb = minBits;
+
+    encoded.push_back(byte(mb));
+    encoded.push_back(byte(lzwMapSize));
+    if (mapped)
+        for (unsigned i = 0; i < 256; ++i)
+            if (lzwMap[i] < 255)
+                encoded.push_back(byte(i));
+
+    dict dict(mb, dictStart);
+    StreamWriter writer(encoded);
+    _string currentString;
+    unsigned currentBits = minBits;
+    unsigned nextBitIncLimit = (1 << minBits) - 1;
+
+    for (ull i = 0; i < size; ++i) {
+        currentString.k = lzwMap[input[i]];
+        if (!dict.search_string(currentString)) {
+            writer.write(currentString.prefixidx, currentBits);
+            currentString.prefixidx = currentString.k;
+
+            if (dict.size() == nextBitIncLimit) {
+                if (currentBits == mb) {
+                    currentBits = minBits;
+                    dict.reset();
+                } else
+                    ++currentBits;
+                nextBitIncLimit = (1 << currentBits) - 1;
+            }
+        }
+    }
+
+    writer.write(currentString.prefixidx, currentBits);
+    if (dict.size() == nextBitIncLimit - 1)
+        ++currentBits;
+    writer.write(eoiCode, currentBits);
+}
+
+/*
+ *  dict.init(size:256)
+    idx=first;
+    write(idx,result)
+    oldidx=idx
+    idx=idx->next
+    if(idx.exist)
+        write(idx,result)
+        B=index.getfirstBit()
+        dict.add(old+b)
+    else
+        B=oldidx.getfirstBit()
+        dict.add(old+b)
+        write(old+b,result)
+    old=index
+    goto idx=idx->next
+*/
+void LZWCodec::decode(const std::vector<byte> &encoded,
+                      std::vector<byte> &decoded) {
+    decoded.clear();
+
+    byte lzwMap[256];
+    const unsigned mb = encoded[0];
+    const unsigned lzwMapSize = (encoded[1] == 0 ? 256 : encoded[1]);
+    const unsigned eoiCode = lzwMapSize;
+    const unsigned dictStart = lzwMapSize + 1;
+    const unsigned minBits = rb(dictStart);
+
+    if (lzwMapSize < 256)
+        for (unsigned i = 0; i < lzwMapSize; ++i)
+            lzwMap[i] = encoded[i + 2];
+    else
+        for (unsigned i = 0; i < 256; ++i)
+            lzwMap[i] = byte(i);
+
+    dict dict(mb, dictStart);
+    StreamReader reader(encoded, encoded[1] == 0 ? 2 : 2 + lzwMapSize);
+
+    while (true) {
+        dict.reset();
+        unsigned currentBits = minBits;
+        unsigned nextBitIncLimit = (1 << minBits) - 2;
+
+        unsigned code = reader.read(currentBits);
+        if (code == eoiCode)
+            return;
+        decoded.push_back(lzwMap[code]);
+        unsigned oldCode = code;
+
+        while (true) {
+            code = reader.read(currentBits);
+            if (code == eoiCode)
+                return;
+
+            dict.decode(oldCode, code, decoded, lzwMap);
+            if (dict.size() == nextBitIncLimit) {
+                if (currentBits == mb)
+                    break;
+                else
+                    ++currentBits;
+                nextBitIncLimit = (1 << currentBits) - 2;
+            }
+
+            oldCode = code;
+        }
+    }
+}
+LPKF_
+lzw.h
+385
+#ifndef LZW_H
+#define LZW_H
+
+#include <vector>
+
+class LZWCodec {
+  public:
+    void encode(const std::vector<unsigned char> &input,
+                std::vector<unsigned char> &encoded);
+
+    void decode(const std::vector<unsigned char> &encoded,
+                std::vector<unsigned char> &decoded);
+
+  private:
+    bool verbose, printTime;
+    unsigned maxBits1, maxBits2;
+};
+
+#endif
+LPKF_
+main.cpp
+189
+#include "huffmanwindow.h"
+
+#include <QApplication>
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    HuffmanWindow w;
+    w.show();
+    return a.exec();
+}
+LPKDIR_E
+LPKF_
+main.cpp
+181
+#include "monkeygui.h"
+
+#include <QApplication>
+
+int main(int argc, char *argv[])
+{
+    QApplication a(argc, argv);
+    MonkeyGUI w;
+    w.show();
+    return a.exec();
+}
+LPKF_
+monkey.cpp
+675
+#include "monkey.h"
+
+monkey::monkey()
+{
+    head = new node;
+    head->data=1;
+    head->next=head;
+}
+
+monkey::monkey(int n,int m) {
+    cnt=n;
+    num=m;
+    head = new node;
+    head->data=1;
+    head->next=head;
+    for(int i=n;i>=2;i--) {
+        p=new node;
+        p->data=i;
+        p->next=head->next;
+        head->next=p;
+    }
+    q=head;
+}
+
+bool monkey::isempty() {
+    return q->next==q;
+}
+
+int monkey::next() {
+    for(int i=1;i<=num-2;i++) {
+        q=q->next;
+    }
+    p=q->next;
+    int ret = p->data;
+    q->next=p->next;
+    delete p;
+    q=q->next;
+    return ret;
+}
+
+int monkey::king() {
+    return q->data;
+}
+LPKF_
+monkey.exe
+30208
+MZ       ÿÿ  ¸       @                                   €   º ´	Í!¸LÍ!This program cannot be run in DOS mode.
+$       PE  d†	 ‹^        ğ / 4   r   
+  °       @                         ğ     Ÿ&                                                    <            p  <                                          àa  (                   ¨¥                            .text   3      4                 ` P`.data       P      8              @ `À.rdata     `      :              @ `@.pdata  <   p      F              @ 0@.xdata  @   €      J              @ 0@.bss    €	                         € `À.idata  <        "   P              @ 0À.CRT    h    Ğ      r              @ @À.tls        à      t              @ @À                                                                                                                                                                                                                                                                                ÃD  f.„     Hƒì(H‹5V  1ÒÇ    H‹6V  Ç    H‹9V  Ç    H‹üU  Ç    H‹¯T  f8MZtXH‹ÑU  ‰£  ‹ …Àt5¹   è0  èv0  H‹oU  ‹‰èÆ  H‹T  ƒ8tZ1ÀHƒÄ(Ã ¹   èÖ/  ëÉ@ HcH<HÈ8PE  u™·Hfùt9fùu‡ƒ¸„   †zÿÿÿ‹ˆø   1Ò…É•ÂéhÿÿÿHi  èT  1ÀHƒÄ(Ãƒxt†KÿÿÿD‹€è   1ÒE…À•Âé7ÿÿÿD  f.„     Hƒì8H‹åT  LÎ~  HÏ~  HĞ~  ‹ ‰¨~  H¡~  H‰D$ H‹uT  D‹è/  HƒÄ8Ã€    AUATUWVSHì˜   1À¹   HT$ H‰×óH«H‹=ˆT  D‹E…É…¼  eH‹%0   H‹¼S  1íH‹pL‹%o—  ëH9Æ„4  ¹è  AÿÔH‰èğH±3H…ÀuâH‹5˜S  1í‹ƒø„"  ‹…À„q  Çë}     ‹ƒø„  …í„1  H‹½R  H‹ H…ÀtE1Àº   1ÉÿĞè  H]#  ÿß–  H‹àR  H‰èX"  H‘ıÿÿè\.  èç  H‹€R  H‰á†  èT.  1ÉH‹ H…Àuë_„     „Òt,ƒát'¹   HƒÀ¶€ú ~æA‰ÈAƒğ€ú"ADÈëäfD  „Òuëf.„     €ú HƒÀ¶„ÒuğH‰i†  D‹E…ÀtöD$\¸
+   …ñ   ‰ë<  ‹}  DcMcäIÁäL‰áèò,  …ÛH‹=á|  H‰Å~KCÿ1ÛL,Å   €    H‹è§,  HpH‰ñè»,  I‰ğH‰D H‹H‰ÁHƒÃè›,  I9İuÎJD%øHÇ     H‰-ƒ|  è†  H‹oQ  H‹h|  ‹r|  H‹ H‰L‹U|  H‹V|  èY.  ‹;|  ‰9|  …É„Ã   ‹#|  …Òuè~,  ‹|  HÄ˜   [^_]A\A]Ã·D$`éÿÿÿfD  H‹5yQ  ½   ‹ƒø…Şıÿÿ¹   è?,  ‹ƒø…èıÿÿH‹mQ  H‹VQ  è,  …íÇ   …Ïıÿÿ1ÀH‡éÅıÿÿf„     H‰Ñÿg”  é6ıÿÿfH‹IQ  Ç   H‹,Q  èÇ+  é{ıÿÿ‰Áè›+  f.„     Hƒì(H‹uQ  Ç    èš  èµüÿÿHƒÄ(Ã@ f.„     Hƒì(H‹EQ  Ç     èj  è…üÿÿHƒÄ(Ã@ f.„     Hƒì(è?+  H…À”À¶À÷ØHƒÄ(ÃUH‰åH   ]éÏÿÿÿD  f.„     UH‰å]ÃWVSHƒìpA¹ Ht$ ‰Œ$   I‰ĞH\$0H‰ñH”$   ÿ‘  1ÒH‰Ùèt  H‰Ùÿû‘  ÿõ  ‰ÇH‰Ùè›  H‰ñÿò  ‰øHƒÄp[^_ÃH‰ÇH‰ñÿÜ  H‰ùèÌ)  H‰ÙH‰Çèi  ëâSHƒì H‰Ë¹   è†)  H‰Ç    H‰@HƒÄ [Ãf.„     VSHƒì(H‰Î‰Ó‰VD‰A¹   èL)  ƒûH‰ÂÇ    H‰H‰B~'¹   è-)  H‹‰ƒëƒûH‰FH‹JH‰HH‰BuÙH‰VHƒÄ([^Ãff.„     H‹AH9@”ÀÃ@ VSHƒì(H‰Ë‹IH‹Sƒù~ƒé¸    ƒÀH‹R9ÁuõH‰SH‹JH‹AH‰K‹1H‰Bè²(  H‹CH‹@H‰C‰ğHƒÄ([^Ã@ H‹A‹ ÃAWAVAUATUWVSHì(  E1ÀH‰ÎÿY  H‹zM  ¹H   HPHÈ  H‰H‰Fè7(  H‰ÃH‰F0H‰òHŒ$€   ÿ·  H‹Œ$€   ‹y‹…À„"  ƒøÿtğƒ)H‹Œ$€   „  …ÿuJH|$xA¸	   HUH  H‰ùÿD  H‰úH‰ñÿ(  H‹L$x‹…À„‘  ƒøÿtğƒ)H‹L$x„}  H¸   X  H‰ñH‰„$¨   H”$¨   ÿ¢  ¹0   èx'  H‰ÇE1ÀH‰òH‰Áÿ®  Ld$pH‰;A¸   H‹-Á  HÌG  L‰áÿÕH‰ùL‰âH‹=˜  ÿ×H‹L$p‹…À„_  ƒøÿtğƒ)H‹L$p„K  ¹0   è	'  I‰ÄH‹H‰ÁL‹5Q  AÿÖLl$hL‰cA¸	   HpG  L‰éÿÕL‰êL‰áÿ×H‹L$h‹…À„ü  ƒøÿtğƒ)H‹L$h„è  H¸È   <   H‹KH‰„$  H”$  H¸8  P   L‹%  H‰„$  AÿÔ¹0   èl&  I‰ÅH‹H‰ÁAÿÖLt$`L‰kA¸	   HäF  L‰ñÿÕL‰òL‰éÿ×H‹L$`‹…À„F  ƒøÿtğƒ)H‹L$`„2  H¸È   d   H‹KH‰„$   H”$   H¸8  x   H‰„$  AÿÔ¹0   èİ%  I‰ÅE1ÀH‹H‰ÁL‹5
+  AÿÖL|$XL‰kA¸   HUF  L‰ùÿÕL‰úL‰éÿ×H‹L$X‹…À„M  ƒøÿtğƒ)H‹L$X„9  H¸   <   H‹KH‰„$ğ   H”$ğ   H¸«   O   H‰„$ø   AÿÔ¹0   èD%  I‰ÅE1ÀH‹H‰ÁAÿÖLt$PL‰k A¸   HÉE  L‰ñÿÕL‰òL‰éÿ×H‹L$P‹…À„›  ƒøÿtğƒ)H‹L$P„‡  H¸G   d   H‹K H‰„$à   H”$à   H¸«   w   H‰„$è   AÿÔ¹0   è²$  I‰ÅH‹H‰Áÿ³‹  Lt$HL‰k(A¸
+   H?E  L‰ñÿÕL‰òL‰éÿ×H‹L$H‹…À„é  ƒøÿtğƒ)H‹L$H„Õ  H¸T  <   H‹K(H‰„$Ğ   H”$Ğ   H¸Ú  x   H‰„$Ø   AÿÔ¹0   è $  I‰ÅH‹H‰ÁÿŒ  Lt$@L‰k0A¸	   H¸D  L‰ñÿÕL‰òL‰éÿ×H‹L$@‹…À„7  ƒøÿtğƒ)H‹L$@„#  H¸2   Œ   H‹K0H‰„$À   H”$À   H¸Ú    H‰„$È   AÿÔH‹H‰ñÿtŠ  ¹0   è‚#  I‰ÅH‰òH‰ÁÿÃ‹  Lt$8L‰k8A¸   H$D  L‰ñÿÕL‰òL‰éÿ×H‹L$8‹…À„ù  ƒøÿtğƒ)H‹L$8„å  H¸     H‹K8HÇ„$°       H‰„$¸   H”$°   AÿÔH‹S8H‰ñÿ«‰  ¹0   èé"  I‰ÄH‰òH‰ÁÿŠ‰  Ll$0L‰c@A¸	   H“C  L‰éÿÕL‰êL‰áÿ×H‹L$0‹…À„@  ƒøÿtğƒ)H‹L$0„,  H‹S@H‰ñÿW‰  H¬$    ÇD$ ÿÿÿÿE1ÉH‹=ˆ  LŞB  H‰éL‰Âÿ×H‰êH‰ñÿ2Š  H‹Œ$    ‹…À„¸  ƒøÿtğƒ)H‹Œ$    „¡  H¬$˜   L‹cE1ÉÇD$ ÿÿÿÿLäB  H‰éHyB  ÿ×L‰áH‰êL‹%*‰  AÿÔH‹Œ$˜   ‹…À„5  ƒøÿtğƒ)H‹Œ$˜   „  H¬$   L‹k E1ÉÇD$ ÿÿÿÿL”B  H‰éHB  ÿ×H‰êL‰éAÿÔH‹Œ$   ‹…À„y  ƒøÿtğƒ)H‹Œ$   „b  H‹k(Hœ$ˆ   ÇD$ ÿÿÿÿE1ÉLFB  H‰ÙHºA  ÿ×H‰ÚH‰éÿdˆ  H‹Œ$ˆ   ‹…À„ú   ƒøÿtğƒ)H‹Œ$ˆ   „ã   H‰ñÿ*‡  HÄ(  [^_]A\A]A^A_ÃD  A¸   º   ÿ÷†  éßøÿÿf.„     A¸   º   ÿ×†  éŸùÿÿf.„     A¸   º   ÿ·†  éÌşÿÿf.„     A¸   º   ÿ—†  éIşÿÿf.„     A¸   º   ÿw†  é¾ıÿÿf.„     A¸   º   ÿW†  éıÿÿf.„     A¸   º   ÿ7†  éÿÿÿf.„     A¸   º   ÿ†  éˆşÿÿf.„     A¸   º   ÿ÷…  é¸ùÿÿf.„     A¸   º   ÿ×…  éùÿÿf.„     A¸   º   ÿ·…  éÇûÿÿf.„     A¸   º   ÿ—…  éûÿÿf.„     A¸   º   ÿw…  écúÿÿf.„     A¸   º   ÿW…  é±ùÿÿf.„     A¸   º   ÿ7…  ém÷ÿÿL‰éH‰Ãè  H‰ñÿ†  H‰Ùè  L‰éH‰ÃèC!  ëâL‰áH‰Ãèî  ëÕL‰ñH‰Ãè)!  ëÈë»H‰éH‰Ãè!  ë¹ëñH‰ÇH‰Ùè!  H‰ûë§ëßH‰ùH‰Ãè±  ë˜H‰ùH‰Ãèì   ë‹L‰áH‰Ãèß   é{ÿÿÿH‰Ãésÿÿÿëœéaÿÿÿë•éZÿÿÿëéSÿÿÿéjÿÿÿérÿÿÿézÿÿÿé?ÿÿÿL‰ùH‰Ãè   é:ÿÿÿ„     SHƒì H‹TC  HPHÈ  H‰ËH‰H‰AH‹I0è  H‰ÙHƒÄ [Hÿ%…  „     Hƒéëºf.„     SHƒì H‹C  HPHÈ  H‰ËH‰H‰AH‹I0èÏ  H‰Ùÿ¾„  H‰ÙHƒÄ [é¹  Hƒéëºf.„     AWAVAUATUWVSHƒìhH‹A0H\$8I‰ÌH‹H0ÿÒ…  I‹D$0H‰ÙH‹-3†  H‹PÿÕA¸
+   1ÒH‰ÙH‹=ëƒ  ÿ×Ht$0A‰ÅI‹D$0H‰ñH‹PÿÕA¸
+   1ÒH‰ñÿ×H|$@E‰è‰ÂH‰ùè¬óÿÿH‹L$0‹…À„-  ƒøÿtğƒ)H‹L$0„  H‹L$8‹…À„*  ƒøÿtğƒ)H‹L$8„  L‹5Oƒ  L‹-8ƒ  L‹=9ƒ  H‰ùè¸óÿÿH‰ù„ÀI‹D$0H‹h0…  è¯óÿÿH‰ñA¸
+   ‰ÂAÿÖH€=  º   AÿÕH‰D$(H‰D$8‹ƒÂƒú‡º   H‰òH‰ÙAÿ×H‰ÚH‰éÿµ„  H‹L$8‹…Àt}ƒøÿtğƒ)H‹L$8tmH‹L$(‹…ÀtOƒøÿtğƒ)H‹L$(t?H‹L$0‹…Àtƒøÿ„Kÿÿÿğƒ)H‹L$0…<ÿÿÿA¸   º   ÿ‚  é&ÿÿÿfD  A¸   º   ÿç  ë®A¸   º   ÿÔ  é}ÿÿÿ€    ğƒ é=ÿÿÿ€    èóÿÿH‰ñA¸
+   ‰ÂAÿÖHš<  º   AÿÕH‰D$(H‰D$8‹ƒÂƒú‡  H‰òH‰ÙÿÒ  H‰ÚH‰éÿ®ƒ  H‹L$8‹…À„Ï   ƒøÿtğƒ)H‹L$8„»   H‹L$(‹…À„   ƒøÿtğƒ)H‹L$(tH‹L$0‹…Àtaƒøÿtğƒ)H‹L$0tQHƒÄh[^_]A\A]A^A_ÃA¸   º   ÿç€  H‹L$8‹…À…ÖıÿÿA¸   º   ÿÇ€  éÔıÿÿf.„     A¸   º   ÿ§€  ëœA¸   º   ÿ”€  ékÿÿÿ€    A¸   º   ÿw€  é/ÿÿÿf.„     ğƒ éáşÿÿH‰ÙH‰ÇèŒ  HL$(H‰ûè  H‰ñèw  H‰Ùè7  ëÖH‰ñH‰Çèb  H‰ÙèZ  H‰ùè  H‰ÇëëH‰ÃëÉë¯ë­ëõH‹IHƒy( tHÿ%f€  Hg*  ÃfD  …ÒuE…ÀtÃfD  éüÿÿf.„     VSHƒì(H…ÒH‰ÎH‰Ót2Hp;  H‰Ùè  …ÀuH‰ğHƒÄ([^ÃfH‰ÚH‰ñHƒÄ([^Hÿ%-€  1öëİ„     WVSHƒì0H‰Î‰ÓL‰Ïÿ€  …Àx…Ûu…Àt#ƒèHƒÄ0[^_Ã@ ƒûuï…ÀuèH‹ÇÿÿÿÿëİH‰ñ‰D$,èpûÿÿ‹D$,ëËÿ%ò  ÿ%â  ÿ%Ò  ÿ%Â  ÿ%²  ÿ%¢  ÿ%’  ÿ%‚  ÿ%r  ÿ%b  ÿ%R  ÿ%B  ÿ%2  ÿ%"  ÿ%  ÿ%  ÿ%ò€  ÿ%â€  ÿ%Ò€  ÿ%Â€  ÿ%²€  ÿ%¢€  ÿ%’€  ÿ%‚€  ÿ%r€  ÿ%b€  ÿ%R€  ÿ%B€  ÿ%2€  ÿ%"€  ÿ%€  ÿ%€  ÿ%ò  ÿ%â  ÿ%Ò  ÿ%Â  ÿ%²  ÿ%¢  ÿ%’  ÿ%‚  ÿ%r  ÿ%b  ÿ%R  ÿ%B  ÿ%2  ÿ%"  ÿ%  ÿ%  ÿ%ò~  ÿ%â~  ÿ%Ò~  ÿ%Â~  ÿ%²~  ÿ%¢~  ÿ%’~  ÿ%‚~  ÿ%r~  ÿ%b~  ÿ%R~  ÿ%B~  ÿ%2~  ÿ%"~  ÿ%~  ÿ%~  ÿ%ò}  ÿ%â}  ÿ%Ê}  ÿ%º}  ÿ%ª}  ÿ%š}  ÿ%Š}  ÿ%z}  ÿ%j}  ÿ%Z}  ÿ%B}  ÿ%2}  ÿ%"}  ÿ%}  ÿ%}  ÿ%ò|  ÿ%â|  ÿ%Ò|  ÿ%Â|  ÿ%²|  ÿ%¢|  ÿ%’|  ÿ%‚|  ÿ%r|  ÿ%b|  ÿ%R|  ÿ%B|  „     Hƒì(H‹å&  H‹ H…ÀtÿĞH‹Ô&  HPH‹@H‰Å&  H…ÀuãHƒÄ(Ãf.„     VSHƒì(H‹;  H‹ƒúÿ‰Ğt9…Àt ‰ÂƒèHÑH)ÂHtÑø@ ÿHƒëH9óuõH~ÿÿÿHƒÄ([^éëÿÿ 1Àë‰ĞD@Jƒ<Á L‰Âuğë±f.„     ‹
+f  …ÀtÃD  Çöe     éqÿÿÿHÿ%Y  1ÀÃATUWVSHƒì0H‹&  H¸2¢ß-™+  H9ÃHÇD$     tH÷ÓH‰}&  HƒÄ0[^_]A\ÃfHL$ ÿ=~  H‹t$ ÿ~  A‰Äÿ~  ‰Åÿ)~  HL$(‰Çÿ<~  H3t$(D‰àHºÿÿÿÿÿÿ  H1ğ‰îH1Æ‰øH1ğH!ĞH9Øt%H‰ÂH÷ÒH‰ø%  H‰&  HƒÄ0[^_]A\ÃfD  HºÌ] ÒfÔÿÿH¸3¢ß-™+  ëËf.„     UVSH‰åHƒìpH‰ÎHe  ÿÆ}  H‹÷e  HUØE1ÀH‰Ùÿ·}  H…À„£   HUàI‰ÁI‰ØHÇD$8    HÌd  H‰T$0HUèH‰L$ 1ÉH‰T$(H‹UØÿ}}  H‹e  1ÉH‰5e  H‰†i  H¸	 À   H‰ei  H‹%  H‰EğH‹#%  H‰EøÿA}  H¢5  ÿT}  ÿ¶|  º	 ÀH‰Áÿ0}  è3  H‹EH‰0e  HEH‰Åd  é{ÿÿÿHƒì(ƒút…Òt¸   HƒÄ(Ãf„     èË  ¸   HƒÄ(ÃVSHƒì(H‹8  ƒ8tÇ    ƒútƒút@¸   HƒÄ([^ÃfH¹£  H5²£  H9ŞtßH‹H…ÀtÿĞHƒÃH9Şuí¸   HƒÄ([^ÃèY  ¸   HƒÄ([^Ã f.„     1ÀÃHƒìXH‹õh  H…Àt,ò„$€   ‰L$ HL$ H‰T$(òT$0ò\$8òD$@ÿĞHƒÄXÃD  f.„     H‰©h  é  @ VSHƒìx)t$@)|$PD)D$`ƒ9‡Ñ   ‹H¼5  Hc‚HĞÿàHˆ4  H‹qòDA òyòq¹   èê  òDD$0I‰ñI‰Øò|$(HH5  H‰Áòt$ èZ  (t$@1À(|$PD(D$`HƒÄx[^Ã„     H84  ë€    HI4  é|ÿÿÿ@ H©4  élÿÿÿ@ Hq4  é\ÿÿÿ@ H94  éLÿÿÿ@ H¯4  é<ÿÿÿÛãÃH‰ÈÃff.„     H‰ÈÃATUWVSHƒìPHc5ƒg  …öH‰ËH‰ÕL‰Çf  H‹og  1ÉHƒÀH‹H9ÓrL‹@E‹@LÂH9Ó‚‰   ƒÁHƒÀ(9ñuÙH‰ÙèA  H…ÀI‰Ä„R  H‹&g  H4¶HÁæHğL‰` Ç     èD  A‹L$HT$ A¸0   HÁH‹òf  H‰L0ÿ'z  H…À„æ   ‹D$DPüƒâûtƒè@ƒà¿ubƒ¿f  ƒÿs)@öÇ…   …ÿt¶E @öÇˆ…—   HƒÄP[^_]A\Ã‰øƒïH‹TøƒÿH‰Tøráƒçø1À‰ÂƒÀH‹L 9øH‰rîëÈH5af  A¸@   H‹L$ H‹T$8I‰ñH‰NH‰Vÿxy  …À…nÿÿÿÿâx  HÛ3  ‰Âè\  ‹E ‰ÿ‰‹D=ü‰D;üépÿÿÿ1öéÈşÿÿ‰ÿ·D=şf‰D;şéXÿÿÿH‹ñe  Hb3  A‹T$L‹D0è  H,3  H‰Úè   UAWAVAUATWVSHƒì8H¬$€   ‹¢e  …ÛtHe¸[^_A\A]A^A_]ÃÇƒe     è  H˜H€HÅ   Hƒàğè÷  L‹%4  ÇZe      H‹54  H)ÄHD$ H‰He  L‰àH)ğHƒø~–Hƒø‹È   …Ò„¤   L9æƒyÿÿÿLvIƒÄL‹-è3  H}¨M)ôIÁìNdæë
+fD  IƒÆ‹NA¸   H‰ú‹L‰öLé‰E¨è>ıÿÿM9æuÙ‹Çd  1öL‹%úw  …ÀÿÿÿfH‹±d  HğD‹ E…ÀtH‹PI‰ùH‹HAÿÔƒÃHƒÆ(;‡d  |ÑéŞşÿÿ‹N…É…Qÿÿÿ‹V…Òu‹VHƒÆ …Ò…8ÿÿÿ‹F…À…-ÿÿÿ‹Vƒú…/  L‹-3  HƒÆI¿    ÿÿÿÿLu¨L9ærHé€şÿÿ†¸   ƒú „   ƒú@…à   H‹A¸   L‰÷H)ÂLÊH‰U¨L‰òèXüÿÿHƒÆL9æƒÿÿÿ‹N‹¶VLéLèƒúL‹u¦D·L‰òL‰÷M‰ÂIÊ  ÿÿfE…ÀMHÂI)ÀMÈL‰E¨A¸   èüÿÿë©‹L‰÷I‰ĞL	úE…ÀIIĞA¸   H)ÂLÊH‰U¨L‰òèÖûÿÿéyÿÿÿƒúu5D¶L‰òL‰÷M‰ÂIÊ ÿÿÿE„ÀMHÂI)ÀMÈL‰E¨A¸   è›ûÿÿé>ÿÿÿH71  HÇE¨    èR  Hë0  èF  Hƒì(‹=‘  Àwc=  Às{=  À„  ‡Ë   =  €„ô   =  À…Ã   1Ò¹   è©  Hƒø„/  H…À„<  ¹   ÿĞ1ÀHƒÄ(Ã„     =”  À„µ   w7=’  À„œ   =“  Àuo1Ò¹   èU  HƒøtoH…ÀtX¹   ÿĞ1ÀHƒÄ(Ã=•  Àti=–  Àu<1Ò¹   è"  Hƒø„ˆ   H…À„µ   ¹   ÿĞ1ÀHƒÄ(Ã=  ÀtË=Œ  Àt&¸   HƒÄ(Ã„     º   ¹   èÑ  èúÿÿ1ÀHƒÄ(ÃD  1Ò¹   è´  Hƒø…[ÿÿÿº   ¹   è›  1Àéÿÿÿ@ º   ¹   è  1Àéíşÿÿf.„     º   ¹   èa  1ÀéÍşÿÿ¸   éÃşÿÿATUWVSHƒì è‘  H‰Å‹pa  …Àu%H…ít Hˆ/  ÇVa     è©  H…Àt¸   HƒÄ [^_]A\Ã@ HIb  ¹0   1öH;a  H‰ßóH«L%îıÿÿ¹    H‰×óH«I)ìH‰×ë.Æ	HƒÆHƒÃD‰g‹H‰KôHH‰øHƒÇH)è‰Cü‰KøHƒş t2H‰ñèu  H…ÀuÅH…ö‰ò„qÿÿÿD  HÉa  I‰èÿxs  éWÿÿÿº    ëä@ SHƒì H‹‹H‰Ë‰Ááÿÿÿ ùCCG „¿   =‘  Àwh=  Às|=  À„°   ‡ô   =  €„Ÿ   =  Àu1Ò¹   è
+  Hƒø„Q  H…À…  H‹`  H…À„  H‰ÙHƒÄ [Hÿà@ =”  À„µ   wX=’  ÀtF=“  ÀuÆ1Ò¹   è©	  Hƒø„ß   H…Àt«¹   ÿĞ¸ÿÿÿÿHƒÄ [Ã„     öB…7ÿÿÿ¸ÿÿÿÿHƒÄ [Ã=•  Àtî=–  À…jÿÿÿ1Ò¹   èM	  Hƒø„³   H…À„Kÿÿÿ¹   ÿĞ¸ÿÿÿÿë=  ÀtÌ=Œ  À…+ÿÿÿë¢„     1Ò¹   è	  Hƒø…[ÿÿÿº   ¹   èë  ¸ÿÿÿÿéSÿÿÿ¹   ÿĞ¸ÿÿÿÿéAÿÿÿ1Àé:ÿÿÿ„     º   ¹   è±  èüöÿÿé1ÿÿÿº   ¹   è˜  ƒÈÿéÿÿÿº   ¹   è  ƒÈÿéëşÿÿUWVSHƒì(HQa  ÿûp  H‹$a  H…Ût3H‹-ˆq  H‹=	q  ‹ÿÕH‰Æÿ×…ÀuH…öt	H‹CH‰ñÿĞH‹[H…ÛuÜHa  HƒÄ([^_]Hÿ%öp  fD  UWVSHƒì(‹Ê`  1ö…À‰ÍH‰×u‰ğHƒÄ([^_]Ãº   ¹   è  H…ÀH‰Ãt=‰(H¬`  H‰xÿRp  H‹{`  H”`  H‰m`  H‰Cÿƒp  ‰ğHƒÄ([^_]Ã¾ÿÿÿÿëšSHƒì ‹M`  …À‰Ëu1ÀHƒÄ [Ã€    HI`  ÿóo  H‹`  H…Àt‹9ÓuëO‹9Út)H‰ÈH‹HH…ÉuîH`  ÿp  1ÀHƒÄ [Ã„     H‹QH‰Pè#  Hì_  ÿæo  ëÔ@ H‹PH‰ÁH‰²_  ëØSHƒì ƒú„’   r0ƒútƒúu‹˜_  …ÀtèGşÿÿë
+D  èûôÿÿ¸   HƒÄ [Ã‹r_  …À…‚   ‹d_  ƒøuÜH‹P_  H…ÉtH‹Yè’  H…ÛH‰ÙuïHS_  HÇ(_      Ç&_      ÿàn  ë›fD  ‹_  …ÀtÇ_     ¸   HƒÄ [ÃH	_  ÿûn  ëÛè›ıÿÿétÿÿÿHcA<HÁ1À9PE  tÃ1Àfy”ÀÃff9MZt	1ÀÃfD  ëÎ@ f.„     HcA<HÁ·AHD·I…Ét)ƒéH‰LLÈ(D‹@I9ĞL‰ÁwHH9ÑwHƒÀ(L9Èuã1ÀÃff.„     WVSHƒì H‰ÎèQ  HƒøwkH‹D*  f:MZu]H‰ÑèEÿÿÿ…ÀtQHcJ<HÑ·AH\·A…Àt9ƒèH€H|Ã(ë	HƒÃ(H9ût"A¸   H‰òH‰Ùèé  …ÀuâH‰ØHƒÄ [^_Ãf1ÛH‰ØHƒÄ [^_Ã Hƒì(L‹Å)  fA8MZH‰ÊuWL‰ÁèÂşÿÿ…ÀtKIc@<H‰ÑL)ÁIÀA·PA·@…ÒID t+ƒêH’LLĞ(fD‹@L9ÁL‰ÂrPH9ÑrHƒÀ(L9Èuã1ÀHƒÄ(Ãff.„     Hƒì(H‹E)  E1Àf:MZtD‰ÀHƒÄ(Ã H‰Ñè8şÿÿ…ÀtéHcB<D·DD‰ÀHƒÄ(ÃfHƒì(L‹)  fA8MZH‰ÊuRL‰Áèşÿÿ…ÀtFIcH<LÁ·AHD·I…Ét.ƒéH‰HLÈ(f.„     ö@' t	H…ÒtHƒêHƒÀ(H9Èuè1ÀHƒÄ(ÃHƒì(H‹•(  f:MZuH‰Ñè–ıÿÿ…À¸    HEÂHƒÄ(ÃfD  1ÀHƒÄ(Ãf„     Hƒì(L‹U(  1ÀfA8MZH‰ÊtHƒÄ(Ã L‰ÁèHıÿÿ…ÀtìIc@<H‰ÑL)ÁIÀA·PA·@…ÒID t1ƒêH’LLĞ(„     D‹@L9ÁL‰ÂrPH9ÑrHƒÀ(L9Èuã1ÀHƒÄ(Ã‹@$÷ĞÁèHƒÄ(ÃD  f.„     Hƒì(L‹µ'  fA;MZA‰ÉuXL‰Ùè²üÿÿ…ÀtLIcC<LØ‹   …Òt;·HHL·@…Àt*ƒèH€HDÁ(D‹QL9ÒM‰Ğr	DAL9ÂrHƒÁ(H9Áuâ1ÀHƒÄ(ÃLÚuëò@ AƒéHƒÂ‹J…Éu‹B…ÀtØE…Éå‹BLØHƒÄ(ÃAWAVAUATUWVSHƒìXÇD$L    ÿªj  HT$LH‰Áÿ<l  H…ÀI‰Ç„<  ‹D$LIÇÅÿÿÿÿHºÿÿÿÿÿÿÿƒÀH˜HÅ    H9ĞIGÍè:  ‹T$LI‰Ä…Ò„   L‹5k  »   I‹|ßø1ÒE‰é1ÉHÇD$8    HÇD$0    ÇD$(    HÇD$     I‰øAÿÖHcÈH‰Íèß   1Ò1É‰l$(H‰ÆH‰D$ E‰éI‰øHÇD$8    HÇD$0    AÿÖHcD$L‰ÚI‰tÜøHƒÃ9ĞuIÄL‰ùHÇ     ÿj  ‹L$LL‰âèPÖÿÿ‰Æ‹D$L…Àt/I‹$H…Ét&»   ëfD  HƒÃI‹LÜøH…Étè]   9\$LuçL‰áèO   ‰ğHƒÄX[^_]A\A]A^A_Ã¾ÿÿÿÿëæÿ%âj  „     ÿ%k  ÿ%
+k  ÿ%új  ÿ%êj  ÿ%Új  ÿ%êh  QPH=   HL$rHé   Hƒ	 H-   H=   wçH)ÁHƒ	 XYÃÿ%Rj  ÿ%Bj  ÿ%2j  ÿ%"j  ÿ%j  ÿ%j  ÿ%òi  ÿ%âi  ÿ%Òi  ÿ%Âi  ÿ%²i  ÿ%¢i  ÿ%’i  ÿ%‚i  ÿ%ri  ÿ%Zi  ÿ%Ji  ÿ%2i  ÿ%"i  ÿ%i  ÿ%òh  ÿ%âh  SHƒì ‰ËèT   ‰ÙHIHÁâHĞHƒÄ [ÃH‹‰X  Ã„     H‰ÈH‡vX  ÃH‹9$  H‹ ÃH‹9$  H‹ Ãÿ%’h  „     ÿ%Zh  ÿ%Jh  ÿ%:h  ÿ%*h  ÿ%h  ÿ%
+h  ÿ%úg  ÿ%êg  ÿ%Úg  ÿ%Êg  ÿ%ºg  ÿ%ªg  ÿ%šg  ÿ%Šg  ÿ%zg  ÿ%jg  ÿ%Zg  ÿ%Jg  ÿ%:g  ÿ%*g  ÿ%g  ÿ%
+g  ÿ%úf  ÿ%êf  ÿ%Úf  ÿ%Êf  H‹‹…Òtƒúÿtğƒ(tÃH‹	A¸   º   Hÿ%c  H‹ad  H‰  ÃHƒì(è÷çÿÿH‹@#  1ÒD‹H‹$#  L‹ H‹
+#  H‹HƒÄ(éûÿÿVSHƒì8HD$XH‰Ë¹   H‰T$XL‰D$`L‰L$hH‰D$(èşÿÿA¸   º   HÂ   I‰Áè‚ıÿÿH‹t$(¹   èëıÿÿH‰ÚH‰ÁI‰ğè-ıÿÿèˆıÿÿUH‰å]éVÒÿÿÿÿÿÿÿÿÿÿB@     ĞB@             ÿÿÿÿÿÿÿÿ                                                                                                                                                                                                                                                        
+                                        a@     À`@     À%@                                     C@             ÿÿÿÿÿÿÿÿ        ÿÿÿÿ            ÿ                              ÿÿÿÿ             @@             À@@     Ğ@@     à@@             ğ@@             2¢ß-™+          Í] ÒfÔÿÿ                                                                                                                                                                                                                                        MonkeyGUI centralwidget monkeyNum monkeyPop label label_2 pushButton resultBox menubar statusbar Number of Monkeys: Which to pop: GO! The following monkey is out:  The king is                                                                                      +                   ÿÿÿÿ	           H       ÿÿÿÿ           :       ÿÿÿÿ            8       MonkeyGUI on_pushButton_clicked                         @•@     `@                     p,@                              à@     à@     ü•@     @Ğ@                                     Argument domain error (DOMAIN) Argument singularity (SIGN)      Overflow range error (OVERFLOW) Partial loss of significance (PLOSS)    Total loss of significance (TLOSS)      The result is too small to be represented (UNDERFLOW) Unknown error     _matherr(): %s in %s(%g, %g)  (retval=%g)
+  ËÿÿMÊÿÿ¼ÊÿÿÌÊÿÿÜÊÿÿìÊÿÿüÊÿÿMingw-w64 runtime failure:
+     Address %p has no image-section   VirtualQuery failed for %d bytes at address %p          VirtualProtect failed with code 0x%x    Unknown pseudo relocation protocol version %d.
+         Unknown pseudo relocation bit size %d.
+               .pdata          `0               P@             °P@             pg@             àB@             k@             Àj@             Àa@               @             ©@             ¸©@             Ğ©@             @–@             h™@             `™@              P@             x™@             p™@              Ğ@             Ğ@             Ğ@             0Ğ@             €P@             0–@             °5@             `-@             à•@             –@             @@             ø•@             ô•@             ğ•@             €ª@      g@     Àf@             xª@     0g@     xª@     @g@     ˆª@     Pg@            °f@             f@                   €ª@     `g@     €f@             11QMainWindow   12QPaintDevice  7QObject        7QWidget        9MonkeyGUI               g@      %@     à%@     0&@     P!@      !@     ˜(@     0)@     @)@     H)@     8)@     ()@     )@     Ğ&@     ((@     È&@     ğ&@     ø&@     à&@     '@      '@     '@     €'@     ¸'@      (@     Ğ'@     ¨'@     è'@     Ø'@     @(@     8(@     0(@     X'@      (@     H(@     ¨(@     ğ'@     (@     È'@     à'@     À'@     h'@     P'@     `'@     (@     (@     Ø&@     '@     '@      '@     ˜'@     è&@     ˆ'@     °(@     ğÿÿÿÿÿÿÿ g@     !@     à!@     &@     ¨&@     ˜&@     °&@     ¸&@      &@             GCC: (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 7.3.0  GCC: (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 7.3.0  GCC: (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 7.3.0  GCC: (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 7.3.0  GCC: (x86_64-posix-seh-rev0, Built by MinGW-W64 project) 7.3.0             hª  °f  @   hª   f  @   xª  Àf  @   pª  €f  @   pª   g  @                                                                                                                                                                                                                                                                 €    !  €  0  y  €  €  ¦  €  °  Ò  (€  à    H€    )  h€  0  A  p€  P  V  x€  `  é  €€  ğ    ¤€     ƒ  ¬€    œ  ¸€     û  ¼€       È€    G!  Ğ€  P!  ˆ!  ‚   !  ß!  ‚  ğ!  %  $‚   %  º%  ˆ‚  À%  Õ%  Œ‚  à%  '&  ‚  0&  †&  œ‚  p)  ¥)  ´‚  °)  *  ¼‚   *  ?*  È‚  @*  G*  Ì‚  P*  S*  Ğ‚  `*  6+  Ô‚  @+  8,  ä‚  @,  o,  ô‚  p,  ã,  ü‚  ğ,  ó,  ƒ   -  A-  ƒ  P-  \-  ƒ  `-  \.  ƒ  `.  c.  0ƒ  p.  t.  4ƒ  €.  „.  8ƒ  .  ]0  Hƒ  `0  3  Xƒ   3  À4  pƒ  À4  ¬5  xƒ  °5  —7  ˆƒ   7  
+8  ƒ  8  8   ƒ  8  09  °ƒ  09  
+:  ¸ƒ  :  .:  Àƒ  0:  B:  Äƒ  P:  ”:  Èƒ   :  -;  Ìƒ  0;  ¤;  Øƒ  °;  î;  àƒ  ğ;  _<  èƒ  `<  —<  ğƒ   <  1=  øƒ  @=  æ=   „  ğ=  k?  „   @  ¿@   „  À@  È@  („  Ğ@  Û@  ,„  à@  ë@  0„  ğ@  û@  4„  àA  
+B  Ì€  B  B  ¨‚   B  RB  ¬‚  `B  ÉB  <ƒ  ĞB  ÚB  8„                                                                                                                                                                                                          B   b    0`pPÀĞ	 B  ˜@     ´  Ì  °5  Ì  	 B  ˜@     ä  ü  °5  ü   B  PP Ò0`p€?  ÿÿ,  7h ?| w   20 B0`      B0`        
+ % 0`
+p	PÀĞàğ€?  ÿÿ¢  <hö ªÙ ğö ŒÌ ±ö Àæ êö ÿ˜ ›ö £“ ÿö • ±ö ¹Œ ö ®æ Êö Ò§ §ö À¢ Üö ä ¹ö Ï‡ îö ö… Ëö á€ €	ö ˆ	ş İ	ö ÿ	© 
+ö ¦
+œ õ
+ö ˜ ·ö ¿‚ ë/ö  ¸ ÷ö †« Úö âÊ ¶ö ¾º ğö ı    20 20	 Â0`
+p	PÀĞàğ  €?  ÿÿA   M pƒ ã,  ›¬ ¼ª Å¨ €  Ÿ£ À ÌÙ ü"            B0`   R0`p    B   B   B0`           
+ 
+R0`pPÀ
+
+Ò0`P   B   B0`      ¢     	 ˆ x h â0`            b0`  
+ 
+’0`pPÀ
+…b0`
+p	ÀĞàğP B  
+ 
+20`pPÀ 20 B0`pP   B0`pP   20 20          20`p B   B   B   B   B   B  	 ¢0`
+p	PÀĞàğ   20            P                                                                                                                                                                                                                                                                                                                                                                                                                                                                            °½  ¨¥  0¡          è¾  8¦  £          ü¾  ˜¨   £          x¿  ¨¨  x¤          ğ¿  €©  P¥           À  Xª  `¥          ,À  hª                      °ª      Ôª      «      8«      d«      «      ´«      Ü«      ¬      4¬      d¬      ˆ¬      °¬      Ì¬      ä¬      ­      0­              L­      l­      ˜­      Ô­      ø­      (®      P®      Œ®      ¼®      ä®      ¯      D¯      \¯      |¯      ˜¯      ¸¯      Ğ¯      ü¯      °      P°      |°       °      Ä°      ğ°      ±      8±      d±      ˆ±      ¸±      ä±      ²      4²      `²      ²      ¼²      è²      ³      P³      €³      ¬³      Ø³      ´      @´      p´      ”´      È´      à´       µ      (µ      Pµ      xµ       µ      Ğµ      ìµ      ¶       ¶      D¶      `¶      „¶      ¬¶      Ì¶      ì¶      ·      4·      p·      ”·      Ğ·      ì·      ¸       ¸      L¸      |¸       ¸      È¸      ¹              (¹              <¹      T¹      l¹      ~¹      ’¹      ¨¹      ¾¹      Î¹      à¹      ú¹      
+º      &º      >º      Jº      dº      zº      º      ¨º      ¼º      Úº      âº      öº      »       »      2»      B»              X»      p»      €»      Œ»      š»      ª»      ¼»      Ğ»      Ú»      è»      ò»      ü»      ¼      ¼      ¼      $¼      ,¼      6¼      >¼      H¼      R¼      \¼      f¼      p¼      z¼      „¼              ¼              ¨¼      Ğ¼      ü¼      (½      4½      @½      H½      P½              °ª      Ôª      «      8«      d«      «      ´«      Ü«      ¬      4¬      d¬      ˆ¬      °¬      Ì¬      ä¬      ­      0­              L­      l­      ˜­      Ô­      ø­      (®      P®      Œ®      ¼®      ä®      ¯      D¯      \¯      |¯      ˜¯      ¸¯      Ğ¯      ü¯      °      P°      |°       °      Ä°      ğ°      ±      8±      d±      ˆ±      ¸±      ä±      ²      4²      `²      ²      ¼²      è²      ³      P³      €³      ¬³      Ø³      ´      @´      p´      ”´      È´      à´       µ      (µ      Pµ      xµ       µ      Ğµ      ìµ      ¶       ¶      D¶      `¶      „¶      ¬¶      Ì¶      ì¶      ·      4·      p·      ”·      Ğ·      ì·      ¸       ¸      L¸      |¸       ¸      È¸      ¹              (¹              <¹      T¹      l¹      ~¹      ’¹      ¨¹      ¾¹      Î¹      à¹      ú¹      
+º      &º      >º      Jº      dº      zº      º      ¨º      ¼º      Úº      âº      öº      »       »      2»      B»              X»      p»      €»      Œ»      š»      ª»      ¼»      Ğ»      Ú»      è»      ò»      ü»      ¼      ¼      ¼      $¼      ,¼      6¼      >¼      H¼      R¼      \¼      f¼      p¼      z¼      „¼              ¼              ¨¼      Ğ¼      ü¼      (½      4½      @½      H½      P½              ¬ _ZN10QArrayData10deallocateEPS_yy _ZN11QMetaObject18connectSlotsByNameEP7QObject    =_ZN16QCoreApplication9translateEPKcS1_S1_i    _ZN7QObject10childEventEP11QChildEvent    	_ZN7QObject10timerEventEP11QTimerEvent    _ZN7QObject11customEventEP6QEvent _ZN7QObject11eventFilterEPS_P6QEvent  _ZN7QObject13connectNotifyERK11QMetaMethod    _ZN7QObject13setObjectNameERK7QString _ZN7QObject16disconnectNotifyERK11QMetaMethod P_ZN7QString15fromUtf8_helperEPKci R_ZN7QString16fromAscii_helperEPKci    e_ZN7QString6appendERKS_   k_ZN7QString6numberEii _ZNK11QObjectData17dynamicMetaObjectEv    ş_ZNK7QObject10objectNameEv    E_ZNK7QString5toIntEPbi    ¢ _ZN10QStatusBarC1EP7QWidget   ¯_ZN11QMainWindow10setMenuBarEP8QMenuBar   °_ZN11QMainWindow11qt_metacallEN11QMetaObject4CallEiPPv    ±_ZN11QMainWindow11qt_metacastEPKc ·_ZN11QMainWindow12setStatusBarEP10QStatusBar  À_ZN11QMainWindow15createPopupMenuEv   Ä_ZN11QMainWindow16contextMenuEventEP17QContextMenuEvent   Æ_ZN11QMainWindow16setCentralWidgetEP7QWidget  Ç_ZN11QMainWindow16staticMetaObjectE   Ó_ZN11QMainWindow5eventEP6QEvent   Ö_ZN11QMainWindowC2EP7QWidget6QFlagsIN2Qt10WindowTypeEE    Ù_ZN11QMainWindowD2Ev  >_ZN11QPushButtonC1EP7QWidget  +_ZN12QApplication4execEv  <_ZN12QApplicationC1ERiPPci    ?_ZN12QApplicationD1Ev 	_ZN15QAbstractButton7setTextERK7QString   0_ZN6QLabel7setTextERK7QString 6_ZN6QLabelC1EP7QWidget6QFlagsIN2Qt10WindowTypeEE  _ZN7QWidget10closeEventEP11QCloseEvent    _ZN7QWidget10enterEventEP6QEvent  _ZN7QWidget10leaveEventEP6QEvent  _ZN7QWidget10paintEventEP11QPaintEvent    _ZN7QWidget10setVisibleEb #_ZN7QWidget10wheelEventEP11QWheelEvent    $_ZN7QWidget11actionEventEP12QActionEvent  %_ZN7QWidget11changeEventEP6QEvent (_ZN7QWidget11nativeEventERK10QByteArrayPvPl   +_ZN7QWidget11resizeEventEP12QResizeEvent  ._ZN7QWidget11setGeometryERK5QRect 0_ZN7QWidget11tabletEventEP12QTabletEvent  3_ZN7QWidget12focusInEventEP11QFocusEvent  ?_ZN7QWidget13dragMoveEventEP14QDragMoveEvent  @_ZN7QWidget13focusOutEventEP11QFocusEvent B_ZN7QWidget13keyPressEventEP9QKeyEvent    N_ZN7QWidget14dragEnterEventEP15QDragEnterEvent    O_ZN7QWidget14dragLeaveEventEP15QDragLeaveEvent    P_ZN7QWidget14mouseMoveEventEP11QMouseEvent    X_ZN7QWidget14setWindowTitleERK7QString    [_ZN7QWidget15keyReleaseEventEP9QKeyEvent  ]_ZN7QWidget15mousePressEventEP11QMouseEvent   e_ZN7QWidget16inputMethodEventEP17QInputMethodEvent    l_ZN7QWidget17mouseReleaseEventEP11QMouseEvent w_ZN7QWidget18focusNextPrevChildEb …_ZN7QWidget21mouseDoubleClickEventEP11QMouseEvent _ZN7QWidget4showEv    —_ZN7QWidget6resizeERK5QSize   ©_ZN7QWidget9dropEventEP10QDropEvent   ¬_ZN7QWidget9hideEventEP10QHideEvent   ­_ZN7QWidget9moveEventEP10QMoveEvent   ´_ZN7QWidget9showEventEP10QShowEvent   µ_ZN7QWidgetC1EPS_6QFlagsIN2Qt10WindowTypeEE   =_ZN8QMenuBarC1EP7QWidget  ƒ_ZN9QLineEditC1EP7QWidget q_ZN9QTextEdit5clearEv t_ZN9QTextEdit6appendERK7QString   }_ZN9QTextEditC1EP7QWidget ¦_ZNK7QWidget10redirectedEP6QPoint ®_ZNK7QWidget11initPainterEP8QPainter  ·_ZNK7QWidget11paintEngineEv   Ä_ZNK7QWidget13sharedPainterEv Ï_ZNK7QWidget14heightForWidthEi    ×_ZNK7QWidget15minimumSizeHintEv   Ú_ZNK7QWidget16inputMethodQueryEN2Qt16InputMethodQueryE    Ş_ZNK7QWidget17hasHeightForWidthEv ğ_ZNK7QWidget6metricEN12QPaintDevice17PaintDeviceMetricE   õ_ZNK7QWidget7devTypeEv    û_ZNK7QWidget8sizeHintEv   Á_ZNK9QLineEdit4textEv "_ZThn16_NK7QWidget10redirectedEP6QPoint   "_ZThn16_NK7QWidget11initPainterEP8QPainter    "_ZThn16_NK7QWidget11paintEngineEv "_ZThn16_NK7QWidget13sharedPainterEv   "_ZThn16_NK7QWidget6metricEN12QPaintDevice17PaintDeviceMetricE "_ZThn16_NK7QWidget7devTypeEv   _Unwind_Resume    DeleteCriticalSection 1EnterCriticalSection  ØGetCommandLineW GetCurrentProcess GetCurrentProcessId GetCurrentThreadId  bGetLastError  ÒGetStartupInfoA ëGetSystemTimeAsFileTime GetTickCount  `InitializeCriticalSection ¸LeaveCriticalSection  ÈLocalFree FQueryPerformanceCounter œRtlAddFunctionTable RtlCaptureContext ¤RtlLookupFunctionEntry  «RtlVirtualUnwind  CSetUnhandledExceptionFilter QSleep `TerminateProcess  tTlsGetValue ‚UnhandledExceptionFilter  ¤VirtualProtect  ¦VirtualQuery  ÓWideCharToMultiByte 8 __C_specific_handler  R __getmainargs S __initenv T __iob_func  [ __lconv_init  a __set_app_type  c __setusermatherr  s _acmdln { _amsg_exit   _cexit  ı _fmode  K_initterm c_onexit abort calloc  'exit  :fprintf Afree  Mfwrite  |malloc  „memcpy  ¢signal  °strcmp  ·strlen  ºstrncmp Úvfprintf   CommandLineToArgvW    Ÿ_ZTVN10__cxxabiv117__class_type_infoE ¤_ZTVN10__cxxabiv120__si_class_type_infoE  ¥_ZTVN10__cxxabiv121__vmi_class_type_infoE ­_ZdaPv    ³_ZdlPv    ¹_Znay ½_Znwy ì__gxx_personality_seh0                                                                        Qt5Core.dll                                                                                                                                                                                                                                  Qt5Widgets.dll  (   libgcc_s_seh-1.dll  <   <   <   <   <   <   <   <   <   <   <   <   <   <   <   <   <   <   <   <   <   <   <   <   <   <   KERNEL32.dll    P   P   P   P   P   P   P   P   P   P   P   P   P   P   P   P   P   P   P   P   P   P   P   P   P   P   msvcrt.dll  d   SHELL32.dll x   x   x   x   x   x   x   x   libstdc++-6.dll                                                                                                                                                                                                                                                                                                                                                                                                                                                                             0@                     @     @*@                     p,@     @,@                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     LPKF_
+monkey.h
+311
+#ifndef MONKEY_H
+#define MONKEY_H
+
+struct node {
+    int data;
+    node *next;
+};
+
+class monkey
+{
+private:
+    node *head;
+    node *p,*q;
+    int cnt;
+    int num;
+public:
+    monkey();
+    monkey(int n,int m);
+    bool isempty();
+    int next();
+    int king();
+};
+
+#endif // MONKEY_H
+LPKF_
+monkey.pro
+1052
+QT       += core gui
+
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+
+CONFIG += c++11
+
+# The following define makes your compiler emit warnings if you use
+# any Qt feature that has been marked deprecated (the exact warnings
+# depend on your compiler). Please consult the documentation of the
+# deprecated API in order to know how to port your code away from it.
+DEFINES += QT_DEPRECATED_WARNINGS
+
+# You can also make your code fail to compile if it uses deprecated APIs.
+# In order to do so, uncomment the following line.
+# You can also select to disable deprecated APIs only up to a certain version of Qt.
+#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+SOURCES += \
+    main.cpp \
+    monkey.cpp \
+    monkeygui.cpp
+
+HEADERS += \
+    monkey.h \
+    monkeygui.h
+
+FORMS += \
+    monkeygui.ui
+
+# Default rules for deployment.
+qnx: target.path = /tmp/$${TARGET}/bin
+else: unix:!android: target.path = /opt/$${TARGET}/bin
+!isEmpty(target.path): INSTALLS += target
+LPKF_
+monkey.pro.user
+41571
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE QtCreatorProject>
+<!-- Written by QtCreator 4.11.1, 2020-04-10T13:56:15. -->
+<qtcreator>
+ <data>
+  <variable>EnvironmentId</variable>
+  <value type="QByteArray">{4aebe04a-3c1f-4c13-80ac-e484e52a8414}</value>
+ </data>
+ <data>
+  <variable>ProjectExplorer.Project.ActiveTarget</variable>
+  <value type="int">0</value>
+ </data>
+ <data>
+  <variable>ProjectExplorer.Project.EditorSettings</variable>
+  <valuemap type="QVariantMap">
+   <value type="bool" key="EditorConfiguration.AutoIndent">true</value>
+   <value type="bool" key="EditorConfiguration.AutoSpacesForTabs">false</value>
+   <value type="bool" key="EditorConfiguration.CamelCaseNavigation">true</value>
+   <valuemap type="QVariantMap" key="EditorConfiguration.CodeStyle.0">
+    <value type="QString" key="language">Cpp</value>
+    <valuemap type="QVariantMap" key="value">
+     <value type="QByteArray" key="CurrentPreferences">CppGlobal</value>
+    </valuemap>
+   </valuemap>
+   <valuemap type="QVariantMap" key="EditorConfiguration.CodeStyle.1">
+    <value type="QString" key="language">QmlJS</value>
+    <valuemap type="QVariantMap" key="value">
+     <value type="QByteArray" key="CurrentPreferences">QmlJSGlobal</value>
+    </valuemap>
+   </valuemap>
+   <value type="int" key="EditorConfiguration.CodeStyle.Count">2</value>
+   <value type="QByteArray" key="EditorConfiguration.Codec">UTF-8</value>
+   <value type="bool" key="EditorConfiguration.ConstrainTooltips">false</value>
+   <value type="int" key="EditorConfiguration.IndentSize">4</value>
+   <value type="bool" key="EditorConfiguration.KeyboardTooltips">false</value>
+   <value type="int" key="EditorConfiguration.MarginColumn">80</value>
+   <value type="bool" key="EditorConfiguration.MouseHiding">true</value>
+   <value type="bool" key="EditorConfiguration.MouseNavigation">true</value>
+   <value type="int" key="EditorConfiguration.PaddingMode">1</value>
+   <value type="bool" key="EditorConfiguration.ScrollWheelZooming">true</value>
+   <value type="bool" key="EditorConfiguration.ShowMargin">false</value>
+   <value type="int" key="EditorConfiguration.SmartBackspaceBehavior">0</value>
+   <value type="bool" key="EditorConfiguration.SmartSelectionChanging">true</value>
+   <value type="bool" key="EditorConfiguration.SpacesForTabs">true</value>
+   <value type="int" key="EditorConfiguration.TabKeyBehavior">0</value>
+   <value type="int" key="EditorConfiguration.TabSize">8</value>
+   <value type="bool" key="EditorConfiguration.UseGlobal">true</value>
+   <value type="int" key="EditorConfiguration.Utf8BomBehavior">1</value>
+   <value type="bool" key="EditorConfiguration.addFinalNewLine">true</value>
+   <value type="bool" key="EditorConfiguration.cleanIndentation">true</value>
+   <value type="bool" key="EditorConfiguration.cleanWhitespace">true</value>
+   <value type="bool" key="EditorConfiguration.inEntireDocument">false</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>ProjectExplorer.Project.PluginSettings</variable>
+  <valuemap type="QVariantMap">
+   <valuelist type="QVariantList" key="ClangCodeModel.CustomCommandLineKey">
+    <value type="QString">-fno-delayed-template-parsing</value>
+   </valuelist>
+   <value type="bool" key="ClangCodeModel.UseGlobalConfig">true</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>ProjectExplorer.Project.Target.0</variable>
+  <valuemap type="QVariantMap">
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 5.14.1 MinGW 64-bit</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop Qt 5.14.1 MinGW 64-bit</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">qt.qt5.5141.win64_mingw73_kit</value>
+   <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">1</value>
+   <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
+   <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">F:/acm/DS/build-monkey-Desktop_Qt_5_14_1_MinGW_64_bit-Debug</value>
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">QtProjectManager.QMakeBuildStep</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibrary">true</value>
+      <value type="QString" key="QtProjectManager.QMakeBuildStep.QMakeArguments"></value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.QMakeForced">false</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.SeparateDebugInfo">false</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.UseQtQuickCompiler">false</value>
+     </valuemap>
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.BuildTargets"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">false</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments"></value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.OverrideMakeflags">false</value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Build</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Build</value>
+    </valuemap>
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.BuildTargets"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">true</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">clean</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.OverrideMakeflags">false</value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Clean</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Clean</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Clean</value>
+    </valuemap>
+    <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
+    <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Debug</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4BuildConfiguration</value>
+    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">2</value>
+   </valuemap>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">F:/acm/DS/build-monkey-Desktop_Qt_5_14_1_MinGW_64_bit-Release</value>
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">QtProjectManager.QMakeBuildStep</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibrary">false</value>
+      <value type="QString" key="QtProjectManager.QMakeBuildStep.QMakeArguments"></value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.QMakeForced">false</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.SeparateDebugInfo">false</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.UseQtQuickCompiler">true</value>
+     </valuemap>
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.BuildTargets"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">false</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments"></value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.OverrideMakeflags">false</value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Build</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Build</value>
+    </valuemap>
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.BuildTargets"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">true</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">clean</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.OverrideMakeflags">false</value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Clean</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Clean</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Clean</value>
+    </valuemap>
+    <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
+    <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Release</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4BuildConfiguration</value>
+    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">0</value>
+   </valuemap>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.2">
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">F:/acm/DS/build-monkey-Desktop_Qt_5_14_1_MinGW_64_bit-Profile</value>
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">QtProjectManager.QMakeBuildStep</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibrary">true</value>
+      <value type="QString" key="QtProjectManager.QMakeBuildStep.QMakeArguments"></value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.QMakeForced">false</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.SeparateDebugInfo">true</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.UseQtQuickCompiler">true</value>
+     </valuemap>
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.BuildTargets"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">false</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments"></value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.OverrideMakeflags">false</value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Build</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Build</value>
+    </valuemap>
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.BuildTargets"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">true</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">clean</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.OverrideMakeflags">false</value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Clean</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Clean</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Clean</value>
+    </valuemap>
+    <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
+    <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Profile</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4BuildConfiguration</value>
+    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">0</value>
+   </valuemap>
+   <value type="int" key="ProjectExplorer.Target.BuildConfigurationCount">3</value>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.DeployConfiguration.0">
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">0</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Deploy</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Deploy</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Deploy</value>
+    </valuemap>
+    <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">1</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.DefaultDeployConfiguration</value>
+   </valuemap>
+   <value type="int" key="ProjectExplorer.Target.DeployConfigurationCount">1</value>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings"/>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
+    <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
+    <valuelist type="QVariantList" key="Analyzer.Perf.Events">
+     <value type="QString">cpu-cycles</value>
+    </valuelist>
+    <valuelist type="QVariantList" key="Analyzer.Perf.ExtraArguments"/>
+    <value type="int" key="Analyzer.Perf.Frequency">250</value>
+    <valuelist type="QVariantList" key="Analyzer.Perf.RecordArguments">
+     <value type="QString">-e</value>
+     <value type="QString">cpu-cycles</value>
+     <value type="QString">--call-graph</value>
+     <value type="QString">dwarf,4096</value>
+     <value type="QString">-F</value>
+     <value type="QString">250</value>
+    </valuelist>
+    <value type="QString" key="Analyzer.Perf.SampleMode">-F</value>
+    <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
+    <value type="int" key="Analyzer.Perf.StackSize">4096</value>
+    <value type="bool" key="Analyzer.QmlProfiler.AggregateTraces">false</value>
+    <value type="bool" key="Analyzer.QmlProfiler.FlushEnabled">false</value>
+    <value type="uint" key="Analyzer.QmlProfiler.FlushInterval">1000</value>
+    <value type="QString" key="Analyzer.QmlProfiler.LastTraceFile"></value>
+    <value type="bool" key="Analyzer.QmlProfiler.Settings.UseGlobalSettings">true</value>
+    <valuelist type="QVariantList" key="Analyzer.Valgrind.AddedSuppressionFiles"/>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.CollectBusEvents">false</value>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.CollectSystime">false</value>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.EnableBranchSim">false</value>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.EnableCacheSim">false</value>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.EnableEventToolTips">true</value>
+    <value type="double" key="Analyzer.Valgrind.Callgrind.MinimumCostRatio">0.01</value>
+    <value type="double" key="Analyzer.Valgrind.Callgrind.VisualisationMinimumCostRatio">10</value>
+    <value type="bool" key="Analyzer.Valgrind.FilterExternalIssues">true</value>
+    <value type="QString" key="Analyzer.Valgrind.KCachegrindExecutable">kcachegrind</value>
+    <value type="int" key="Analyzer.Valgrind.LeakCheckOnFinish">1</value>
+    <value type="int" key="Analyzer.Valgrind.NumCallers">25</value>
+    <valuelist type="QVariantList" key="Analyzer.Valgrind.RemovedSuppressionFiles"/>
+    <value type="int" key="Analyzer.Valgrind.SelfModifyingCodeDetection">1</value>
+    <value type="bool" key="Analyzer.Valgrind.Settings.UseGlobalSettings">true</value>
+    <value type="bool" key="Analyzer.Valgrind.ShowReachable">false</value>
+    <value type="bool" key="Analyzer.Valgrind.TrackOrigins">true</value>
+    <value type="QString" key="Analyzer.Valgrind.ValgrindExecutable">valgrind</value>
+    <valuelist type="QVariantList" key="Analyzer.Valgrind.VisibleErrorKinds">
+     <value type="int">0</value>
+     <value type="int">1</value>
+     <value type="int">2</value>
+     <value type="int">3</value>
+     <value type="int">4</value>
+     <value type="int">5</value>
+     <value type="int">6</value>
+     <value type="int">7</value>
+     <value type="int">8</value>
+     <value type="int">9</value>
+     <value type="int">10</value>
+     <value type="int">11</value>
+     <value type="int">12</value>
+     <value type="int">13</value>
+     <value type="int">14</value>
+    </valuelist>
+    <value type="int" key="PE.EnvironmentAspect.Base">2</value>
+    <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:F:/acm/DS/monkey/monkey.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">F:/acm/DS/monkey/monkey.pro</value>
+    <value type="QString" key="RunConfiguration.Arguments"></value>
+    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
+    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
+    <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
+    <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
+    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">F:/acm/DS/build-monkey-Desktop_Qt_5_14_1_MinGW_64_bit-Release</value>
+   </valuemap>
+   <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>ProjectExplorer.Project.Target.1</variable>
+  <valuemap type="QVariantMap">
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Desktop Qt 5.14.1 MSVC2017 64bit</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Desktop Qt 5.14.1 MSVC2017 64bit</value>
+   <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">qt.qt5.5141.win64_msvc2017_64_kit</value>
+   <value type="int" key="ProjectExplorer.Target.ActiveBuildConfiguration">0</value>
+   <value type="int" key="ProjectExplorer.Target.ActiveDeployConfiguration">0</value>
+   <value type="int" key="ProjectExplorer.Target.ActiveRunConfiguration">0</value>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.0">
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">F:/acm/DS/build-monkey-Desktop_Qt_5_14_1_MSVC2017_64bit-Debug</value>
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">QtProjectManager.QMakeBuildStep</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibrary">true</value>
+      <value type="QString" key="QtProjectManager.QMakeBuildStep.QMakeArguments"></value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.QMakeForced">false</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.SeparateDebugInfo">false</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.UseQtQuickCompiler">false</value>
+     </valuemap>
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.BuildTargets"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">false</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments"></value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.OverrideMakeflags">false</value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Build</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Build</value>
+    </valuemap>
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.BuildTargets"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">true</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">clean</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.OverrideMakeflags">false</value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Clean</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Clean</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Clean</value>
+    </valuemap>
+    <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
+    <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Debug</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4BuildConfiguration</value>
+    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">2</value>
+   </valuemap>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.1">
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">F:/acm/DS/build-monkey-Desktop_Qt_5_14_1_MSVC2017_64bit-Release</value>
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">QtProjectManager.QMakeBuildStep</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibrary">false</value>
+      <value type="QString" key="QtProjectManager.QMakeBuildStep.QMakeArguments"></value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.QMakeForced">false</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.SeparateDebugInfo">false</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.UseQtQuickCompiler">true</value>
+     </valuemap>
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.BuildTargets"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">false</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments"></value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.OverrideMakeflags">false</value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Build</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Build</value>
+    </valuemap>
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.BuildTargets"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">true</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">clean</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.OverrideMakeflags">false</value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Clean</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Clean</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Clean</value>
+    </valuemap>
+    <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
+    <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Release</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4BuildConfiguration</value>
+    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">0</value>
+   </valuemap>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.BuildConfiguration.2">
+    <value type="QString" key="ProjectExplorer.BuildConfiguration.BuildDirectory">F:/acm/DS/build-monkey-Desktop_Qt_5_14_1_MSVC2017_64bit-Profile</value>
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">QtProjectManager.QMakeBuildStep</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.LinkQmlDebuggingLibrary">true</value>
+      <value type="QString" key="QtProjectManager.QMakeBuildStep.QMakeArguments"></value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.QMakeForced">false</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.SeparateDebugInfo">true</value>
+      <value type="bool" key="QtProjectManager.QMakeBuildStep.UseQtQuickCompiler">true</value>
+     </valuemap>
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.1">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.BuildTargets"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">false</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments"></value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.OverrideMakeflags">false</value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">2</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Build</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Build</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Build</value>
+    </valuemap>
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.1">
+     <valuemap type="QVariantMap" key="ProjectExplorer.BuildStepList.Step.0">
+      <value type="bool" key="ProjectExplorer.BuildStep.Enabled">true</value>
+      <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.MakeStep</value>
+      <valuelist type="QVariantList" key="Qt4ProjectManager.MakeStep.BuildTargets"/>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.Clean">true</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeArguments">clean</value>
+      <value type="QString" key="Qt4ProjectManager.MakeStep.MakeCommand"></value>
+      <value type="bool" key="Qt4ProjectManager.MakeStep.OverrideMakeflags">false</value>
+     </valuemap>
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">1</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Clean</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Clean</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Clean</value>
+    </valuemap>
+    <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">2</value>
+    <value type="bool" key="ProjectExplorer.BuildConfiguration.ClearSystemEnvironment">false</value>
+    <valuelist type="QVariantList" key="ProjectExplorer.BuildConfiguration.UserEnvironmentChanges"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Profile</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4BuildConfiguration</value>
+    <value type="int" key="Qt4ProjectManager.Qt4BuildConfiguration.BuildConfiguration">0</value>
+   </valuemap>
+   <value type="int" key="ProjectExplorer.Target.BuildConfigurationCount">3</value>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.DeployConfiguration.0">
+    <valuemap type="QVariantMap" key="ProjectExplorer.BuildConfiguration.BuildStepList.0">
+     <value type="int" key="ProjectExplorer.BuildStepList.StepsCount">0</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DefaultDisplayName">Deploy</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">Deploy</value>
+     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.BuildSteps.Deploy</value>
+    </valuemap>
+    <value type="int" key="ProjectExplorer.BuildConfiguration.BuildStepListCount">1</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">ProjectExplorer.DefaultDeployConfiguration</value>
+   </valuemap>
+   <value type="int" key="ProjectExplorer.Target.DeployConfigurationCount">1</value>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.PluginSettings"/>
+   <valuemap type="QVariantMap" key="ProjectExplorer.Target.RunConfiguration.0">
+    <value type="QString" key="Analyzer.Perf.CallgraphMode">dwarf</value>
+    <valuelist type="QVariantList" key="Analyzer.Perf.Events">
+     <value type="QString">cpu-cycles</value>
+    </valuelist>
+    <valuelist type="QVariantList" key="Analyzer.Perf.ExtraArguments"/>
+    <value type="int" key="Analyzer.Perf.Frequency">250</value>
+    <valuelist type="QVariantList" key="Analyzer.Perf.RecordArguments">
+     <value type="QString">-e</value>
+     <value type="QString">cpu-cycles</value>
+     <value type="QString">--call-graph</value>
+     <value type="QString">dwarf,4096</value>
+     <value type="QString">-F</value>
+     <value type="QString">250</value>
+    </valuelist>
+    <value type="QString" key="Analyzer.Perf.SampleMode">-F</value>
+    <value type="bool" key="Analyzer.Perf.Settings.UseGlobalSettings">true</value>
+    <value type="int" key="Analyzer.Perf.StackSize">4096</value>
+    <value type="bool" key="Analyzer.QmlProfiler.AggregateTraces">false</value>
+    <value type="bool" key="Analyzer.QmlProfiler.FlushEnabled">false</value>
+    <value type="uint" key="Analyzer.QmlProfiler.FlushInterval">1000</value>
+    <value type="QString" key="Analyzer.QmlProfiler.LastTraceFile"></value>
+    <value type="bool" key="Analyzer.QmlProfiler.Settings.UseGlobalSettings">true</value>
+    <valuelist type="QVariantList" key="Analyzer.Valgrind.AddedSuppressionFiles"/>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.CollectBusEvents">false</value>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.CollectSystime">false</value>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.EnableBranchSim">false</value>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.EnableCacheSim">false</value>
+    <value type="bool" key="Analyzer.Valgrind.Callgrind.EnableEventToolTips">true</value>
+    <value type="double" key="Analyzer.Valgrind.Callgrind.MinimumCostRatio">0.01</value>
+    <value type="double" key="Analyzer.Valgrind.Callgrind.VisualisationMinimumCostRatio">10</value>
+    <value type="bool" key="Analyzer.Valgrind.FilterExternalIssues">true</value>
+    <value type="QString" key="Analyzer.Valgrind.KCachegrindExecutable">kcachegrind</value>
+    <value type="int" key="Analyzer.Valgrind.LeakCheckOnFinish">1</value>
+    <value type="int" key="Analyzer.Valgrind.NumCallers">25</value>
+    <valuelist type="QVariantList" key="Analyzer.Valgrind.RemovedSuppressionFiles"/>
+    <value type="int" key="Analyzer.Valgrind.SelfModifyingCodeDetection">1</value>
+    <value type="bool" key="Analyzer.Valgrind.Settings.UseGlobalSettings">true</value>
+    <value type="bool" key="Analyzer.Valgrind.ShowReachable">false</value>
+    <value type="bool" key="Analyzer.Valgrind.TrackOrigins">true</value>
+    <value type="QString" key="Analyzer.Valgrind.ValgrindExecutable">valgrind</value>
+    <valuelist type="QVariantList" key="Analyzer.Valgrind.VisibleErrorKinds">
+     <value type="int">0</value>
+     <value type="int">1</value>
+     <value type="int">2</value>
+     <value type="int">3</value>
+     <value type="int">4</value>
+     <value type="int">5</value>
+     <value type="int">6</value>
+     <value type="int">7</value>
+     <value type="int">8</value>
+     <value type="int">9</value>
+     <value type="int">10</value>
+     <value type="int">11</value>
+     <value type="int">12</value>
+     <value type="int">13</value>
+     <value type="int">14</value>
+    </valuelist>
+    <value type="int" key="PE.EnvironmentAspect.Base">2</value>
+    <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:F:/acm/DS/monkey/monkey.pro</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">F:/acm/DS/monkey/monkey.pro</value>
+    <value type="QString" key="RunConfiguration.Arguments"></value>
+    <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
+    <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
+    <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
+    <value type="bool" key="RunConfiguration.UseLibrarySearchPath">true</value>
+    <value type="bool" key="RunConfiguration.UseMultiProcess">false</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
+    <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory"></value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default"></value>
+   </valuemap>
+   <value type="int" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
+  </valuemap>
+ </data>
+ <data>
+  <variable>ProjectExplorer.Project.TargetCount</variable>
+  <value type="int">2</value>
+ </data>
+ <data>
+  <variable>ProjectExplorer.Project.Updater.FileVersion</variable>
+  <value type="int">22</value>
+ </data>
+ <data>
+  <variable>Version</variable>
+  <value type="int">22</value>
+ </data>
+</qtcreator>
+LPKF_
+monkeygui.cpp
+630
+#include "monkeygui.h"
+#include "ui_monkeygui.h"
+#include "monkey.h"
+
+MonkeyGUI::MonkeyGUI(QWidget *parent)
+    : QMainWindow(parent)
+    , ui(new Ui::MonkeyGUI)
+{
+    ui->setupUi(this);
+}
+
+MonkeyGUI::~MonkeyGUI()
+{
+    delete ui;
+}
+
+
+void MonkeyGUI::on_pushButton_clicked()
+{
+    ui->resultBox->clear();
+    monkey mo = monkey(ui->monkeyNum->text().toInt(),ui->monkeyPop->text().toInt());
+    while(!(mo.isempty())) {
+    ui->resultBox->append(QString("The following monkey is out: ")+QString::number(mo.next()));
+    }
+    ui->resultBox->append(QString("The king is ")+QString::number(mo.king()));
+}
+
+LPKF_
+monkeygui.h
+389
+#ifndef MONKEYGUI_H
+#define MONKEYGUI_H
+
+#include <QMainWindow>
+
+QT_BEGIN_NAMESPACE
+namespace Ui { class MonkeyGUI; }
+QT_END_NAMESPACE
+
+class MonkeyGUI : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    MonkeyGUI(QWidget *parent = nullptr);
+    ~MonkeyGUI();
+
+private slots:
+    void on_pushButton_clicked();
+
+private:
+    Ui::MonkeyGUI *ui;
+};
+#endif // MONKEYGUI_H
+LPKF_
+monkeygui.ui
+2321
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MonkeyGUI</class>
+ <widget class="QMainWindow" name="MonkeyGUI">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MonkeyGUI</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QLineEdit" name="monkeyNum">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>60</y>
+      <width>113</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="monkeyPop">
+    <property name="geometry">
+     <rect>
+      <x>200</x>
+      <y>100</y>
+      <width>113</width>
+      <height>21</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>31</x>
+      <y>60</y>
+      <width>141</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Number of Monkeys:</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>71</x>
+      <y>100</y>
+      <width>101</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Which to pop:</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>340</x>
+      <y>60</y>
+      <width>391</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>GO!</string>
+    </property>
+   </widget>
+   <widget class="QTextEdit" name="resultBox">
+    <property name="geometry">
+     <rect>
+      <x>50</x>
+      <y>140</y>
+      <width>681</width>
+      <height>381</height>
+     </rect>
+    </property>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>26</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
+LPKF_
+screenshot.png
+13029
+‰PNG
+
+   IHDR    ~   =¹ÖĞ   sRGB ®Îé   gAMA  ±üa   	pHYs  t  tŞfx  2zIDATx^íİİ¯eg~'ôuªÜİötÂ8A ¹‹xÑ0íòÌ$Šï c¸@šu9 ‘ĞH¼	„¸´ºå—«[şŠ@Ã›º+#¡ÑL,n"Á…£\à2ošÀ\DİÍP$éNÇn»ØÏ©ó³õx½í}öïÔŞë|>Ñ“µöóºÖ®.éùî½WùâÕ?ÿì“vm3­   Ï¸¸ü—ÿÿs÷^ıóOsÅTÀ¸
+%Â  °äó¸ÑWî½:<|Û   ÿÖãâ¯ÜÛ¥‹>`\V  \ËÓìq±ßø†ˆ  ”º˜²  àúî\  Ê  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê-ş—ËÿÎßùï‡=şÃ«WëüÑÿxø£?úãáÓÏ>~áåŸşîÿıûÃŸûGşÌğ¯ı«owîÈ:  pÛ,ÿê¿şo†¿øË¿º;ûìiÅA.†ßşíßşÚ¿şW‡_|ñª  ¸-V¿üWşÊğó_éªfÚgŸ}1ÕÅE+»ÿ·ó³Ÿ}:üÆö×/ƒÇK/-Ïó<=|ãbxcøşğäû÷¯j  Ø’Ø£®µ°]>ií^?øàƒáWµ}‘0íw~çw†×^{­ô^Wÿîé¿øÿÓğà?ùï†wşÓßşÃßø­á?úÏÿöğÿõ¿5¼û_şÍá7şÆÿ0|üñÇÃãÇ‡şğ‡—åÇ?şñğ÷~ğ‡Ã¿ıŞßşÛÿñ¿šeÚ£w^½|c.^}gxtU7¦ƒÖï‡WgíáğF»ç\º»¼ßÑ›}4¼óê³m—}Ş?  †‰5åÜµĞÑES"t´¾•VşøãáşÁßıàGÃGÿÏ‡ÿåÿıÁğ¿şÁïÿÛışğ£O~2üì“O®z>õôÏéÉp÷kŸw_üÙeİ¢{÷†{¿9µs~ôÎğÎÃ]Ÿ{W¯ÏØÓ õÆ0|¿ûøı‡A  öÓ¾é˜9t,}+r]‹Á£m†?ıô³áÅ¯İ~ñøÊğòË_¾şsw†»_ıtxr÷“á³;ÃÅ§—}ïŞİÕß½{YîÜ¹.î>¾ú§ÿd×÷g—š/zôÊğÊıGÃƒwÆ7Ş~óáğèş®Ï¹¤ÿğáÕÃğàÃ'Ã—~ÑußÏ¼  8©ğq“¡£YõÇeğxñÎğÂ×>ÿÉ?øÉßşà“?~òé‡?şì'ÃÇOşä²ßİ»/_ùÊW.Ë;w‡‹;O†¯ıüÇÃ>}æù9÷ß~0Ü{øÎğÎ—ÂÅÃá¶Y{bSşèáÕîgKÏ~qğÅO“>ÿY×eyc7ó´øi×«ù‚úµÒÏ›¦~îôEıî:vÁêŞƒïooà›  N_>n:t4«jõã:ü½ÿïGÃOŸüd¸óÕO‡»_ıìò[¾ò³áÎİümFOvòá2x|õ¥Ÿîú<û3¬Y÷ŞŞ¾ÿhxØıŞêÑ;ïïïÚÆ6ëßØmê¯äŸ-}ø`øh·Ù&04»¾¿>|ïªß÷‡ûí9‹‰Ÿ6µ€Òšîïæı0¾\ëápÿÃXëÃáÁîÿ^½
+÷ïï‚Ñ—~.öpxØæyûíáŞ£ßîÚ^yEê  NËÌ®+œ—>n:t4«ƒÇO?ı“áâ«»q6vÁc8ZèhÇ;w'O>»üf£•¶)¿ØÕ¿ø§~2Ü}aå3WÚæıÑƒ]Ğ¸zİ6îï<xôtSÿ%OƒÃ½>û³¥]€ùŞƒ{İ<;÷ßû<½ÜŞŞõi©àKÑãòçPºyŸ~[qÿû¦ toxû{¾x6eÜë‚Óåü÷w×¿;ÿ¨}çqo¸÷ÊÓ¦§ú‡Ìç¿… ¨ğù¸+ìcuğ¸¸ûÙğÂ.x¼Ğ¾í¸
+OÃÇ§—ßx|¶û_û>}ÎãÎeøøúİ¯o|ã_şÜ/üÙ«YVºÜ¼ïÂF|[Ñ6î»À0ú+«Gícß Ü{¥íîwíùÛ‡]İâw½3¼zf>ÿ¦£¹ú¶"~~õyyõÁåO¨v—²soøæı]àyø›—ß€DX¹÷àí]ôØÙ]ç—×¿?|ÿê/ğ‡- À‘åŸWåŸ]İ”ÕÁãÎİ]°xa:^¸
+»ó§¥}ãñéå¦ùg?ûÙğñÇŸ\–O>ùd¸ølşÌKÿğğs/|ıj–µòæıjã~ÿ›ËáÈ¾Ïj?½Êi?J|3rï›÷¿øä2¬Üîóêêï½2¼²›µÿ)Ù¬>½  X£¦£æã&¬ÿÆãÎÓo<â[»_ùdB–öS«'—?¯j¿|ú5İgŸ}vùPz+íõ¾î½ıöpÿÑƒá7Ş<º?¼=úpÇÎåF¾íÍ¿¼5´Û°»Ö½§xåíáÃÛÏ§\~óñ¹™µqï›Ãı«Ÿ[]şK\÷î‘;âç]_ú	Ø„WÚ¿üèÑå·:ÏÚ…‘İeŒÿü  šzü¦ÃÇêàñ}åëÃ/ÿÂ?:üòŸşÇ†¿øóÿøğ~îÏ¯ş©bxå¥oÿàğ—?µŠ°Á£•CBÇSO7è¦Ÿ)ŠüÓÁ?wõŒÆıï·Èpï*|´‡É?Ÿxb­ö¯\=Sqo”îÚ¿Îõpwí¡ò«–æŞÛß»ü)Ù¯~é_ïú¨¥‰ä2€µg@ù—²Ú¿ĞõÆôÏÏ  `g*t„›«ƒÇ¯ÿ¥zøş…¿<üûÿü¿4ü{é_şİö_şæ×†ëŸúµá×şÉnxáîİák_ûêğÒK//¾øµ«R÷é×ãâbõ2Ï¸üÉÒîÿ>ÿ™Ò„{oxùß¾xæÙ‹7>ÿïdì£…6Áå¿dõtãßÖjÏa<³Ö¯Ã÷ú…îßî?z8<|tõPù3vÁ¤ı«XßexĞş‰ß˜gWŞxØ÷Èa©½¾ú—³>ï÷êğà•ïO>|6Ğ  °NŞÍ•s7:B•.,|%ñ·şöo?ıôÎe°8T[âÿú?ÿáßü7şÚ.”¼xU»uí[‰«€p­ô  ço1x´ŸKıèG?>şøã«šÃ´oB~ñqÉq•öó«ËÿŞGş§w àvZ¦ıëÁ·  Ğöğ“Úí¼}«óÆG>  øÆ  ¨ç   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å.?~ì?   ”ò  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @¹‹Ç?¹:’÷Ş{ïêŒsõæ›o^ Ï›àZğx÷İw¯^qnŞzë­ï¿ÿşÕ ·İë¯¿~uF<`‚àqŞWğxíµ×®^p[}ğÁ‚ÇÏx   å   ÜfƒÇË/¿|YÎÅ©]ï¹½  œ¶ç<bc›Ûşõu=~üøêìôµ{n×ÛÊÚûïß¯şõuÓûwÓ...®ÎÆµö¥>  ·ÍsıÆ6^ßöïÚûŸêwÛß¿JkEkòäÉe>  ¾àX)Å”Aø  øÂsíú±Ÿıl(×Åy.Sæúä¶ÜŞ×õ¯÷15.×Oõ9†±¹s]œ÷}²©>¹>·R—ë³¹6  ÎÃÉ~ã1ö“¡\çù8¶9mu­-JîÓ·åöxİä~ûÊcóÚM3ŸÓÔú±Vnïûô¢OèÇ¶ã£_›¾® Àvmş§VÇØĞæ9ö™/6Ö¡Ïmìs]×šõÇÆõ¦æ_Ò¯·4ÏT[«?d}  NÇI~ƒz“Úº¹ğ¬öÌıùä÷nªÏ”˜÷±  œ—[ÿpy|š_Xz?ú÷®ïß^G°èÛš<Nø  Ø®³
+7±1=æıfzjó]å˜ë¯kú„µ}[¿}æ}^úÅªÿW®  n³ç<b#Ç±qlv£DŸx=¦¯¾Qò:ıü¹=^÷çûÊkäµ›<o>_cªo_?µ~ôËıs]ßŞ›<w”şÃTıš±§¢‰ù<‹ğÑŠĞ ğ…‹İfÏîˆRç*Æ¼÷Ş{Ã»ï¾{õŠsóÖ[oo¾ùæÕ«›ñşûï¯½öÚÕ+ n«>ø`xıõ×¯^nı3Ô9—o2  ¨'xP¦¡ €Fğ   ÊyÆ&´g<8oñ àyğŒÇ8ÁàH ÁcœŸZ  å   œà  ”<  €r‚ °è—~é—)½¹¶0×lŸà Ìjá÷~ï÷>/½¾]À Æ À¤SÆÚ…`Œà ìe.ˆ L<  €r‚  PNğ  VkÏnDØ‡à ¬Ïwòœ‡gCàv< €IKÿBÕX{{=2|K·›à ÌŠp¥Kí à ,ja"Ê˜¥öf®Ø>Á  ('x   å   ÜÅãÇŸ\Éw¾ó«3ÎÕ·¿ıí«³›ñşûï¯½öÚÕ+ n«>ø`xıõ×¯^˜Ğ‚Çw¿ûİ«Wœ›o}ë[‚ Ï…à1ÎO­  €r‚  PNğ   Ê	zùå—/Ë’µız‡ €S$xLÈÿ|ŒóÇ_«TÏÏş...F  Ë	Sÿ}Aëÿ¼CD„%®ïÉ“'_*  ,<  €r‚ÇÄO°úo¦ê{Kı–Ú§ä1sãçÚ¦ä1q>5ÇX[®‹ó¾O˜k»i~f pÁãšÚ†8~NÕJŞ ¯ù™ÕÜøf©}NŒéÏ³<ÿ¾s7K×75{İ,?5ıÏ¬„ €u±1ÚÇú1w¶ôú˜úõÛù¾ÿ¹ë[3ÿÜøĞú¬éWÍó  ‡<fô›İSØü À9<`%?« 8œàñµoPúŸíûS§}åùûõÛù¾ßêÌ]ïšùçÆ‡ÖgM?  N—àq Øçq_×cçYlÎ£ÄÆ<úæ1cukä5úÿ\Ûyü!ó/?%ñ0y.û  XGğXá~CÜ^G	}]~ë{cíkëÖšwèœ!Æ:ÿuÇß¤ø×¬¢  °àÁAÚ·ù¸¯ë à¼dé[Š%× Ày¹Ømüü^F|ç;ß¾ûİï^½âÜ|ë[ß¾ıío_½ºï¿ÿşÕ ·İë¯¿~uF<`Bœ·› À4Á  (ç   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”»xüøñ“«ó³õŞ{ï] ÀixóÍ7¯Îh6<Ş}÷İ«W  ğ|½õÖ[‚GÇO­  €r‚  PNğ   Ê	  @9Á  (wkƒÇÅÅÅe¹)‡¬c¦Æ-µCõüÏË©Ü×Vß_ €ŞfƒGlèÆJóäÉÍı+ÂmÍ¶^+±ş1fÊR;Ó¼oÏ_ş;™ °M›şÆ#oÌOe“~nŞSyß¶êŞßÊ0÷Ÿ °M›S  ¸y.ß™û™GnkŸ“ÇÌŸk;†±ùs]>æ~ñ:×…\¿¦ß\Ÿ1ûŒkÏuqŞ÷É¦úäúÜ¶¶nÎšş¹Ï\¿9cc×Ôå×}[6×¶$Æ^g à<ÜúàÑ6;ùgyóÓ·õíKbLå5ö™{­©ùÇ®¥Éõ1nLÔçù[ÉkômM—ôıÛ1Ïò¹=Æõ×06Gˆ>¡ÛJŒ~qlÆêæ´~s}ûõ‘çÈ÷>6__ãúócŠy£äk ¶åÖŠÍÔZ±)ÇŞxUÏßœúû·æúúyÖê×;tµö{ÍûsmŞCîû1 ÀùòS«m£–ëÅF7Ê)n4ãº¦şlóõOõ©Ò¿  çLğXĞ6}ÙŠv/mC›ÇsF9EK×•¯?JÖ^G0èÛ!¯ÛÖØ’­İ 0OğØÓ17KıfòØ›×êù—Äú¹Ó1ï¯ŸkÊ±ïaÎu×Ú÷ı9ôş[İš± Àí¶ùà¢~c4Vß×ÅÆ-—}6¶1¦?ÏòıÜyL>KíÍÜüKòœù¼Éõ¡¯kÇ¶f.¹ÿœ©~}}Ìk…è—ûçº¾½?6yî(ylª~NÌÙŸgQßÊ!kä{èÇç¶ÜŞÎ³¹9®£_ÿØó §eóÁ£md¢dcõKu¹~~ìÔø©¶<n¬ÏR{XjËÇ,ÆåÖÖ*Ï“csÕG]®Ïu¹ômY®ïÛ®«Ÿ»Ÿ®msãûù§úNÕ7smKbìuæ  ÎƒŸZQ¦m$·ü‰öï	  ŠàA©ø$;Ê–lñ  ª  @9Á  ('x   ånmğˆƒoÊ!ëÅ˜©qKíÇP=ÿór*÷µÕ÷  ·Ùàº±ÒÜäCÁmÍx9Ö_céáå¥v¦yßNÇÒß‰ü÷ 8_›şÆ#oÌOe“~nŞSyß¶êŞßªMÿš@ÑÚã=> à¼m6xLmæN}“·EŠ):B;> à|y¸|§mf¢ôrÛXûœ<fnü\Û1ŒÍŸëò1÷‹×¹.äú5ıæúŒÙgÜX{®‹ó¾O6Õ'×ç¶µusÖôÏ}æúÍ»¦.¿îÛ²¹6 €pëƒGÛ0Å'¯ı'ª}[ß¾$ÆôçY^cŸ¹×ššìZš\ãÆD}¿•¼FßÖÄqIß¿óÜ!¯‘Ûc\cs„èú±­ÄøèÇf¬nNë7×·_ÿy|ïcóõu1®? 8Ä­Ïs3›ÂĞÎóæğºªçoNıı[s}ı<kõë:ÏZûÎ½æı9†6oå} Ûà§VÚF-Ö‹n”SÜœÆuMıÙæëŸêS¥ÿ  Î™à± mşú²í^Ú†6)æŒrŠ–®+_”¬½`Ğ·C^·­ p®=só×o&½y­I¬ŸË1óşú¹¦ûæ\w­}ßŸCï¿Õ­»¯cşù ÏßæƒGl\úÑX}_Ÿ\öÙøÄ˜ş<Ëkôsç1ù<,µ7só/Ésæó&×‡¾®Ûš¹äşs¦úõõ1g¬¢_îŸëúöşØä¹£ä5²©ú91gE}+‡¬‘ï¡ŸÛr{;Ïææ¸˜³?ÏªÖ nŞæƒGÛ¬DÉÆê—êrııØ©ñSmyÜXŸ¥ö°Ô–YŒË%¬­;T'Çæ«º\ŸëréÛ²\ß·]W?w?ÿ\Û>æÆ÷óOõªoæÚæÄ¸\ÆÌµ çÃO­(Ó6‹ñiõ?µŞâ= T<(ŸVGÙ’-Ş @Á  ('x   å   Ü­ñ`ğM9d½35n©ıªç^Nå¾¶úş ô6<bC7Vš›|(¸­"Çúk,=¼¼ÔÎ4ïÛéÈ/€íÚô7yc~*›ôsÛğÊû¶UçğşV†‚CC9 p~6<¦6s§¾ÉƒÛ"BGğw ¶ÍÃå;m¥—ÛÆÚçä1sãçÚalş\—¹_¼Îu!×¯é7×gÌ>ãÆÚs]œ÷}²©>¹>·­­›³¦î3×oÎØØ5uùuß–Íµ­ã¯3 pún}ğh›öIk”¼ùéÛúö%1¦?ÏòûÌ½ÖÔüc×Òäú7&êóü­ä5ú¶&Kúşí˜çyÜãúk›#DŸĞm%ÆG¿86cusZ¿¹¾ıú‡Èsä{›¯¯‹qıù1õ÷˜¯ Ø–[<*6SkÅ¦+{ãU=sêïßšëëçY«_ïĞyÖÚwî5ïÏ1´y½ïCÇ çÇO­´Z.¬İ(§¸ÉŒëšú³Í×?Õ§Jÿş œ3ÁcAÛüõe+Ú½´m>SÌå-]W¾ş(Y{Á o;†¼n[ à\	{:ææ¯ßL{óZ=ÿ’X?—c:æıõsM9ö=Ì¹îZû¾?‡Ş«[3¶·ö= ¶aóÁ#66ıg¬¾¯‹Q.s·^ŒéÏ³¼F?w“ÏÃR{37ÿ’<g>or}èëÚ±­™Kî?gª__sÆZ!úåş¹®oïM;J^#›ªŸsöçYÔ·rÈùúñ¹-··ólnëšº `{6<ÚF&J6V¿T—ë×èÇNŸjËãÆú,µ‡¥¶|Ìb\.amİ¡ò<ù86÷X}Ôåú\—Kß–åú¾íºú¹ûùçÚö17¾ŸªïT}3×¶FŒ¿Î ÀéóS+Ê´dş4{kŸhoñ  ª”ŠO²£lÉï	  Šà  ”<  €r‚  PîÖx0ø¦²^Œ™·Ô~Õó?/§r_[} z›±¡+ÍM>ÜÖŒ‘cı5–^^jgš÷í4ä¿—ûüİ  ÎÏ¦¿ñÈóSÙ¤ŸÛ†÷TŞ·­:‡÷·*´yãş£ °]›S›¹©z   ‡ËwâgcŸ¶æ¶±ö9yÌÜø¹¶c›?×åcî¯s]ÈõkúÍõ³Ï¸±ö\ç}ŸlªO®Ïmkëæ¬éŸûÌõ›36vM]~İ·esms|  ·Ë­mÃ?óh%o ú¶¾}IŒéÏ³¼Æ>s¯55ÿØµ4¹>Æ‰ú<+y¾­‰ã’¾;æ¹C^#·Ç¸şÆæÑ'ôc[‰ñÑ/ÍXİœÖo®o¿ş!òùŞÇæëëb\^%® Ø¦[<çF§ßhµó¼9¼®êù›SÿÖ\_?ÏZız‡Î³Ö¾s¯y¡Í{İû®~ï €çÏO­´Q.¬İ(§¸±Œëšú³Í×?Õ§JÿşmU»7¡ ¶OğXĞ6D}ÙŠv/±é«ØüÅœQNÑÒuåë’µ×í>«6Ïyİ¶ÆÖT½o Àé<ötÌÍ_¿™<ö&¬zş%±~.ÇtÌûëçšrì{˜sİµö}½ÿV·floìz™ 8›±‘é74cõ}]lÜr™Û¸õbLå5Æ6a1&Ÿ‡¥öfnş%yÎ|ŞäúĞ×µc[3—ÜÎT¿¾>æŒµBôËıs]ßŞ›<w”¼F6U?'æìÏ³¨oå5ò=ôãs[noçÙÜ×óF ¶kóÁ£m”¢dcõKu¹~~ìÔø©¶<n¬ÏR{XjËÇ,ÆåÖÖ*Ï“csÕG]®Ïu¹ômY®ïÛ®«Ÿ»Ÿ®msãûù§úNÕ7smsb\_ €mòS+Ê´Mdÿ‰ö–6–[¼' €*‚¥âSì([²Å{ ¨"x   å   œà  ”»µÁ#¾)‡¬c¦Æ-µCõüÏË©Ü×Vß_ €ŞfƒGlèÆJs“·5ãAäX¥‡——Ú™æ};ıßK `»6ıGŞ˜ŸÊ&ıÜ6¼§ò¾mÕ9¼¿U¡ Í÷ßŠğ Û¶Ùà1µ™;õMÜVÂ l›‡ËwÚf'J/·µÏÉcæÆÏµÃØü¹.s¿xëB®_Óo®Ï˜}Æµçº8ïûdS}r}n[[7gMÿÜg®ßœ±±kêòë¾-›k ·>x´SüÔ£ÿÄµoëÛ—Ä˜ş<Ëkì3÷ZSó]K“ëcÜ˜¨Ïó·’×èÛš8.éû·c;ä5r{Œë¯al}B?¶•ıâØŒÕÍiıæúöë"Ï‘ï}l¾¾.ÆõçUòõ ÛsëƒGõfjNl
+C;?ææ«zşæÔß¿5××Ï³V¿Ş¡ó¬µïÜkŞŸchórßq=Q™ 8~jµ oŒZa½sØXÆuMıÙæëŸêS¥ÿ¶¨İc `Ûyc´µR»—¶¡ÍÇcŠ9£œ¢¥ëÊ×%k¯#ômÇ×mk  œ+ÁcOÇÜüõ›Éco^«ç_ëçrLÇ¼¿~®)Ç¾‡9×]kß÷çĞûoukÆÉãÚù¡~ ÀéÛ|ğˆM¿1«ïëbã–Ë>£ÓŸgy~î<&Ÿ‡¥öfnş%yÎ|ŞäúĞ×µc[3—ÜÎT¿¾>æŒµBôËıs]ßŞ›<w”¼F6U?'æìÏ³¨oå5ò=ôãs[noçÙÜ×U97 pZ6<Úf&J6V¿T—ë×èÇNŸjËãÆú,µ‡¥¶|Ìb\.amİ¡ò<ù86÷X}Ôåú\—Kß–åú¾íºú¹ûùçÚö17¾ŸªïT}3×¶ÆuÇ çÁO­(Ó6“ñiö?ÕŞâ= T<(ŸfGÙ’-Ş @Á  ('x   å   Ü­ñ`ğM9d½35n©ıªç^Nå¾¶úş ô6<bC7Vš›|(¸­"Çúk,=¼¼ÔÎ4ïÛiÈ/÷ù» œŸMã‘7æ§²I?·ï©¼o[uïoU hóÆıG> `»6<¦6sSõ  @—ïÄÏ<Æ>mÍmcísò˜¹ñsmÇ06®ËÇÜ/^çºë×ô›ë3fŸqcí¹.Îû>ÙTŸ\ŸÛÖÖÍYÓ?÷™ë7glìšºüºoËæÚ  Â­mÃ4õS¾­o_cúó,¯±ÏÜkMÍ?v-M®qc¢>ÏßJ^£okâ¸¤ïßyî×Èí1®¿†±9Bô	ıØVb|ô‹c3V7§õ›ëÛ¯ˆ<G¾÷±ùúº×ŸK›¯]S.Ç^ 8·>x<ÏN¿ÑŠØ±TÏßœúû·æúúyÖê×;tµö{ÍûsmŞëÜ÷uÇ çÁO­´Z.¬İ(§¸¹Œëšú³Í×?Õ§JÿşmM»§ü¿‰¹? àü	Úf¨/[Ñî%6ı&ğbÎ(§héºòõGÉÚëvŸï_“×mk  œ+ÁcOÇÜüõ›Éco^«ç_ëçrLÇ¼¿~®)Ç¾‡9×]kß÷çĞûoukÆ ·ÛæƒGlˆúÑX}_·\öÙØÆ˜ş<Ëkôsç1ù<,µ7só/Ésæó&×‡¾®Ûš¹äşs¦úõõ1g¬¢_îŸëúöşØä¹£ä5²©ú91gE}+‡¬‘ï¡ŸÛr{;Ïææ¸~ıcÏ œ–Í¶‘‰’Õ/Õåú5ú±Sã§Úò¸±>Kía©-³—KX[w¨<O>Í=Vu¹>×åÒ·e¹¾o»®~î~ş¹¶}ÌïçŸê;UßÌµ-‰±×™ 8~jE™¶‘Üò'Ú[¼' €*‚¥â“ì([²Å{ ¨"x   å   œà  ”»µÁ#¾)‡¬c¦Æ-µCõüÏË©Ü×Vß_ €ŞfƒGlèÆJs“·5ãAäX¥‡——Ú™æ};ûü  Î×¦¿ñÈóSÙ¤ŸÛ†÷TŞ·­:‡÷·*´y… ¸=6<¦6s6ÑpÎ!t ÇãáòøäuìÓ×Ü6Ö>'™?×vcóçº|Ìıâu®¹~M¿¹>cö7Öëâ¼ï“MõÉõ¹mmİœ5ısŸ¹~sÆÆ®©Ë¯û¶l®  ÜúàÑ6LñÉk+yÕ·õíKbLå5ö™{­©ùÇ®¥Éõ1nLÔçù[ÉkômM—ôıÛ1Ïò¹=Æõ×06Gˆ>¡ÛJŒ~qlÆêæ´~s}ûõ‘çÈ÷>6__ãús €CÜúàñ<7S±)í<o¯«zşæÔß¿5××Ï³V¿Ş¡ó¬µïÜkŞŸchóVŞ7 °~jµ mÔra½ØèF9ÅÍi\×ÔŸm¾ş©>Uú÷ àœ	Úæ¯/[Ñî¥mhóñ˜bÎ(§héºòõGÉÚë}Û1äuÛ  çJğØÓ17ıfòØ›×êù—Äú¹Ó1ï¯ŸkÊ±ïaÎu×Ú÷ı9ôş[İš± Àí¶ùà¢~c4Vß×ÅÆ-—}6¶1¦?ÏòıÜyL>KíÍÜüKòœù¼Éõ¡¯kÇ¶f.¹ÿœ©~}}Ìk…è—ûçº¾½?6yî(ylª~NÌÙŸgQßÊ!kä{èÇç¶ÜŞÎ³¹9®#æìÏ€mÚ|ğh¥(ÙXıR]®_£;5~ª-ë³Ô–Úò1‹q¹„µu‡ÊóäãØÜcõQ—ës].}[–ëû¶ëêçîçŸkÛÇÜø~ş©¾SõÍ\Ûœ— °]~jE™¶‘ŒO²£lis¹Å{ ¨"xP*>É²%[¼' €*‚  PNğ   Ê	  @¹[<âÁà›rÈz1fjÜRû1TÏÿ¼œÊ}mõı èm6xÄ†n¬47ùPp[3Dõ×Xzxy©iŞ·Ó³Ïß àülú¼1?•Mú¹mxOå}Ûªsxo" °}›S›9›h  ¸y.ßiŸ¶Féå¶±ö9yÌÜø¹¶c›?×åcî¯s]ÈõkúÍõ³Ï¸±ö\ç}ŸlªO®Ïmkëæ¬éŸûÌõ›36vM]~İ·esmk´±> €í»õÁ#6=QòªoëÛ—Ä˜ş<Ëkì3÷ZSó]K“ëcÜ˜¨Ïó·’×èÛš8.éû·c;ä5r{Œë¯al}B?¶•ıâØŒÕÍiıæúöë"Ï‘ï}l¾¾.ÆõçÇ× lß­ÏsÓÓoºÚyŞ^WõüÍ©¿k®¯Ÿg­~½CçYkß¹×¼?ÇĞæ=ä¾«ß/ à´ø©Õ‚¶9Ê…õb£å7™q]S¶ùú§úTéß¿-êïoË÷
+ ·à± mşú²í^Ú&/)æŒrŠ–®+_”¬½Írßvyİ¶Æ–ä{k%× Û#xìé˜›¿¶ÁÊó{óZ=ÿ’X?—c:æıõsM9ö=Ì¹îZû¾?‡Ş«[3 ¸İ6<bCÔoŒÆêûºØ¸å²ÏÆ6ÆôçY^£Ÿ;Éça©½™›I3Ÿ7¹>ôuíØÖÌ%÷Ÿ3Õ¯¯9c­ırÿ\×·÷Ç&Ï%¯‘MÕÏ‰9ûó,ê[9d|ıøÜ–ÛÛy67Ç1ÄÜq lÓæƒGÛ(EÉÆê—êrııØ©ñSmyÜXŸ¥ö°Ô–YŒË%¬­;T'Çæ«º\ŸëréÛ²\ß·]W?w?ÿ\Û>æÆ÷óOõªoæÚÖˆñ× 8m~jE™¶‰ŒO³£lic¹Å{ ¨"xP*>Å²%[¼' €*‚  PNğ   Ê	  @¹[<âÁà›rÈz1fjÜRû1TÏÿ¼œÊ}mõı èm6xÄ†n¬47ùPp[3Dõ×Xzxy©iŞ·ç/ÿÌ Ø¦Mã‘7æ§²I?·ï©¼o[uïoeˆû?‡÷ ¸Í©MŒÍœ†şïb8ş~Àvy¸|gîg¹m¬}N37~®íÆæÏuù˜ûÅë\rıš~s}Æì3n¬=×Åyß'›ê“ësÛÚº9kúç>sıæŒ]S—_÷mÙ\ÛZm¼Ğ ÛvëƒGlx¢äTßÖ·/‰1ıy–×Øgîµ¦æ»–&×Ç¸1QŸço%¯Ñ·5q\Ò÷oÇ<wÈkäö×_ÃØ!ú„~l+1>úÅ±«›ÓúÍõí×?D#ßûØ|}]ŒëÏ qëƒÇóÜLÅ¦0´ó¼9¼®êù›SÿÖ\_?ÏZız‡Î³Ö¾s¯y¡Í[yß À6ø©Õ‚¶QË…õb£å7§q]S¶ùú§úTéß¿­j÷&¸ Àö	Ú†¨/[Ñî%6}›¿˜3Ê)Zº®|ıQ²öºİgÕæ9¯ÛÖ  8W‚Ç¹ùë7“ÇŞ¼VÏ¿$ÖÏå˜yı\S}s®»Ö¾ïÏ¡÷ßêÖŒ n·ÍØõ£±ú¾.6n¹ì³±1ıy–×èçÎcòyXjoææ_’çÌçM®}];¶5sÉıçLõëëcÎX+D¿Ü?×õíı±ÉsGÉkdSõsbÎş<‹úVY#ßC?>·åövÍÍ °ÖæƒGÛ(EÉÆê—êrııØ©ñSmyÜXŸ¥ö°Ô–YŒË%¬­;T'Çæ«º\ŸëréÛ²\ß·]W?w?ÿ\Û>æÆ÷óOõªoæÚÖ¸ÎX à|ø©eÚ†2>)ßâ'æ[¼' €*‚¥Ú¦<—-Ùâ= T<  €r‚  PNğ   ÊİÚàWY;õu,yŞë p;l6xÄ†z¬4Õ{èø©±÷ €ÛgÓßxäu(ŸŸ’ç}]•ë· óG>  n§Í©ÍôT=  PÇÃå;s?ÊmcíkÍ1Vrıš~s}¦¬“ûÌõÓ‡¼6^ğ ¸n}ğˆÍp”¼¹îÛúö}Å¡Eı>××Äq<nÌØü‡hóÄ\  ÜN·>xÜÄfø:›îSÚ¬_çZiï  ·“ŸZ-ˆOë£ì«©ÚtÇ¼QSúù¯Kø  ¸½m³Ü—}ìÛ6¹®µòüû†! € xìéĞÍô!÷%1g.Çtìù  ¸½6<bóÜo¢Çêûº±}«[#æ˜:6í<×÷mùØôuíØ®'—ÜIë›çõ­¬½÷×s9  Ø†ÍØ÷Ş±ú¥º\¿¤Ó¿nrİ\[«»<ßØ¼smkc  ÎŸŸZ±¶‘÷  ç@ğ8sùÛ¡ €S%x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê]<~üøÉÕùÙzï½÷®Î  à4¼ùæ›Wg4›  ÀióS+   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   œà  ”<  €r‚  PNğ   Ê	  @9Á  ('x   å   ÜÅãÇŸ\  \Ûïşîï^Ã¯üÊ¯\}ã  ”<  €r~j  ”<  €kéŸéğŒ  ğ\  @9?µ  Ê	  ÀŞâ9±g:¾üŒÇ0üÿİ4($ş¾#    IEND®B`‚1KPLÿ
